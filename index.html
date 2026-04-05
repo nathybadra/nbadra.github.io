@@ -1978,57 +1978,19 @@ function toggleCS(id) {
    el embed funciona. Fallback elegante si hay error de red.
 ────────────────────────────────────────────────────────── */
 function loadDash() {
+  var dashboardUrl = 'https://nathybadra.github.io/conflict-urban-vulnerability/conflict_dashboard.html';
+  var ph  = document.getElementById('dash-ph');
   var wrap = document.getElementById('dash-wrap');
-  var placeholder = document.getElementById('dash-ph');
+
   if (!wrap) return;
 
-  var dashboardUrl = 'https://nathybadra.github.io/conflict-urban-vulnerability/outputs/html/conflict_dashboard.html';
+  wrap.style.display = 'block';
+  if (ph) ph.style.display = 'none';
 
-  // Ocultar placeholder
-  if (placeholder) placeholder.style.display = 'none';
-
-  // Crear iframe
   var iframe = document.createElement('iframe');
   iframe.src = dashboardUrl;
   iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;background:#fff;';
   iframe.setAttribute('loading', 'lazy');
-  iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
-
-  var loaded = false;
-
-  // Failsafe: si tras 8s no cargó, mostrar link directo
-  var failSafe = setTimeout(function() {
-    if (!loaded) {
-      iframe.remove();
-      if (placeholder) {
-        placeholder.style.display = 'flex';
-        // Cambiar el botón a link directo
-        var btn = placeholder.querySelector('button');
-        if (btn) {
-          var link = document.createElement('a');
-          link.className = btn.className;
-          link.href = dashboardUrl;
-          link.target = '_blank';
-          link.rel = 'noopener';
-          link.style.marginTop = '8px';
-          link.innerHTML = '<span class="en">Open dashboard ↗</span><span class="es" style="display:none">Abrir dashboard ↗</span>';
-          btn.parentNode.replaceChild(link, btn);
-        }
-      }
-    }
-  }, 8000);
-
-  iframe.onload = function() {
-    loaded = true;
-    clearTimeout(failSafe);
-    if (placeholder && placeholder.parentNode) placeholder.style.display = 'none';
-  };
-
-  iframe.onerror = function() {
-    clearTimeout(failSafe);
-    iframe.remove();
-    if (placeholder) placeholder.style.display = 'flex';
-  };
 
   wrap.appendChild(iframe);
 }
