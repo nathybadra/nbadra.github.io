@@ -1919,6 +1919,110 @@ nav {
   border-color: rgba(255,105,51,0.5) !important;
 }
 
+<style id="ux-hero-lang-polish-v1">
+  /* segmented control usando tu clase real */
+  .lang-toggle {
+    display: inline-flex;
+    background: rgba(255,255,255,0.06);
+    border-radius: 999px;
+    padding: 3px;
+    gap: 2px;
+    margin-left: 8px;
+  }
+
+  .lang-btn {
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+    border-radius: 999px !important;
+    border: none !important;
+    background: transparent !important;
+    color: rgba(255,255,255,0.55) !important;
+    transition: all .25s ease !important;
+  }
+
+  .lang-btn.active {
+    background: linear-gradient(135deg,#ff6a3d,#ff3d77) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
+  }
+
+  .lang-btn:hover {
+    color: rgba(255,255,255,0.85) !important;
+  }
+
+  /* hero spacing usando tus IDs/clases reales */
+  #hero {
+    padding-top: 96px !important;
+  }
+
+  .hero-banner-content {
+    gap: 64px !important;
+  }
+
+  .hero-text {
+    padding-top: 18px !important;
+  }
+
+  .hero-name {
+    margin-bottom: 18px !important;
+  }
+
+  .hero-tagline {
+    margin-bottom: 24px !important;
+  }
+
+  .hero-bio {
+    margin-bottom: 30px !important;
+    max-width: 560px !important;
+  }
+
+  .hero-cta {
+    display: flex !important;
+    gap: 14px !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    margin-top: 10px !important;
+    margin-bottom: 30px !important;
+  }
+
+  /* CTA hierarchy sin tocar HTML */
+  .hero-cta .btn-primary {
+    background: linear-gradient(135deg,#ff6a3d,#ff3d77) !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 600 !important;
+    box-shadow: 0 8px 24px rgba(255,122,77,0.20) !important;
+  }
+
+  .hero-cta .btn-forest {
+    background: rgba(255,255,255,0.08) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    box-shadow: none !important;
+  }
+
+  .hero-cta .btn-outline {
+    background: transparent !important;
+    color: rgba(255,255,255,0.68) !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    box-shadow: none !important;
+  }
+
+  @media (max-width: 860px) {
+    .hero-banner-content {
+      gap: 30px !important;
+    }
+
+    .hero-text {
+      padding-top: 0 !important;
+    }
+
+    .hero-cta {
+      justify-content: center !important;
+    }
+  }
+</style>
+   
 </style>
 </head>
 <body>
