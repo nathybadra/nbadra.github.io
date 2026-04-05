@@ -1984,6 +1984,9 @@ function loadDash() {
 
   if (!wrap) return;
 
+  // Evitar duplicados
+  if (wrap.querySelector('iframe')) return;
+
   wrap.style.display = 'block';
   if (ph) ph.style.display = 'none';
 
