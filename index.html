@@ -1742,6 +1742,23 @@ nav{justify-content:flex-end !important;padding:0 34px !important;min-height:76p
   </div>
 </section>
 
+   <!-- DASHBOARD EMBED -->
+<div id="dash-wrap" class="dash-wrap">
+  <div id="dash-ph" class="dash-ph">
+    <div class="dash-ph-icon">◌</div>
+
+    <p>
+      <span class="en">Click to load the interactive dashboard.</span>
+      <span class="es" style="display:none">Haz clic para cargar el dashboard interactivo.</span>
+    </p>
+
+    <button class="btn btn-gold btn-sm" onclick="loadDash()">
+      <span class="en">Load Dashboard</span>
+      <span class="es" style="display:none">Cargar Dashboard</span>
+    </button>
+  </div>
+</div>
+
 <!-- ════════════════════════════════════════
      ABOUT
 ════════════════════════════════════════ -->
@@ -1984,10 +2001,9 @@ function loadDash() {
 
   if (!wrap) return;
 
-  // Evitar duplicados
+  // evita duplicados
   if (wrap.querySelector('iframe')) return;
 
-  wrap.style.display = 'block';
   if (ph) ph.style.display = 'none';
 
   var iframe = document.createElement('iframe');
