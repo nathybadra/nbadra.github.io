@@ -1,0 +1,599 @@
+/* ══════════════════════════════════════════════════════════════════
+   RECO-LAB · QA FINAL ACOTADA · 16 ago 2026
+   ══════════════════════════════════════════════════════════════════
+
+   Hoja nueva, cargada en último lugar por las cuatro páginas activas.
+   Retirar este único <link> revierte toda la pasada y nada más: no
+   modifica ninguna hoja anterior, no reordena la cascada y no toca
+   datasets, notebooks ni outputs analíticos.
+
+   Estándar de espaciado de referencia: la sección Métodos. Texto con
+   aire interno suficiente —nunca por debajo de 12–16px contra el borde
+   de su propio plato— y, al mismo tiempo, uso del ancho disponible del
+   contenedor. Las dos cosas a la vez: ni pegado ni encogido.
+
+   Índice
+     1 · Aire interno mínimo en bloques con plato
+     2 · Ancho útil del texto general
+     3 · Header · el nav respira contra el selector de modo
+     4 · Pie · compacto y sin invasión entre columnas
+     5 · Marco analítico progresivo · secuencia de cinco pasos
+     6 · Proyecto 01 · el análisis pertenece a su figura
+     7 · Figuras · la fuente vive dentro del gráfico
+     8 · Proyecto 02 · corte analítico
+     9 · Proyecto 02 · sección 08 · diagnóstico territorial
+    10 · Proyecto 02 · FAI · estado de fuentes por indicador
+    11 · Radio consistente · ninguna esquina viva
+    12 · UPI · tarjetas de régimen
+   ══════════════════════════════════════════════════════════════════ */
+
+
+/* ══ 1 · AIRE INTERNO MÍNIMO EN BLOQUES CON PLATO ══════════════════
+
+   Tres bloques dibujaban su propio plato y ponían el texto a 0–1px del
+   borde: los platos de lectura (`.rl-reading`, `.rl-read`), la isla de
+   papel de la tabla HAR y el marco de la matriz UPI. Medido: 0px a la
+   izquierda en los platos de lectura, 1px en la celda de la tabla y 1px
+   en el puente de la matriz.
+
+   El aire se da con `padding` sobre el propio plato, no con margen en
+   los hijos: así ninguna regla previa de tipografía cambia de posición
+   y el bloque sigue ocupando el ancho completo del contenedor. */
+.rlx-project .rl-reading,
+.rlx-project .rl-read{
+  padding-left:var(--rl-inset,20px);
+  padding-right:var(--rl-inset,20px);
+  box-sizing:border-box;
+}
+/* El plato de lectura ya traía aire vertical propio en varias hojas;
+   sólo se garantiza un mínimo cuando no lo tiene. */
+.rlx-project .rl-reading:not([style*="padding"]),
+.rlx-project .rl-read:not([style*="padding"]){
+  padding-top:max(18px,var(--rl-inset-y,18px));
+  padding-bottom:max(18px,var(--rl-inset-y,18px));
+}
+
+/* La isla de papel de la tabla: el aire va en la primera y la última
+   celda de cada fila, no en el contenedor, porque el scroll horizontal
+   de la tabla vive dentro y un padding en el marco lo recortaría. */
+.rl-table-wrap table th:first-child,
+.rl-table-wrap table td:first-child{padding-left:20px;}
+.rl-table-wrap table th:last-child,
+.rl-table-wrap table td:last-child{padding-right:20px;}
+
+/* El marco de la matriz UPI: el puente y el pie apoyaban contra el
+   filete del propio marco. */
+.rl-matrix > .rl-bridge,
+.rl-matrix > .rl-axhelp,
+.rl-matrix > .rl-upimeta{
+  padding-left:20px;
+  padding-right:20px;
+  box-sizing:border-box;
+}
+
+/* Ficha de proyecto: el bloque de metadatos apoyaba sus líneas contra el
+   borde derecho del contenedor, a 0px medidos. Recibe el mismo retiro
+   que ya tenía del lado del filete. */
+.proj-head .proj-meta{padding-right:16px;}
+
+
+/* ══ 2 · ANCHO ÚTIL DEL TEXTO GENERAL ══════════════════════════════
+
+   Los textos generales bajo títulos usan el ancho del contenedor. Los
+   títulos conservan su medida corta, que es una decisión de composición
+   y no un texto general: acortar un título es jerarquía, acortar un
+   párrafo deja media página vacía al lado.
+
+   Único bloque medido por debajo del umbral en las cuatro páginas:
+   el pie de la banda de sistemas de la home, a 579px sobre 929px
+   disponibles. */
+.systems .found p{max-width:none;}
+
+/* Los párrafos de la secuencia analítica acompañan a la secuencia y
+   usan el mismo ancho que ella. */
+.progression > p,
+.rl-mx-prog > p{max-width:none;}
+
+/* Dos bloques del Proyecto 02 quedaban al 63 % y al 70 % del ancho
+   disponible de su propio plato: la nota de granularidad dentro de la
+   figura y el bloque de escenarios de ponderación. Ambos son texto
+   general bajo un título, no una composición a dos columnas. */
+.rl-technote.is-in-fig > p,
+.rl-scenarios > p{max-width:none;}
+
+
+/* ══ 3 · HEADER · EL NAV RESPIRA CONTRA EL SELECTOR DE MODO ════════
+
+   El bloque central queda centrado entre el wordmark y los controles
+   —así ya se comportaba a 1440 y 1280, con holguras simétricas— y se le
+   garantiza una separación mínima contra `.rlx-end`, que es donde la
+   franja se estrechaba primero al bajar de 1180.
+
+   La separación se pide con `column-gap` en la fila, no con un margen
+   en el nav, para que el reparto siga siendo el del grid y las tres
+   piezas no se desalineen. */
+.rlx-hdr .rlx-hdr-row{
+  column-gap:clamp(28px,3.4vw,64px);
+  align-items:center;
+}
+.rlx-hdr .rlx-nav{
+  justify-content:center;
+  flex-wrap:nowrap;
+}
+/* Un filete tenue marca dónde termina la navegación y empiezan los
+   controles, en lugar de dejar que la distancia sola lo insinúe. */
+@media (min-width:1181px){
+  .rlx-hdr .rlx-end{
+    padding-left:clamp(18px,1.6vw,30px);
+    border-left:1px solid var(--sh-hairline,rgba(128,142,155,0.22));
+  }
+}
+/* Entre 901 y 1180 el sobrante central es corto: el nav aprieta su
+   propio interlineado antes que invadir los controles. */
+@media (min-width:901px) and (max-width:1180px){
+  .rlx-hdr .rlx-nav{gap:clamp(8px,1vw,14px);}
+  .rlx-hdr .rlx-hdr-row{column-gap:clamp(18px,2vw,32px);}
+}
+
+
+/* ══ 4 · PIE · COMPACTO Y SIN INVASIÓN ENTRE COLUMNAS ══════════════
+
+   La línea temática se pide en una sola línea, y así estaba, pero con
+   `nowrap` a 16px pesaba 555px y era ella quien fijaba el ancho de la
+   primera columna del pie: a 1120 el grid quedaba 570 / 181 / 247 y la
+   columna Navegación se comprimía hasta rozar la línea.
+
+   La línea baja un punto de cuerpo y aprieta ligeramente el tracking:
+   sigue en una sola línea, deja de gobernar el grid, y las tres
+   columnas recuperan un reparto propio. */
+.rlx-ftr .rlx-ftr-grid{
+  grid-template-columns:minmax(0,1.35fr) minmax(150px,0.72fr) minmax(190px,0.93fr);
+  column-gap:clamp(24px,2.6vw,44px);
+  row-gap:22px;
+  align-items:start;
+}
+.rlx-ftr .rlx-fields{min-width:0;}
+.rlx-ftr .rlx-fields .txt{
+  white-space:nowrap;
+  font-size:13px;
+  letter-spacing:0.005em;
+}
+/* Por debajo de 1181 la línea vuelve a envolver: a 1120 la holgura
+   contra la columna Navegación bajaba a 8px medidos, y una línea que
+   casi toca la columna vecina se lee como si la cruzara. Envolver es
+   preferible a empujar. */
+@media (max-width:1180px){
+  .rlx-ftr .rlx-fields .txt{white-space:normal;}
+}
+
+/* Pie más compacto: el bloque de marca es el único que crecía sin
+   límite hacia abajo. */
+.rlx-ftr .rlx-ftr-grid{padding-top:34px;padding-bottom:26px;}
+.rlx-ftr .rlx-ftr-brand .rlx-blurb{margin-block:10px 12px;}
+.rlx-ftr .rlx-ftr-brand .rlx-btns{margin-top:14px;}
+.rlx-ftr .rlx-list > li{margin-bottom:6px;}
+.rlx-ftr .rlx-ftr-bot{padding-block:14px;}
+
+
+/* ══ 5 · MARCO ANALÍTICO PROGRESIVO · SECUENCIA DE CINCO PASOS ═════
+
+   Vulnerabilidad → Movilidad y desplazamiento → Capacidad de absorción
+   → Accesibilidad → Regímenes territoriales.
+
+   Clase propia para no heredar la cadena anterior, que recibía reglas
+   de tres hojas a la vez —incluido un selector de descendencia que
+   alcanzaba el span de idioma— y dibujaba cada vínculo dos veces: un
+   tramo de línea, más una punta de flecha clavada encima del tramo.
+
+   Aquí el vínculo es una sola marca: un galón dibujado con dos filetes
+   en el hueco entre pasos. Sin línea que lo atraviese, sin negrita
+   dentro del paso, con tinta clara y aire interno. Ocupa el ancho útil
+   de la sección en cinco columnas iguales; en pantallas estrechas se
+   apila y el galón gira un cuarto de vuelta. */
+.rl-flow{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:clamp(20px,2.2vw,34px);
+  align-items:stretch;
+  width:100%;
+  margin:0 0 26px;
+  padding:0;
+  list-style:none;
+  counter-reset:none;
+}
+.rl-flow .rl-flow-step{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  min-width:0;
+  padding:16px 18px 17px;
+  border:1px solid var(--rl-flow-edge,rgba(255,255,255,0.16));
+  border-radius:14px;
+  background:var(--rl-flow-plate,rgba(255,255,255,0.05));
+  list-style:none;
+}
+/* El índice ordena la secuencia; no compite con la etiqueta. */
+.rl-flow .fl-i{
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:11px;
+  font-weight:400;
+  letter-spacing:0.16em;
+  color:var(--rl-flow-idx,rgba(219,228,234,0.62));
+}
+/* Texto claro, peso normal. Ninguna negrita dentro de la cápsula. */
+.rl-flow .fl-t{
+  font-size:14.5px;
+  line-height:1.45;
+  font-weight:400;
+  letter-spacing:0.01em;
+  color:var(--rl-flow-ink,#DBE4EA);
+  text-wrap:pretty;
+}
+/* Los spans de idioma heredan y no reciben caja propia. Nunca se les
+   fija `display`: es el conmutador de idioma. */
+.rl-flow .fl-t > span,
+.rl-flow .fl-i > span{
+  font-size:inherit;
+  font-weight:inherit;
+  line-height:inherit;
+  letter-spacing:inherit;
+  color:inherit;
+  background:none;
+  border:0;
+  padding:0;
+  margin:0;
+}
+/* Una flecha por conexión, centrada en el hueco. Dos filetes en ángulo
+   y nada más: no hay tramo de línea que pueda cruzarla. */
+.rl-flow .rl-flow-step + .rl-flow-step::before{
+  content:"";
+  position:absolute;
+  top:50%;
+  left:calc(-1 * clamp(20px,2.2vw,34px) / 2);
+  width:8px;
+  height:8px;
+  border-top:1.4px solid var(--rl-flow-arrow,rgba(219,228,234,0.55));
+  border-right:1.4px solid var(--rl-flow-arrow,rgba(219,228,234,0.55));
+  transform:translate(-50%,-50%) rotate(45deg);
+  pointer-events:none;
+}
+
+/* Modo Claro: la misma pieza sobre papel.
+
+   El índice va a 11px: sobre papel, el mismo 0,62 de alfa que funciona
+   en Oscuro y Noche —5,09:1 y 5,69:1 medidos— caía a 4,07:1, por debajo
+   del piso de 4,5. En Claro sube a 0,80. */
+html[data-theme="light"] .rl-flow{
+  --rl-flow-edge:rgba(30,45,61,0.18);
+  --rl-flow-plate:rgba(30,45,61,0.045);
+  --rl-flow-ink:#1E2D3D;
+  --rl-flow-idx:rgba(30,45,61,0.80);
+  --rl-flow-arrow:rgba(30,45,61,0.5);
+}
+/* Dentro de una banda oscura permanente la pieza conserva tinta clara
+   en los tres modos: esos bloques son platos fijos por diseño. */
+.systems .rl-flow,
+.rl-mp-body .rl-flow{color:inherit;}
+
+@media (max-width:1080px){
+  .rl-flow{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .rl-flow .rl-flow-step + .rl-flow-step::before{display:none;}
+}
+@media (max-width:760px){
+  .rl-flow{grid-template-columns:1fr;gap:26px;}
+  .rl-flow .rl-flow-step + .rl-flow-step::before{
+    display:block;
+    top:calc(-1 * 26px / 2);
+    left:26px;
+    transform:translate(-50%,-50%) rotate(135deg);
+  }
+}
+
+
+/* ══ 6 · PROYECTO 01 · EL ANÁLISIS PERTENECE A SU FIGURA ═══════════
+
+   El texto que sigue al mapa IVUB es el análisis de ese mapa, no una
+   sección nueva. El filete divisorio lo presentaba como bloque aparte
+   y separaba la figura de su propia lectura. Se retira el filete, se
+   acerca el bloque a la figura y se conserva el aire interno. */
+.rl-read.rl-read-bare.is-figure-note{
+  border-top:0;
+  margin-top:14px;
+  padding-top:16px;
+}
+
+
+/* ══ 7 · FIGURAS · LA FUENTE VIVE DENTRO DEL GRÁFICO ═══════════════
+
+   7.1 · El pie que ya no lleva fuente deja de repartir en dos extremos
+   y se comporta como una nota simple del gráfico. */
+.rl-fig-foot.is-note-only{
+  display:block;
+  justify-content:flex-start;
+}
+.rl-fig-foot.is-note-only .rl-fig-note{max-width:none;}
+
+/* 7.2 · La figura doble de retornos.
+
+   A 1120 el reparto era 591 / 464 para dos viewBox de 680 y 500, así
+   que el panel izquierdo se dibujaba a escala 0,80 y las etiquetas del
+   eje X —los años— bajaban a poco más de 10px efectivos.
+
+   Por debajo de 1340 los dos paneles pasan a una columna: cada uno
+   recibe el ancho completo del bloque y el eje X se lee entero. Los
+   paneles llevan además separación real y el mismo radio que el resto
+   del sistema; antes se tocaban con 1px y tenían las esquinas vivas. */
+.rl-fig-duo{
+  gap:14px;
+  background:transparent;
+  padding:14px;
+  box-sizing:border-box;
+}
+.rl-fig-duo > .rl-fig-panel{
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.10);
+  min-width:0;
+}
+html[data-theme="light"] .rl-fig-duo > .rl-fig-panel{
+  border-color:rgba(30,45,61,0.14);
+}
+@media (max-width:1340px){
+  .rl-fig-duo{grid-template-columns:1fr !important;}
+}
+/* El SVG nunca se dibuja por debajo de la escala en la que su eje deja
+   de leerse. */
+.rl-fig-duo > .rl-fig-panel > svg{width:100%;height:auto;}
+
+
+/* ══ 8 · PROYECTO 02 · CORTE ANALÍTICO ═════════════════════════════
+   El corte fija año, línea base y sobre qué se calcula el ratio: es la
+   línea que da período a todas las cifras de la tabla. Sube un punto,
+   de 12,75 a 13,75, sin cambiar su peso ni su color.
+
+   Se repiten los dos contextos de `final-acotada` porque allí la regla
+   se escribió como descendencia (`.rl-fig-block .rl-fig-sub.is-cut`) y
+   una clase suelta no la alcanza. */
+.rl-table-wrap .rl-fig-sub.is-cut,
+.rl-fig-block .rl-fig-sub.is-cut,
+.rl-fig-sub.is-cut{
+  font-size:13.75px;
+  line-height:1.62;
+}
+
+
+/* ══ 9 · PROYECTO 02 · SECCIÓN 08 · DIAGNÓSTICO TERRITORIAL ════════
+
+   9.1 · Tarjetas sin numerador y con línea superior de color.
+
+   El numerador 01/02/03 competía con el título dentro de la tarjeta y
+   no aportaba orden que la secuencia no diera ya. Lo que diferencia a
+   las tres tarjetas pasa a ser la línea superior, que es la referencia
+   visual de las tarjetas actuales, ahora sin recortes: la línea corre
+   de borde a borde y toma el radio del contenedor, de modo que no queda
+   cortada en las esquinas. */
+.rl-diag.is-clean{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:22px;
+  align-items:stretch;
+}
+.rl-diag.is-clean .rl-diag-card{
+  position:relative;
+  overflow:hidden;             /* la línea toma el radio de la tarjeta */
+  padding:26px 26px 24px;
+  border-radius:14px;
+  min-width:0;
+}
+.rl-diag.is-clean .rl-diag-card::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:3px;
+  background:var(--diag,#5980A6);
+}
+/* El numerador ya no se publica. Se oculta sin borrarlo del marcado
+   por si otra vista lo necesita, y sin tocar `display` en spans de
+   idioma. */
+.rl-diag.is-clean .rl-diag-card > .n{display:none;}
+.rl-diag.is-clean .rl-diag-card > h4{
+  margin:0 0 12px;
+  font-size:17px;
+  line-height:1.34;
+  letter-spacing:0.005em;
+}
+.rl-diag.is-clean .rl-diag-card > p{
+  margin:0;
+  font-size:15.5px;
+  line-height:1.62;
+  max-width:none;
+  text-wrap:pretty;
+}
+/* A tres columnas por debajo de 1180 cada tarjeta baja de 340px y el
+   párrafo queda comprimido. Con tres tarjetas, dos columnas dejarían
+   una huérfana: se pasa directamente a una. */
+@media (max-width:1180px){
+  .rl-diag.is-clean{grid-template-columns:1fr;}
+}
+
+/* 9.2 · El cierre es síntesis analítica, no una figura.
+
+   No lleva ficha de fuente —se retiró del marcado— y deja de dibujarse
+   como tarjeta: pasa a texto corrido de ancho completo, separado por un
+   filete y por aire, con su título como H3. Un plato aquí lo habría
+   presentado como una cuarta tarjeta del mismo rango que las tres
+   anteriores, que es justamente lo que no es.
+
+   El plato y el filete vertical de acento se declaraban por modo en
+   `final-acotada` (`html[data-theme="dark"] .rl-diag-close`), así que
+   una clase suelta no los alcanzaba: la regla se escribe aquí con el
+   mismo gancho de modo para poder retirarlos. */
+html .rl-diag-close.is-synthesis,
+html[data-theme="light"] .rl-diag-close.is-synthesis,
+html[data-theme="dark"] .rl-diag-close.is-synthesis,
+html[data-theme="night"] .rl-diag-close.is-synthesis{
+  background:none;
+  border:0;
+  border-top:1px solid var(--rl-hair,rgba(255,255,255,0.14));
+  border-radius:0;
+  padding:30px 0 0;
+  margin-top:30px;
+  overflow:visible;
+}
+/* Sin el filete vertical de acento: ese rail lo dibujaba como plato. */
+html .rl-diag-close.is-synthesis::before{content:none;display:none;}
+html[data-theme="light"] .rl-diag-close.is-synthesis{
+  --rl-hair:rgba(30,45,61,0.16);
+}
+.rl-diag-close.is-synthesis > h3{
+  margin:0 0 16px;
+  font-size:23px;
+  line-height:1.26;
+  letter-spacing:-0.005em;
+}
+.rl-diag-close.is-synthesis > p{
+  margin:0 0 14px;
+  font-size:16px;
+  line-height:1.62;
+  max-width:none;
+}
+.rl-diag-close.is-synthesis > p:last-child{margin-bottom:0;}
+.rl-diag-close.is-synthesis > p.is-implication{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid var(--rl-hair,rgba(255,255,255,0.10));
+}
+
+
+/* ══ 10 · PROYECTO 02 · FAI · ESTADO DE FUENTES POR INDICADOR ══════
+
+   La ficha del bloque declaraba proxy para todo el explorador, y no lo
+   es: el FAI y la brecha son resultados derivados, la seguridad nominal
+   es modelada, y sólo los seis componentes P1–P6 tienen estado de
+   proxy. Aquí se publica el estado por indicador tal como lo declara el
+   glosario del propio explorador. Es presentación: no cambia pesos,
+   cálculo ni método. */
+.rl-fai-status{
+  margin:14px 0 0;
+  padding:18px 20px 16px;
+  border:1px solid var(--rl-hair,rgba(255,255,255,0.13));
+  border-radius:14px;
+  background:var(--rl-plate,rgba(255,255,255,0.035));
+  box-sizing:border-box;
+}
+html[data-theme="light"] .rl-fai-status{
+  --rl-hair:rgba(30,45,61,0.16);
+  --rl-plate:rgba(30,45,61,0.035);
+}
+.rl-fai-status .rl-fai-status-h{
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--muted,rgba(219,228,234,0.7));
+  margin-bottom:12px;
+}
+.rl-fai-status .rl-fai-status-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:6px 30px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.rl-fai-status .rl-fai-status-list > li{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:14px;
+  min-width:0;
+  padding:6px 0;
+  border-bottom:1px solid var(--rl-hair,rgba(255,255,255,0.08));
+  list-style:none;
+}
+.rl-fai-status .fsn{
+  font-size:14px;
+  line-height:1.5;
+  min-width:0;
+}
+.rl-fai-status .fst{
+  flex:0 0 auto;
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:10.5px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  padding:3px 9px;
+  border-radius:999px;
+  white-space:nowrap;
+}
+/* Los tres estados del glosario, con la tinta institucional de cada
+   naturaleza de evidencia. Los tonos son los que ya usan las fichas
+   `.rl-ev`, en su variante de contraste suficiente a cuerpo pequeño. */
+.rl-fai-status .fst.is-derived{color:#8FBFD6;background:rgba(89,128,166,0.20);}
+.rl-fai-status .fst.is-modeled{color:#D6A98F;background:rgba(176,91,59,0.20);}
+.rl-fai-status .fst.is-proxy{color:#C7CDD3;background:rgba(255,255,255,0.09);}
+html[data-theme="light"] .rl-fai-status .fst.is-derived{color:#416180;background:rgba(89,128,166,0.15);}
+html[data-theme="light"] .rl-fai-status .fst.is-modeled{color:#8A4529;background:rgba(176,91,59,0.14);}
+html[data-theme="light"] .rl-fai-status .fst.is-proxy{color:#4A5560;background:rgba(30,45,61,0.09);}
+@media (max-width:860px){
+  .rl-fai-status .rl-fai-status-list{grid-template-columns:1fr;}
+}
+
+
+/* ══ 11 · RADIO CONSISTENTE · NINGUNA ESQUINA VIVA ═════════════════
+
+   Cinco cajas quedaban con esquina cuadrada dentro de contenedores de
+   radio 14: los dos marcos del par comparativo, la rejilla doble de
+   figuras, sus paneles y la nota técnica dentro de la figura. El
+   sistema usa 14px; ninguna de las cinco tenía motivo para no usarlo. */
+.rl-pair .rl-pair-frame,
+.rl-technote.is-in-fig{
+  border-radius:14px;
+}
+/* Una nota técnica que vive dentro de una figura no apoya contra sus
+   bordes: mantiene el mismo retiro que el resto del bloque. */
+.rl-fig-block > .rl-technote.is-in-fig{
+  margin-left:14px;
+  margin-right:14px;
+}
+
+/* La ficha de método de la matriz UPI cierra el bloque con radio
+   14 abajo, pero sus tres celdas eran cuadradas y sobresalían por las
+   esquinas. Recortando en el contenedor las celdas heredan el radio y
+   la esquina deja de quedar viva. */
+.rl-upimeta{overflow:hidden;}
+
+
+/* ══ 12 · UPI · TARJETAS DE RÉGIMEN ════════════════════════════════
+
+   Las seis tarjetas ya compartían ancho, radio y filete. Lo que faltaba
+   era aire: a tres columnas el texto de la implicación territorial
+   quedaba comprimido contra los costados, y las divisorias interiores
+   apoyaban en el borde de la tarjeta en lugar de respetar el mismo
+   retiro que el texto. */
+.rl-regimes{gap:22px;}
+.rl-regimes .rl-regime{
+  padding:22px 24px 20px;
+  min-width:0;
+}
+.rl-regimes .rl-regime .ri{
+  font-size:14.5px;
+  line-height:1.58;
+  text-wrap:pretty;
+}
+/* El filete de Orientación arranca y termina donde arranca y termina el
+   texto, no en el borde de la tarjeta. */
+.rl-regimes .rl-regime .ro{
+  margin-left:0;
+  margin-right:0;
+  padding-top:12px;
+}
+/* Por debajo de 1180 tres columnas comprimen la implicación: se pasa a
+   dos, y a una en pantallas estrechas. */
+@media (max-width:1180px){
+  .rl-regimes{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+}
+@media (max-width:820px){
+  .rl-regimes{grid-template-columns:1fr !important;}
+}

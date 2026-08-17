@@ -1,0 +1,544 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>FAI — Functional Accessibility and Residential Security Index</title><style>body{font-family:system-ui,Arial,sans-serif;background:#F8F8F6;color:#374151;margin:0;padding:28px 32px;line-height:1.5;}.header{border-left:4px solid #2F5D62;padding-left:16px;margin-bottom:28px;}.header h1{font-family:Georgia,serif;font-size:20px;color:#2F5D62;margin:0 0 6px 0;letter-spacing:.02em;font-weight:normal;}.header p{font-size:12px;color:#9CA3AF;margin:0;max-width:720px;line-height:1.65;}.tabs{display:flex;gap:4px;margin-bottom:22px;background:#FFFFFF;padding:4px;border-radius:8px;border:1px solid #E5E7EB;width:fit-content;box-shadow:0 1px 4px rgba(0,0,0,.06);}.tab{font-size:12px;padding:7px 18px;border-radius:6px;cursor:pointer;color:#9CA3AF;border:none;background:none;letter-spacing:.03em;transition:all .15s;}.tab:hover{color:#374151;background:#F8F8F6;}.tab.active{background:#2F5D62;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15);}.panel{display:none;background:#FFFFFF;border:1px solid #E5E7EB;border-radius:8px;padding:26px 28px;box-shadow:0 2px 8px rgba(0,0,0,.04);}.panel.active{display:block;}.section-label{font-family:Georgia,serif;font-size:14px;color:#2F5D62;margin-bottom:18px;border-bottom:2px solid #E5E7EB;padding-bottom:9px;}.subsection{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9CA3AF;margin:22px 0 10px;}.weights-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}.weight-card{background:#F8F8F6;border:1px solid #E5E7EB;border-left:4px solid #2F5D62;border-radius:8px;padding:14px 16px;transition:box-shadow .15s;}.weight-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.08);}.weight-card.c1{border-left-color:#8B1E3F;}.weight-card.c2{border-left-color:#D8B365;}.weight-card.c3{border-left-color:#8FB3A5;}.weight-card.c4{border-left-color:#5C8C7E;}.weight-card.c5{border-left-color:#D8814A;}.weight-card.c6{border-left-color:#9CA3AF;}.weight-label{font-size:11px;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}.weight-title{font-size:13px;color:#374151;font-weight:600;margin:2px 0 5px;}.weight-source{font-size:11px;color:#9CA3AF;line-height:1.5;margin-bottom:10px;}.weight-row{display:flex;align-items:center;gap:10px;}input[type=range]{flex:1;-webkit-appearance:none;height:4px;background:#E5E7EB;border-radius:2px;outline:none;cursor:pointer;}input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#2F5D62;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);}.weight-val{font-family:Georgia,serif;font-size:14px;color:#2F5D62;min-width:44px;text-align:right;font-weight:600;}.weight-total{font-size:12px;padding:10px 14px;background:#EEF3FF;border:1px solid #C7D4F0;border-radius:6px;display:flex;align-items:center;gap:12px;margin-bottom:8px;}.scenario-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}.scenario-btn{font-size:11px;padding:6px 12px;border-radius:6px;cursor:pointer;border:1px solid #E5E7EB;background:#FFFFFF;color:#9CA3AF;letter-spacing:.02em;transition:all .15s;}.scenario-btn:hover{border-color:#2F5D62;color:#2F5D62;}.scenario-btn.active{background:#2F5D62;color:#fff;border-color:#2F5D62;}.btn-primary{font-size:12px;font-weight:600;background:#2F5D62;color:#fff;border:none;border-radius:6px;padding:9px 26px;cursor:pointer;letter-spacing:.03em;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:all .15s;}.btn-primary:hover{filter:brightness(1.1);box-shadow:0 4px 10px rgba(0,0,0,.24);}.btn-primary:disabled{background:#ccc;color:#888;cursor:not-allowed;box-shadow:none;}.btn-secondary{font-size:12px;background:transparent;color:#2F5D62;border:1.5px solid #2F5D62;border-radius:6px;padding:8px 20px;cursor:pointer;letter-spacing:.03em;margin-left:10px;transition:all .15s;}.btn-secondary:hover{background:#EEF3FF;}.table-wrap{overflow-x:auto;}table{width:100%;min-width:900px;border-collapse:collapse;font-size:12px;}th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#9CA3AF;padding:10px 14px;text-align:center;border-bottom:2px solid #2F5D62;white-space:nowrap;}th:nth-child(1){text-align:center;width:36px;}th:nth-child(2){text-align:left;}td{padding:10px 14px;border-bottom:1px solid #E5E7EB;text-align:center;color:#374151;vertical-align:middle;}td:nth-child(1){text-align:center;color:#9CA3AF;font-size:11px;}td:nth-child(2){text-align:left;font-weight:600;}tr:hover td{background:#F5F8FF;}.badge{display:inline-block;font-size:11px;padding:4px 0;border-radius:12px;font-weight:700;letter-spacing:.03em;width:80px;text-align:center;}.badge-secure{background:#D1E7DD;color:#1B4332;}.badge-moderate{background:#FFF3CD;color:#5C4400;}.badge-low{background:#FDE2C1;color:#6B3800;}.badge-critical{background:#F5C2C7;color:#7B1010;}.pres-label{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;padding:3px 0;border-radius:10px;width:76px;text-align:center;}.pres-optimal{background:#C8E6C9;color:#1B5E20;}.pres-low{background:#E8F5E9;color:#1B5E20;}.pres-moderate{background:#FFFDE7;color:#F57F17;}.pres-high{background:#FFF3E0;color:#E65100;}.pres-severe{background:#FFEBEE;color:#B71C1C;}.pres-critical{background:#FFEBEE;color:#B71C1C;}.delta-up{color:#5C8C7E;font-size:11px;font-weight:700;}.delta-down{color:#8B1E3F;font-size:11px;font-weight:700;}.delta-same{color:#9CA3AF;font-size:13px;}.bar-bg{height:5px;background:#E5E7EB;border-radius:3px;overflow:hidden;min-width:54px;margin-top:4px;}.bar-fill{height:100%;border-radius:3px;transition:width .4s ease;}.source-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}.source-card{background:#F8F8F6;border:1px solid #E5E7EB;border-radius:6px;padding:14px 16px;}.source-name{font-family:Georgia,serif;font-size:12px;color:#2F5D62;margin-bottom:5px;font-weight:600;}.source-desc{font-size:11px;color:#374151;line-height:1.6;margin-bottom:8px;}.source-status{font-size:11px;}.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;}.dot-green{background:#5C8C7E;}.dot-yellow{background:#D8B365;}.dot-red{background:#8B1E3F;}.dot-blue{background:#2F5D62;}.gap-tag{display:inline-block;font-size:11px;background:#FFF3CD;color:#8B1E3F;border-radius:3px;padding:2px 7px;margin-top:5px;}.g-group-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9CA3AF;margin:24px 0 12px;padding-left:10px;border-left:3px solid #2F5D62;}.g-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}.g-card{background:#FFFFFF;border:1px solid #E5E7EB;border-radius:8px;padding:17px;border-top:3px solid #2F5D62;transition:box-shadow .15s;display:flex;flex-direction:column;}.g-card:hover{box-shadow:0 4px 14px rgba(0,0,0,.09);}.g-card.gc-derived{border-top-color:#7B61FF;}.g-card.gc-proxy{border-top-color:#D8B365;}.g-card.gc-modeled{border-top-color:#8FB3A5;}.g-card.gc-observed{border-top-color:#5C8C7E;}.g-card-full{grid-column:1 / -1;}.g-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;gap:8px;}.g-title{font-family:Georgia,serif;font-size:13px;color:#2F5D62;font-weight:normal;line-height:1.35;}.g-type{font-size:11px;text-transform:uppercase;letter-spacing:.07em;padding:3px 8px;border-radius:10px;font-weight:700;white-space:nowrap;flex-shrink:0;}.gtype-derived{background:#EDE9FF;color:#5B41C4;}.gtype-proxy{background:#FFF3E0;color:#C65A00;}.gtype-modeled{background:#E3F2FD;color:#0D47A1;}.gtype-observed{background:#E8F5E9;color:#1B5E20;}.g-def{font-size:12px;line-height:1.65;color:#374151;margin-bottom:11px;}.g-toggle{font-size:11px;color:#2F5D62;cursor:pointer;user-select:none;display:flex;align-items:center;gap:4px;}.g-toggle:hover{text-decoration:underline;}.g-detail{margin-top:11px;font-size:11px;line-height:1.75;color:#374151;border-top:1px solid #E5E7EB;padding-top:11px;display:none;}.g-detail strong{color:#2F5D62;}.cat-wrap{overflow-x:auto;margin-top:10px;}.cat-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:980px;}.cat-table th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#9CA3AF;padding:11px 12px;text-align:left;border-bottom:2px solid #2F5D62;white-space:nowrap;}.cat-table td{padding:11px 12px;border-bottom:1px solid #E5E7EB;vertical-align:middle;line-height:1.55;text-align:left;}.cat-table th:nth-child(1),.cat-table td:nth-child(1){width:145px;min-width:145px;padding-right:12px;}.cat-table th:nth-child(2),.cat-table td:nth-child(2){width:140px;min-width:140px;padding-right:14px;font-family:system-ui,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:.01em;color:#374151;white-space:nowrap;text-align:left;}.cat-table th:nth-child(2){font-size:11px;font-weight:700;letter-spacing:.06em;color:#9CA3AF;}.cat-table th:nth-child(3),.cat-table td:nth-child(3){width:auto;text-align:left;padding-left:18px;line-height:1.65;}.note-box{background:#EEF3FF;border:1px solid #C7D4F0;border-radius:6px;padding:13px 16px;font-size:12px;line-height:1.7;color:#374151;margin-bottom:18px;}.warn-box{background:#F7F9FC;border:1px solid #D9E2EC;border-left:4px solid #2F5D62;border-radius:8px;padding:16px 18px;font-size:12px;line-height:1.75;color:#374151;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.04);}.project-header{background:#0F2B34;color:#FFFFFF;padding:10px 28px 12px;margin:0 0 20px;border-bottom:1px solid rgba(255,255,255,.05);box-shadow:0 2px 10px rgba(0,0,0,.18);}.project-eyebrow{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#6C9BAA;margin-bottom:5px;}.project-title{font-family:Georgia,serif;font-size:18px;font-weight:normal;color:#FFFFFF;line-height:1.25;margin:0 0 4px;letter-spacing:-.01em;}.project-subtitle{font-size:11px;color:#C2D3D9;line-height:1.4;margin:0 0 8px;font-style:italic;}.project-meta{display:flex;gap:20px;font-size:11px;color:#96B4BF;letter-spacing:.02em;flex-wrap:wrap;}.project-meta span strong{color:#E4ECEF;font-weight:600;}.satellite-bridge{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#2F5D62;margin:0 0 8px;padding-left:13px;border-left:3px solid #2F5D62;}.project-footer{margin:36px -32px -28px;padding:10px 34px;background:linear-gradient(135deg,#0C2230 0%,#152E3A 100%);border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:flex-end;align-items:center;font-size:11px;line-height:1.55;min-height:62px;box-shadow:0 -4px 16px rgba(0,0,0,.14);}.footer-signature{display:flex;gap:0;align-items:center;}.footer-block{padding:0 26px;border-left:1px solid rgba(255,255,255,.13);}.footer-block:first-child{padding-left:0;border-left:none;}.footer-block-label{font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:#5A8595;font-weight:700;margin-bottom:3px;display:block;}.footer-name{color:#FFFFFF;font-weight:700;font-size:12px;display:block;margin-bottom:1px;}.footer-role{color:#C7D6DC;font-size:11px;display:block;white-space:nowrap;letter-spacing:.01em;line-height:1.2;}.footer-icon-row{display:flex;align-items:center;gap:5px;color:#C2D3D9;font-size:11px;}.footer-link,.footer-link:visited{color:#79D7D2;text-decoration:none;font-size:11px;font-weight:500;}.footer-link:hover{color:#A7ECE8;text-decoration:underline;}@media(max-width:768px){.project-header{padding:10px 18px 12px;}.project-title{font-size:16px;}.project-meta{gap:10px;}.project-footer{justify-content:flex-start;padding:16px 20px;}.footer-signature{flex-direction:column;gap:12px;align-items:flex-start;}.footer-block{padding:0;border-left:none;border-top:1px solid rgba(255,255,255,.1);padding-top:10px;}.footer-block:first-child{border-top:none;padding-top:0;}.g-grid{grid-template-columns:1fr;}.g-card-full{grid-column:auto;}}</style><script>/* reco-lab embed-clean */(function(){var p=new URLSearchParams(location.search);var e=p.get("embed")==="1"||window.self!==window.top;if(e)document.documentElement.setAttribute("data-embed","1");})();</script><style id='reco-lab-embed'>html[data-embed="1"] .tf-header,html[data-embed="1"] .tf-footer,html[data-embed="1"] .tf-p-header,html[data-embed="1"] .tf-p-footer,html[data-embed="1"] .site-header,html[data-embed="1"] .site-footer,html[data-embed="1"] header.site,html[data-embed="1"] footer.site,html[data-embed="1"] .product-footer,html[data-embed="1"] .project-footer,html[data-embed="1"] .tf-nav,html[data-embed="1"] .tf-nav-return,html[data-embed="1"] .global-cta,html[data-embed="1"] .tf-langtoggle,html[data-embed="1"] .nav-return,html[data-embed="1"] .back-to-lab{display:none!important;}html[data-embed="1"] body{padding-top:0!important;margin-top:0!important;}html[data-embed="1"]{scroll-padding-top:0!important;}html[data-embed="1"] body{overflow-x:hidden!important;}</style>
+<style id='reco-lab-embed-back'>html[data-embed="1"] .tf-p-back-wrap,html[data-embed="1"] .tf-p-back,html[data-embed="1"] .tf-p-nav,html[data-embed="1"] .tf-back,html[data-embed="1"] .back-link,html[data-embed="1"] .tf-p-return,html[data-embed="1"] .product-nav,html[data-embed="1"] .tf-p-cta{display:none!important;}html[data-embed="1"],html[data-embed="1"] body{overflow-y:hidden!important;scrollbar-width:none!important;}html[data-embed="1"]::-webkit-scrollbar,html[data-embed="1"] body::-webkit-scrollbar{width:0!important;height:0!important;display:none!important;}</style>
+
+<style id="rl-institutional-palette">
+/* ══════════════════════════════════════════════════════════════
+   RECO-LAB institutional palette · overrides the pastel defaults
+   Navy #1E2D3D · Ink #08111B · Teal #2F5D62 · Amber #D9941A
+   Terra #B05B3B · Critical #8C2D1F
+   ══════════════════════════════════════════════════════════════ */
+
+/* Category badges · one width, centred, institutional tints */
+.badge-secure,.badge-moderate,.badge-low,.badge-critical{
+  display:inline-block;min-width:96px;text-align:center;
+  padding:4px 10px;border-radius:3px;border:1px solid;
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:11px;letter-spacing:0.08em;font-weight:600;
+  text-transform:uppercase;white-space:nowrap;
+}
+.badge-secure  {background:rgba(47,93,98,0.10); color:#24484C; border-color:rgba(47,93,98,0.36);}
+.badge-moderate{background:rgba(217,148,26,0.13);color:#8A5B08; border-color:rgba(217,148,26,0.40);}
+.badge-low     {background:rgba(176,91,59,0.13); color:#8F4429; border-color:rgba(176,91,59,0.40);}
+.badge-critical{background:rgba(140,45,31,0.13); color:#7A2418; border-color:rgba(140,45,31,0.40);}
+
+/* Pressure tags · same scale */
+.pres-low     {background:rgba(47,93,98,0.10); color:#24484C;}
+.pres-high    {background:rgba(176,91,59,0.13); color:#8F4429;}
+.pres-severe,
+.pres-critical{background:rgba(140,45,31,0.13); color:#7A2418;}
+.pres-low,.pres-high,.pres-severe,.pres-critical{
+  display:inline-block;min-width:84px;text-align:center;
+  border:1px solid rgba(0,18,25,0.14);border-radius:3px;
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:11px;letter-spacing:0.07em;font-weight:600;padding:3px 9px;
+}
+
+/* Methodological framework · source-status tags, no pastel */
+.gtype-observed{background:rgba(47,93,98,0.10); color:#24484C; border:1px solid rgba(47,93,98,0.34);}
+.gtype-modeled {background:rgba(30,45,61,0.10);  color:#1E2D3D; border:1px solid rgba(30,45,61,0.32);}
+.gtype-derived {background:rgba(30,45,61,0.07);  color:#33465A; border:1px solid rgba(30,45,61,0.26);}
+.gtype-proxy   {background:rgba(217,148,26,0.13);color:#8A5B08; border:1px solid rgba(217,148,26,0.38);}
+.gtype-observed,.gtype-modeled,.gtype-derived,.gtype-proxy{
+  display:inline-block;min-width:92px;text-align:center;
+  border-radius:3px;padding:3px 9px;
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:11px;letter-spacing:0.08em;font-weight:600;text-transform:uppercase;
+}
+
+/* Accent edges and dots */
+.weight-card.c2{border-left-color:#D9941A;}
+.weight-card.c3{border-left-color:#2F5D62;}
+.g-card.gc-proxy{border-top-color:#D9941A;}
+.g-card.gc-modeled{border-top-color:#2F5D62;}
+.dot-yellow{background:#D9941A;}
+.gap-tag{
+  background:rgba(176,91,59,0.13);color:#8F4429;
+  border:1px solid rgba(176,91,59,0.34);border-radius:3px;
+  font-size:11px;letter-spacing:0.06em;font-weight:600;padding:3px 8px;
+}
+
+/* Neutral surfaces · institutional tint instead of pale blue */
+.weight-total{background:rgba(30,45,61,0.05);border-color:rgba(30,45,61,0.16);}
+.note-box{background:rgba(30,45,61,0.04);border-color:rgba(30,45,61,0.14);color:#374151;}
+.btn-secondary:hover{background:rgba(30,45,61,0.07);}
+tr:hover td{background:rgba(30,45,61,0.04);}
+
+/* Tabs · RECO-LAB chrome */
+.tab{
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;
+}
+.tab.active,.tab.on{color:#1E2D3D;border-bottom-color:#2F5D62;}
+
+/* Nothing in the explorer renders below 11px */
+.badge-secure,.badge-moderate,.badge-low,.badge-critical,
+.pres-low,.pres-high,.pres-severe,.pres-critical,
+.gtype-observed,.gtype-modeled,.gtype-derived,.gtype-proxy,
+.gap-tag,.weight-total,.note-box{font-size:11px;}
+
+/* Explorer chrome · same 11px floor as the rest of the build */
+.rl-shell-head .t,.rl-shell-head .eye,.rl-shell-foot,.rl-shell-foot .bot,
+.footnote,.eye,.bot{font-size:11px !important;letter-spacing:0.12em;}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Serif:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<style id="rl-fai-correction">
+/* ==================================================================
+   RECO-LAB . FAI explorer . correction pass
+   Five defects, all of them layout or contrast rather than content:
+   (a) the shell header and masthead were laid out inside the body's own
+       24-32px inset, so the dark bar floated with a white margin on
+       three sides instead of meeting the edges of the document;
+   (b) the masthead ground was #08111B -- effectively black, which this
+       system does not use as a surface. It is now institutional navy,
+       one step below the header bar;
+   (c) the active tab carried navy ink on a teal ground: the tab rule
+       set its colour after the base rule had set the dark background.
+       A dark ground now always takes white type;
+   (d) the comparative table and the category table were laid out at a
+       fixed minimum width, so both opened a grey horizontal slider
+       inside the panel -- worst in English, where the headings run
+       longer. Both are proportional now, and below 760px each row is
+       read as a card instead of panning sideways;
+   (e) the standalone stated what the FAI does twice, once in the
+       masthead and once again in the instrument header.
+   ================================================================== */
+
+/* -- a . the shell meets the edge of the document ------------------ */
+html:not([data-embed="1"]) body{padding:0 !important;}
+html:not([data-embed="1"]) .rl-shell-body{padding-top:34px;padding-bottom:20px;}
+html:not([data-embed="1"]) .rl-shell-backwrap{padding-top:10px;}
+
+/* -- b . masthead ground . navy, never black ---------------------- */
+.rl-shell-mast{background:#12263A;}
+
+/* -- e . one introduction, not two -------------------------------- */
+html:not([data-embed="1"]) .header{display:none;}
+
+/* -- c . a dark ground always takes white type -------------------- */
+.tab.active,.tab.on,.tab.active:hover{background:#2F5D62;color:#FFFFFF;}
+.scenario-btn.active,.scenario-btn.active:hover{background:#2F5D62;color:#FFFFFF;border-color:#2F5D62;}
+.btn-recalc{background:#1E2D3D;color:#FFFFFF;}
+.btn-recalc:hover:not(:disabled){background:#2F5D62;color:#FFFFFF;}
+
+/* -- no decorative underline anywhere in the instrument ----------- */
+.g-toggle,.g-toggle:hover,a,a:hover{text-decoration:none;}
+.g-toggle:hover{color:#1E2D3D;}
+
+/* -- d . the tables are proportional, never a slider -------------- */
+.table-wrap,.cat-wrap{overflow-x:visible;}
+#panel-table table{table-layout:fixed;width:100%;min-width:0;max-width:100%;}
+#panel-table th{white-space:normal;padding:9px 6px;line-height:1.3;vertical-align:bottom;}
+#panel-table td{padding:8px 6px;}
+#panel-table th:nth-child(1),#panel-table td:nth-child(1){width:3%;}
+#panel-table th:nth-child(2),#panel-table td:nth-child(2){width:12%;}
+#panel-table th:nth-child(3),#panel-table td:nth-child(3){width:7.5%;}
+#panel-table th:nth-child(4),#panel-table td:nth-child(4){width:11%;}
+#panel-table th:nth-child(5),#panel-table td:nth-child(5){width:8%;}
+#panel-table th:nth-child(6),#panel-table td:nth-child(6){width:11%;text-align:center;}
+#panel-table th:nth-child(7),#panel-table td:nth-child(7){width:7.5%;}
+#panel-table th:nth-child(8),#panel-table td:nth-child(8){width:7%;}
+#panel-table th:nth-child(9),#panel-table td:nth-child(9){width:6.5%;}
+#panel-table th:nth-child(10),#panel-table td:nth-child(10){width:7.5%;}
+#panel-table th:nth-child(11),#panel-table td:nth-child(11){width:7.5%;}
+#panel-table th:nth-child(12),#panel-table td:nth-child(12){width:11.5%;text-align:center;}
+.bar-bg{min-width:0;}
+/* Category and pressure are columns, not ragged edges: one badge width,
+   centred, identical in both languages. */
+#panel-table td:nth-child(12) .badge{
+  display:inline-block;width:100%;max-width:132px;min-width:0;
+  text-align:center;box-sizing:border-box;
+}
+/* The six-level pressure signal shipped as mint #C8E6C9 and pale yellow
+   #FFFDE7 -- the two tints the institutional palette had not reached.
+   Same scale as every other tag in the instrument. */
+.pres-label,
+.pres-optimal,.pres-low,.pres-moderate,.pres-high,.pres-severe,.pres-critical{
+  display:inline-block;width:100%;max-width:118px;min-width:0;box-sizing:border-box;
+  text-align:center;border:1px solid;border-radius:3px;padding:3px 6px;
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:11px;letter-spacing:.06em;font-weight:600;text-transform:uppercase;
+}
+.pres-optimal {background:rgba(47,93,98,0.15); color:#22454A;border-color:rgba(47,93,98,0.42);}
+.pres-low     {background:rgba(47,93,98,0.09); color:#24484C;border-color:rgba(47,93,98,0.30);}
+.pres-moderate{background:rgba(217,148,26,0.13);color:#8A5B08;border-color:rgba(217,148,26,0.40);}
+.pres-high    {background:rgba(176,91,59,0.13); color:#8F4429;border-color:rgba(176,91,59,0.40);}
+.pres-severe  {background:rgba(140,45,31,0.11); color:#7A2418;border-color:rgba(140,45,31,0.34);}
+.pres-critical{background:rgba(140,45,31,0.17); color:#6E1F14;border-color:rgba(140,45,31,0.50);}
+.cat-table{table-layout:fixed;width:100%;min-width:0;max-width:100%;}
+.cat-table th{white-space:normal;}
+.cat-table th:nth-child(1),.cat-table td:nth-child(1){width:20%;min-width:0;}
+.cat-table th:nth-child(2),.cat-table td:nth-child(2){width:16%;min-width:0;white-space:normal;}
+.cat-table th:nth-child(3),.cat-table td:nth-child(3){width:64%;}
+.cat-table td:nth-child(1) .badge{
+  display:inline-block;width:100%;max-width:140px;min-width:0;
+  text-align:center;box-sizing:border-box;
+}
+
+/* the tab strip wraps instead of pushing the document sideways */
+.tabs{width:auto;max-width:100%;flex-wrap:wrap;}
+
+/* -- narrow viewports . read down, never sideways ----------------- */
+@media (max-width:760px){
+  html:not([data-embed="1"]) .rl-shell-nav,
+  html:not([data-embed="1"]) .rl-shell-mast .in,
+  html:not([data-embed="1"]) .rl-shell-body,
+  html:not([data-embed="1"]) .rl-shell-backwrap{padding-left:18px;padding-right:18px;}
+  .weights-grid,.source-grid,.g-grid{grid-template-columns:1fr;}
+  .panel{padding:14px;}
+
+  #panel-table table,#panel-table thead,#panel-table tbody,
+  #panel-table tr,#panel-table td{display:block;width:auto;}
+  #panel-table thead{display:none;}
+  #panel-table tbody tr{
+    display:grid;grid-template-columns:1fr 1fr;gap:0 12px;
+    border:1px solid #E5E7EB;border-radius:8px;background:#FFFFFF;
+    padding:12px 14px;margin:0 0 10px;
+  }
+  #panel-table tbody tr:hover td{background:none;}
+  #panel-table tbody td{border-bottom:0;padding:5px 0;text-align:left;width:auto;}
+  #panel-table tbody td::before{
+    display:block;font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:#9CA3AF;margin-bottom:2px;
+  }
+  #panel-table tbody td:nth-child(1){display:none;}
+  #panel-table tbody td:nth-child(2){grid-column:1 / -1;font-weight:600;font-size:15px;padding-bottom:8px;}
+  #panel-table tbody td:nth-child(2)::before{content:none;}
+  #panel-table tbody td:nth-child(12){
+    grid-column:1 / -1;padding-top:10px;margin-top:6px;
+    border-top:1px solid #E5E7EB;text-align:left;
+  }
+  #panel-table tbody td:nth-child(12)::before{content:none;}
+  #panel-table td:nth-child(12) .badge{max-width:none;}
+  #panel-table td:nth-child(6),#panel-table td:nth-child(6) .pres-label{text-align:left;}
+  #panel-table td .pres-label{max-width:none;width:auto;}
+  #panel-table tbody td:nth-child(3)::before{content:"Nominal security";}
+  #panel-table tbody td:nth-child(4)::before{content:"Functional accessibility";}
+  #panel-table tbody td:nth-child(5)::before{content:"Accessibility gap";}
+  #panel-table tbody td:nth-child(6)::before{content:"Shelter pressure";}
+  #panel-table tbody td:nth-child(7)::before{content:"Alert accessibility";}
+  #panel-table tbody td:nth-child(8)::before{content:"Miklat coverage";}
+  #panel-table tbody td:nth-child(9)::before{content:"Mamad";}
+  #panel-table tbody td:nth-child(10)::before{content:"Shelter condition";}
+  #panel-table tbody td:nth-child(11)::before{content:"Emergency fallback";}
+
+  .cat-table,.cat-table tbody,.cat-table tr,.cat-table td{display:block;width:auto;}
+  .cat-table thead{display:none;}
+  .cat-table tbody tr{
+    border:1px solid #E5E7EB;border-radius:8px;background:#FFFFFF;
+    padding:12px 14px;margin:0 0 10px;
+  }
+  .cat-table td{border-bottom:0;padding:4px 0;width:auto !important;}
+  .cat-table td:nth-child(1) .badge{max-width:none;}
+}
+</style>
+
+<style id="rl-fai-mirror">
+/* ==================================================================
+   RECO-LAB . FAI explorer . ES/EN mirror layer
+   Appended last in all four files, so both languages resolve to one set
+   of declarations regardless of which generation of the base stylesheet
+   they carry. Nothing here is language-specific.
+   ================================================================== */
+
+:root{
+  --fx-sans:'IBM Plex Sans',system-ui,Helvetica,Arial,sans-serif;
+  --fx-serif:'IBM Plex Serif',Georgia,serif;
+  --fx-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  --fx-ink:#374151; --fx-muted:#9CA3AF; --fx-rule:#E5E7EB;
+  --fx-teal:#2F5D62; --fx-navy:#1E2D3D; --fx-off:#F8F8F6;
+}
+
+/* -- ground and type stack ---------------------------------------- */
+body{
+  font-family:var(--fx-sans);
+  background:var(--fx-off);color:var(--fx-ink);
+  line-height:1.5;margin:0;
+}
+html:not([data-embed="1"]) body{padding:0;}
+html[data-embed="1"] body{padding:20px 22px 24px !important;}
+
+/* -- instrument header (embed only; hidden in the standalone) ------ */
+.header{border-left:4px solid var(--fx-teal);padding-left:16px;margin-bottom:28px;}
+.header h1{
+  font-family:var(--fx-serif);font-size:20px;font-weight:500;
+  color:var(--fx-teal);margin:0 0 6px;letter-spacing:.01em;
+}
+.header p{font-size:12.5px;color:var(--fx-muted);margin:0;max-width:720px;line-height:1.65;}
+
+/* -- tabs · one geometry, one height ------------------------------ */
+.tabs{
+  display:flex;flex-wrap:wrap;gap:4px;margin-bottom:22px;
+  background:#FFFFFF;padding:4px;border-radius:8px;
+  border:1px solid var(--fx-rule);width:auto;max-width:100%;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.tab{
+  font-family:var(--fx-mono);
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+  line-height:1.2;padding:9px 18px;min-height:34px;
+  display:inline-flex;align-items:center;
+  border-radius:6px;cursor:pointer;border:none;background:none;
+  color:var(--fx-muted);transition:background .15s ease,color .15s ease;
+}
+.tab:hover{color:var(--fx-ink);background:var(--fx-off);}
+.tab.active,.tab.on,.tab.active:hover{
+  background:var(--fx-teal);color:#FFFFFF;box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+
+/* -- panels ------------------------------------------------------- */
+.panel{
+  background:#FFFFFF;border:1px solid var(--fx-rule);border-radius:8px;
+  padding:26px 28px;box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+.section-label{
+  font-family:var(--fx-serif);font-size:14px;color:var(--fx-teal);
+  margin-bottom:18px;border-bottom:2px solid var(--fx-rule);padding-bottom:9px;
+}
+.subsection{
+  font-family:var(--fx-mono);
+  font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;
+  color:var(--fx-muted);margin:22px 0 10px;
+}
+
+/* -- weighting panel ---------------------------------------------- */
+.weights-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+.weight-card{
+  background:var(--fx-off);border:1px solid var(--fx-rule);
+  border-left:4px solid var(--fx-teal);border-radius:8px;padding:14px 16px;
+  transition:box-shadow .15s ease;
+}
+.weight-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.08);}
+.weight-label{
+  font-family:var(--fx-mono);
+  font-size:11px;color:var(--fx-muted);text-transform:uppercase;
+  letter-spacing:.09em;margin-bottom:2px;
+}
+.weight-title{font-size:13px;color:var(--fx-ink);font-weight:600;margin:2px 0 5px;}
+.weight-source{font-size:11.5px;color:var(--fx-muted);line-height:1.55;margin-bottom:10px;}
+.weight-row{display:flex;align-items:center;gap:10px;}
+input[type=range]{flex:1;-webkit-appearance:none;height:4px;background:var(--fx-rule);border-radius:2px;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;border-radius:50%;
+  background:var(--fx-teal);cursor:pointer;border:2px solid #fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.2);
+}
+.weight-val{
+  font-family:var(--fx-serif);font-size:14px;font-weight:600;
+  color:var(--fx-teal);min-width:44px;text-align:right;
+}
+.weight-total{
+  font-size:11.5px;padding:10px 14px;
+  background:rgba(30,45,61,0.05);border:1px solid rgba(30,45,61,0.16);
+  border-radius:6px;display:flex;align-items:center;gap:12px;margin-bottom:12px;
+}
+.scenario-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.scenario-btn{
+  font-family:var(--fx-mono);
+  font-size:11px;letter-spacing:.06em;padding:7px 13px;border-radius:6px;
+  cursor:pointer;border:1px solid var(--fx-rule);background:#FFFFFF;
+  color:var(--fx-muted);transition:border-color .15s ease,color .15s ease;
+}
+.scenario-btn:hover{border-color:var(--fx-teal);color:var(--fx-teal);}
+.scenario-btn.active,.scenario-btn.active:hover{
+  background:var(--fx-teal);color:#FFFFFF;border-color:var(--fx-teal);
+}
+
+/* -- buttons · one primary, one secondary, both languages ---------- */
+.btn-primary,.btn-recalc{
+  font-family:var(--fx-sans);
+  font-size:12.5px;font-weight:600;letter-spacing:.02em;
+  background:var(--fx-navy);color:#FFFFFF;border:1px solid var(--fx-navy);
+  border-radius:6px;padding:10px 26px;cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,.18);transition:background .15s ease;
+}
+.btn-primary:hover:not(:disabled),.btn-recalc:hover:not(:disabled){
+  background:var(--fx-teal);border-color:var(--fx-teal);color:#FFFFFF;
+}
+.btn-primary:disabled,.btn-recalc:disabled{
+  background:var(--fx-rule);border-color:var(--fx-rule);
+  color:var(--fx-muted);cursor:not-allowed;box-shadow:none;
+}
+.btn-secondary{
+  font-family:var(--fx-sans);
+  font-size:12.5px;background:transparent;color:var(--fx-teal);
+  border:1.5px solid var(--fx-teal);border-radius:6px;padding:9px 20px;
+  cursor:pointer;letter-spacing:.02em;margin-left:10px;
+  transition:background .15s ease;
+}
+.btn-secondary:hover{background:rgba(47,93,98,0.08);}
+
+/* -- comparative table -------------------------------------------- */
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+#panel-table th{
+  font-family:var(--fx-mono);
+  font-size:11px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--fx-muted);font-weight:600;
+  border-bottom:2px solid var(--fx-teal);
+  /* Every heading centres in one shared row height, so a one-line label
+     and a three-line label sit on the same optical axis. */
+  text-align:center;vertical-align:middle;
+  padding:12px 6px;line-height:1.35;white-space:normal;
+}
+#panel-table td{
+  padding:9px 6px;border-bottom:1px solid var(--fx-rule);
+  color:var(--fx-ink);text-align:center;vertical-align:middle;
+}
+#panel-table td:nth-child(1){color:var(--fx-muted);font-size:11px;}
+#panel-table td:nth-child(2){text-align:center;font-weight:600;}
+#panel-table tr:hover td{background:rgba(30,45,61,0.04);}
+.bar-bg{height:5px;background:var(--fx-rule);border-radius:3px;overflow:hidden;min-width:0;margin-top:4px;}
+.bar-fill{height:100%;border-radius:3px;transition:width .4s ease;}
+.delta-up{color:#24484C;font-size:11.5px;font-weight:600;font-family:var(--fx-mono);}
+.delta-down{color:#7A2418;font-size:11.5px;font-weight:600;font-family:var(--fx-mono);}
+.delta-same{color:var(--fx-muted);font-size:12px;font-family:var(--fx-mono);}
+
+/* -- sources panel ------------------------------------------------- */
+.source-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.source-card{background:var(--fx-off);border:1px solid var(--fx-rule);border-radius:6px;padding:14px 16px;}
+.source-name{font-family:var(--fx-serif);font-size:12.5px;color:var(--fx-teal);margin-bottom:5px;font-weight:600;}
+.source-desc{font-size:11.5px;color:var(--fx-ink);line-height:1.6;margin-bottom:8px;}
+.source-status{font-size:11px;font-family:var(--fx-mono);letter-spacing:.04em;color:var(--fx-muted);}
+
+/* -- glossary ------------------------------------------------------ */
+.g-title{font-family:var(--fx-serif);}
+.g-def,.g-detail{font-family:var(--fx-sans);}
+.g-toggle{font-family:var(--fx-mono);font-size:11px;letter-spacing:.06em;}
+
+/* -- methodological framework -------------------------------------- */
+#panel-notes p{font-family:var(--fx-sans);font-size:12.5px !important;line-height:1.75 !important;color:var(--fx-ink) !important;}
+.cat-table th{
+  font-family:var(--fx-mono);
+  font-size:11px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--fx-muted);font-weight:600;
+  text-align:center;vertical-align:middle;
+  border-bottom:2px solid var(--fx-teal);padding:12px;
+}
+.cat-table td{vertical-align:middle;}
+.cat-table td:nth-child(1),.cat-table td:nth-child(2){text-align:center;}
+.cat-table td:nth-child(3){text-align:left;}
+
+/* -- footnote ------------------------------------------------------ */
+.footnote{
+  font-family:var(--fx-sans);
+  font-size:11.5px;color:var(--fx-muted);line-height:1.75;
+  margin-top:14px;border-top:1px solid var(--fx-rule);padding-top:12px;
+}
+</style>
+
+<style id="rl-fai-final">
+/* The instrument header repeated what the block above the frame already
+   says, in the embed as well as in the standalone. One introduction. */
+.header{display:none !important;}
+/* Lead-ins in the table footnote carry weight, never a rule under them. */
+.footnote b{color:#374151;font-weight:600;text-decoration:none;border-bottom:0;}
+/* Nothing in the instrument draws a decorative underline. */
+a,a:hover,.g-toggle,.g-toggle:hover{text-decoration:none !important;}
+</style>
+</head><body><div class="project-header"><div class="project-eyebrow">Urban resilience under conditions of territorial stress</div><h1 class="project-title">Housing Pressure and Urban Dynamics in Israel (2021&ndash;2025)</h1><p class="project-subtitle">Conflict, absorption capacity, and migratory flows</p><div class="project-meta"><span><strong>Case study:</strong> Israel</span><span><strong>Analytical period:</strong> 2021&ndash;2025</span><span><strong>Structural break:</strong> October 7, 2023</span></div></div><div class="satellite-bridge">Satellite analysis &mdash; Residential protection</div><div class="header"><h1>FAI — Functional Accessibility and Residential Security Index</h1><p>Interactive explorer of residential protection, temporal access, saturation, mamad coverage and informal redundancy under conflict conditions</p></div><div class="tabs"><button class="tab active" data-tab="weights" onclick="switchTab('weights')">FAI weighting</button><button class="tab" data-tab="table"    onclick="switchTab('table')">Comparative table</button><button class="tab" data-tab="sources"  onclick="switchTab('sources')">Data sources</button><button class="tab" data-tab="glossary" onclick="switchTab('glossary')">FAI glossary</button><button class="tab" data-tab="notes"    onclick="switchTab('notes')">Methodological framework</button></div><div class="panel active" id="panel-weights"><div class="section-label">FAI methodological weighting architecture</div><div class="note-box">Weights are methodological assumptions used for sensitivity testing and territorial reclassification scenarios. They are <strong>not</strong> estimated causal parameters. Weights must sum to <strong>1.00</strong> to preserve index comparability and recalculation consistency.</div><div class="scenario-row"><button class="scenario-btn active" data-scen="baseline"          onclick="loadScenario('baseline')">Baseline</button><button class="scenario-btn"        data-scen="temporal_stress"   onclick="loadScenario('temporal_stress')">Temporal stress</button><button class="scenario-btn"        data-scen="saturation_stress" onclick="loadScenario('saturation_stress')">Saturation stress</button><button class="scenario-btn"        data-scen="mamad_dependency"  onclick="loadScenario('mamad_dependency')">Mamad dependency</button></div><div class="weight-total"><span style="font-weight:600;">&Sigma; weights:</span><span id="total-display" style="color:#2F5D62;font-weight:700;font-family:Georgia,serif;font-size:14px;">1.00</span><span id="total-msg" style="color:#5C8C7E;font-weight:600;">&#10003; valid</span></div><div class="weights-grid"><div class="weight-card c1"><div class="weight-label">W1 — Shelter pressure</div><div class="weight-title">Shelter pressure / absorption</div><div class="weight-source">Population-to-capacity ratio inside the walkable radius. Penalises simultaneous over-demand on the public miklat network. A low score indicates high structural stress on shelter infrastructure.</div><div class="weight-row"><input type="range" id="w1" min="0" max="50" value="25" oninput="updateWeights()"><span class="weight-val" id="w1v">0.25</span></div></div><div class="weight-card c2"><div class="weight-label">W2 — Alert accessibility</div><div class="weight-title">Alert accessibility</div><div class="weight-source">Pikud HaOref alert times mapped to walkable radius. Captures effective access under 15 / 30 / 60 / 90 second windows.</div><div class="weight-row"><input type="range" id="w2" min="0" max="50" value="25" oninput="updateWeights()"><span class="weight-val" id="w2v">0.25</span></div></div><div class="weight-card c3"><div class="weight-label">W3 — Miklat supply</div><div class="weight-title">Miklat coverage</div><div class="weight-source">Public miklat per 1,000 residents. Necessary but not sufficient: does not capture distance, pressure or operational condition.</div><div class="weight-row"><input type="range" id="w3" min="0" max="50" value="20" oninput="updateWeights()"><span class="weight-val" id="w3v">0.20</span></div></div><div class="weight-card c4"><div class="weight-label">W4 — Mamad coverage</div><div class="weight-title">Private protected rooms (mamad)</div><div class="weight-source">Share of buildings constructed after 1993 (mandatory mamad). Reduces public-shelter dependency. Does not fully capture TAMA 38 retrofits.</div><div class="weight-row"><input type="range" id="w4" min="0" max="50" value="15" oninput="updateWeights()"><span class="weight-val" id="w4v">0.15</span></div></div><div class="weight-card c5"><div class="weight-label">W5 — Shelter condition</div><div class="weight-title">Shelter condition</div><div class="weight-source">Inspection proxy. Pikud HaOref does not publish a centralised endpoint; municipal disclosures fill partial gaps.</div><div class="weight-row"><input type="range" id="w5" min="0" max="50" value="10" oninput="updateWeights()"><span class="weight-val" id="w5v">0.10</span></div></div><div class="weight-card c6"><div class="weight-label">W6 — Emergency fallback</div><div class="weight-title">Emergency fallback capacity</div><div class="weight-source">Underground parking and basement-type structures activated as de-facto fallback during alerts. Not Pikud HaOref-certified. Low baseline weight; sensitivity scenario component only.</div><div class="weight-row"><input type="range" id="w6" min="0" max="50" value="5" oninput="updateWeights()"><span class="weight-val" id="w6v">0.05</span></div></div></div><button class="btn-primary" id="btn-calc" onclick="recalculate()">Recompute FAI and view table</button><button class="btn-secondary" onclick="loadScenario('baseline')">Reset to baseline</button></div><div class="panel" id="panel-table"><div class="section-label">Territorial reclassification: nominal security vs functional accessibility</div><div class="table-wrap"><table><thead><tr><th>#</th><th>Territorial unit</th><th>Nominal<br>security</th><th>Functional<br>accessibility</th><th>Gap</th><th>Shelter<br>pressure</th><th>Alert</th><th>Miklat</th><th>Mamad</th><th>Condition</th><th>Fallback</th><th>Category</th></tr></thead><tbody id="table-body"></tbody></table></div><div class="footnote"><b>Shelter pressure:</b> qualitative signal over the relationship between the population inside the walkable radius and estimated miklat capacity.<br><b>Alert accessibility:</b> share of the population inside the walkable radius according to the alert window.<br><b>Accessibility gap</b> = functional accessibility &minus; nominal security, in percentage points.<br><b>Negative values</b> indicate overestimation in the nominal model.<br><b>Shelter pressure and shelter condition</b> are partially proxy; see the Data sources tab.</div></div><div class="panel" id="panel-sources"><div class="section-label">Data architecture and methodological sources</div><div class="source-grid"><div class="source-card"><div class="source-name">OpenStreetMap — miklat geometry</div><div class="source-desc">amenity=shelter polygons. Tel Aviv coverage robust; periphery requires manual completion. Allows m² to capacity translation.</div><div class="source-status"><span class="dot dot-green"></span>available — overpass-api.de</div></div><div class="source-card"><div class="source-name">Pikud HaOref — alert times</div><div class="source-desc">Official alert windows (seconds-to-impact). Define the walkable radius. North 15–30 s; Gush Dan 90 s; Negev 60 s.</div><div class="source-status"><span class="dot dot-green"></span>available — oref.org.il</div></div><div class="source-card"><div class="source-name">CBS Israel — statistical area density</div><div class="source-desc">Sub-municipal granularity. Cross with temporal radius to estimate simultaneous demand per shelter. Statistical Areas 2022.</div><div class="source-status"><span class="dot dot-green"></span>available — cbs.gov.il/opendata</div></div><div class="source-card"><div class="source-name">GOVMAP — building registry</div><div class="source-desc">Construction year by parcel. Post-1993 = mandatory mamad. Full national coverage with restricted API.</div><div class="source-status"><span class="dot dot-yellow"></span>partial — govmap.gov.il/api</div><div class="gap-tag">institutional access required for full coverage</div></div><div class="source-card"><div class="source-name">Tel Aviv Open Data — GIS shelters</div><div class="source-desc">Municipal inventory of public miklat with addresses and reported state.</div><div class="source-status"><span class="dot dot-green"></span>available — gis.tel-aviv.gov.il</div></div><div class="source-card"><div class="source-name">Pikud HaOref — inspections</div><div class="source-desc">Shelter fitness reports. Most opaque input. Some municipalities publish irregular fit / not-fit lists.</div><div class="source-status"><span class="dot dot-red"></span>limited — no centralised endpoint</div><div class="gap-tag">primary methodological gap — proxy required</div></div><div class="source-card"><div class="source-name">OSM — underground parking</div><div class="source-desc">amenity=parking + location=underground. De-facto fallback at &le;−2 floors. Not certified by Pikud HaOref. Activates W6 (emergency fallback capacity).</div><div class="source-status"><span class="dot dot-blue"></span>derived — overpass-api.de</div><div class="gap-tag">no certification standard</div></div><div class="source-card"><div class="source-name">CBS / Tax Authority / Knesset RIC</div><div class="source-desc">Combined panel for the residential displacement pressure proxy: rent shifts, vacancy typology, fiscal mobility traces.</div><div class="source-status"><span class="dot dot-yellow"></span>partial — multi-source assemblage</div><div class="gap-tag">no observed flow registry</div></div></div></div><div class="panel" id="panel-glossary"><div class="section-label">FAI glossary — components, weights and interpretive layers</div><div class="g-group-label">Composite indices</div><div class="g-grid"><div class="g-card gc-derived"><div class="g-header"><span class="g-title">FAI — Functional Accessibility Index</span><span class="g-type gtype-derived">derived</span></div><div class="g-def">Composite index evaluating functional residential protection under emergency conditions. Integrates six weighted dimensions: shelter pressure, alert accessibility, miklat coverage, mamad coverage, shelter condition and emergency fallback capacity.</div><div class="g-toggle" onclick="toggleCard(this)">&#9656; Interpretation &amp; limitations</div><div class="g-detail"><strong>Interpretation:</strong> A high FAI indicates that multiple protective dimensions are simultaneously favourable — adequate supply, low structural stress, accessible within the alert window, good condition and mamad coverage.<br><br><strong>Limitations:</strong> Sensitivity index, not a predictive model. Does not account for behavioural response, population mobility or real-time conditions.</div></div><div class="g-card gc-derived"><div class="g-header"><span class="g-title">Nominal security score</span><span class="g-type gtype-modeled">modeled</span></div><div class="g-def">Pre-FAI residential security index based on structural supply indicators (miklat density, mamad coverage) without incorporating shelter pressure, temporal accessibility or shelter condition.</div><div class="g-toggle" onclick="toggleCard(this)">&#9656; Interpretation &amp; limitations</div><div class="g-detail"><strong>Interpretation:</strong> Structural baseline. Higher values reflect greater nominal shelter infrastructure per population unit.<br><br><strong>Limitations:</strong> Overestimates effective protection in high-density or peripheral sub-districts. Does not reflect real-time demand pressure or alert constraints.</div></div><div class="g-card gc-derived g-card-full"><div class="g-header"><span class="g-title">Accessibility gap</span><span class="g-type gtype-derived">derived</span></div><div class="g-def">FAI minus nominal security score, expressed in percentage points (pp). Negative values indicate that functional accessibility reduces effective protection relative to the nominal score.</div><div class="g-toggle" onclick="toggleCard(this)">&#9656; Interpretation &amp; limitations</div><div class="g-detail"><strong>Interpretation:</strong> −15.6 pp means that incorporating shelter pressure, alert windows and condition reduces effective protection by 15.6 percentage points below the nominal score.<br><br><strong>Limitations:</strong> Sensitive to weight configuration. Interpret alongside scenario results.</div></div></div><div class="g-group-label">Primary components — W1 through W4</div><div class="g-grid"><div class="g-card gc-proxy"><div class="g-header"><span class="g-title">Shelter pressure (W1)</span><span class="g-type gtype-proxy">proxy</span></div><div class="g-def">Relative modeled stress on the public shelter system. Compares population potentially exposed within the functional walkable radius against estimated miklat / public shelter capacity. Reported as a six-level qualitative signal — Optimal, Low, Moderate, High, Severe and Critical — rather than a raw percentage.</div><div class="g-toggle" onclick="toggleCard(this)">&#9656; Interpretive levels &amp; limitations</div><div class="g-detail"><strong>Optimal:</strong> low modeled pressure; estimated capacity is sufficient relative to the potentially exposed population.<br><strong>Low:</strong> limited pressure; no immediate signal of structural overload.<br><strong>Moderate:</strong> intermediate pressure; some territorial constraints may appear under alert conditions.<br><strong>High:</strong> elevated pressure; the shelter system may face significant stress during alerts.<br><strong>Severe:</strong> very high pressure; estimated demand may exceed comfortable or safe absorption capacity.<br><strong>Critical:</strong> extreme pressure; the public shelter system may be structurally overloaded relative to exposed population.<br><br><strong>Note:</strong> This component does not measure physical damage, direct displacement or observed shelter occupation. It is a proxy signal used to identify where protection demand may exceed available shelter capacity.<br><br><strong>Limitations:</strong> Capacity estimates rely on OSM polygon area conversions. Behavioural distribution across shelters is not modelled.</div></div><div class="g-card gc-proxy"><div class="g-header"><span class="g-title">Alert accessibility (W2)</span><span class="g-type gtype-proxy">proxy</span></div><div class="g-def">Share of population able to reach a public shelter within the Pikud HaOref alert window for each territorial unit (15–90 seconds translated to walkable radius).</div><div class="g-toggle" onclick="toggleCard(this)">&#9656; Interpretation &amp; limitations</div><div class="g-detail"><strong>Interpretation:</strong> Higher values indicate that more residents can reach a miklat within the available warning time.<br><br><strong>Limitations:</strong> Assumes average walking speed. Does not account for mobility limitations, nighttime conditions or crowding at shelter entrances.</div></div><div class="g-card gc-proxy"><div class="g-header"><span class="g-title">Miklat coverage (W3)</span><span class="g-type gtype-proxy">proxy</span></div><div class="g-def">Public miklat availability relative to resident population. Necessary but not sufficient — does not capture distance, pressure or operational condition.</div><div class="g-toggle" onclick="toggleCard(this)">&#9656; Interpretation &amp; limitations</div><div class="g-detail"><strong>Interpretation:</strong> A high coverage score indicates relatively high per-capita miklat provision, but effective access depends on alert windows and saturation levels.<br><br><strong>Limitations:</strong> Derived from OSM shelter polygons; coverage quality varies across territorial units.</div></div><div class="g-card gc-proxy"><div class="g-header"><span class="g-title">Mamad coverage (W4)</span><span class="g-type gtype-proxy">proxy</span></div><div class="g-def">Proportion of residential buildings constructed after 1993, when private protected rooms (mamad) became mandatory. Reduces dependency on the public miklat network.</div><div class="g-toggle" onclick="toggleCard(this)">&#9656; Interpretation &amp; limitations</div><div class="g-detail"><strong>Interpretation:</strong> High mamad ratio = large share of residents have in-unit protection, reducing demand on public shelters.<br><br><strong>Limitations:</strong> Post-1993 construction year used as mamad presence proxy. Does not capture TAMA 38 retrofits or actual mamad operability.</div></div></div><div class="g-group-label">Secondary components &amp; displacement proxy — W5, W6, D9</div><div class="g-grid"><div class="g-card gc-proxy"><div class="g-header"><span class="g-title">Shelter condition (W5)</span><span class="g-type gtype-proxy">proxy</span></div><div class="g-def">Proxy for operational quality and maintenance of public protective infrastructure. Used because no centralised national inspection endpoint exists.</div><div class="g-toggle" onclick="toggleCard(this)">&#9656; Interpretation &amp; limitations</div><div class="g-detail"><strong>Interpretation:</strong> Indicative estimate from partial municipal disclosure data. Not a verified inspection score.<br><br><strong>Limitations:</strong> Primary methodological gap. Pikud HaOref does not publish a consolidated inspection registry. Some municipalities disclose fit / not-fit lists irregularly.</div></div><div class="g-card gc-proxy"><div class="g-header"><span class="g-title">Emergency fallback capacity (W6)</span><span class="g-type gtype-proxy">proxy</span></div><div class="g-def">Underground parking and basement-type structures used as de-facto emergency fallback during alerts. Not Pikud HaOref-certified protective infrastructure. Low baseline weight; activated only as a sensitivity scenario component.</div><div class="g-toggle" onclick="toggleCard(this)">&#9656; Interpretation &amp; limitations</div><div class="g-detail"><strong>Interpretation:</strong> Represents complementary informal capacity, not certified protection. Read alongside the baseline scenario; compare with mamad-dependency scenario to gauge sensitivity.<br><br><strong>Limitations:</strong> No certification standard exists. Depth and structural quality not assessed. Derived from OSM underground-parking geometry.</div></div><div class="g-card gc-modeled g-card-full"><div class="g-header"><span class="g-title">Residential displacement pressure proxy <span style="font-size:11px;color:#9CA3AF;">(Block D9)</span></span><span class="g-type gtype-modeled">modeled</span></div><div class="g-def">Estimates structural conditions under which households with low functional protection and high urban pressure may experience residential relocation dynamics. Does not measure observed displacement or direct population flows.</div><div class="g-toggle" onclick="toggleCard(this)">&#9656; Interpretation &amp; limitations</div><div class="g-detail"><strong>Interpretation:</strong> Identifies risk-pressure confluence zones, not flow trajectories. Assembled from CBS, Tax Authority and Knesset RIC data.<br><br><strong>Limitations:</strong> No direct displacement flow registry exists. Treat as structural pressure signal only.</div></div></div></div><div class="panel" id="panel-notes"><div class="section-label">Methodological framework and interpretive boundaries</div><div class="note-box">This platform does not predict future events or model observed behaviour. It functions as a methodological sensitivity tool: it shows how territorial classifications change when the relative weights of FAI components are modified under different analytical scenarios.</div><div class="subsection">Territorial category definitions</div><div class="cat-wrap"><table class="cat-table"><thead><tr><th>Category</th><th>FAI range</th><th>Definitions</th></tr></thead><tbody><tr><td><span class="badge badge-secure">Secure</span></td><td>&ge;&thinsp;65%</td><td class="definition-cell">High functional accessibility. Adequate shelter supply, favourable alert windows, low structural pressure on shelter infrastructure.</td></tr><tr><td><span class="badge badge-moderate">Moderate</span></td><td>45 – 64%</td><td class="definition-cell">Intermediate accessibility. Some structural limitations in supply, pressure or temporal coverage, but no systemic breakdown across dimensions.</td></tr><tr><td><span class="badge badge-low">Low</span></td><td>25 – 44%</td><td class="definition-cell">Reduced functional protection. Significant gaps in at least two FAI dimensions that compound effective accessibility deficits.</td></tr><tr><td><span class="badge badge-critical">Critical</span></td><td>&lt;&thinsp;25%</td><td class="definition-cell">Severely limited accessibility. Systemic deficiencies across multiple dimensions with no sufficient compensating mechanism.</td></tr></tbody></table></div></div><script>const PAYLOAD = {"subdistricts": [{"subdistrict_code": "41", "subdistrict": "Tel Aviv", "shelter_supply_score": 0.867, "temporal_accessibility_score": 1.0, "saturation_score": 0.064, "saturation_score_conservative": 0.032, "saturation_score_optimistic": 0.096, "mamad_coverage_score": 0.42, "informal_redundancy_score": 0.78, "condition_score": 0.65, "variable_status_condition": "proxy"}, {"subdistrict_code": "33", "subdistrict": "Petah Tikva", "shelter_supply_score": 0.6, "temporal_accessibility_score": 1.0, "saturation_score": 0.048, "saturation_score_conservative": 0.024, "saturation_score_optimistic": 0.072, "mamad_coverage_score": 0.55, "informal_redundancy_score": 0.6, "condition_score": 0.65, "variable_status_condition": "proxy"}, {"subdistrict_code": "32", "subdistrict": "Rehovot", "shelter_supply_score": 1.0, "temporal_accessibility_score": 1.0, "saturation_score": 0.072, "saturation_score_conservative": 0.036, "saturation_score_optimistic": 0.108, "mamad_coverage_score": 0.62, "informal_redundancy_score": 0.55, "condition_score": 0.75, "variable_status_condition": "proxy"}, {"subdistrict_code": "31", "subdistrict": "Ramla", "shelter_supply_score": 0.467, "temporal_accessibility_score": 1.0, "saturation_score": 0.04, "saturation_score_conservative": 0.02, "saturation_score_optimistic": 0.06, "mamad_coverage_score": 0.45, "informal_redundancy_score": 0.4, "condition_score": 0.55, "variable_status_condition": "proxy"}, {"subdistrict_code": "12", "subdistrict": "Haifa", "shelter_supply_score": 0.333, "temporal_accessibility_score": 0.667, "saturation_score": 0.032, "saturation_score_conservative": 0.016, "saturation_score_optimistic": 0.048, "mamad_coverage_score": 0.35, "informal_redundancy_score": 0.55, "condition_score": 0.55, "variable_status_condition": "proxy"}, {"subdistrict_code": "11", "subdistrict": "Hadera", "shelter_supply_score": 0.733, "temporal_accessibility_score": 1.0, "saturation_score": 0.056, "saturation_score_conservative": 0.028, "saturation_score_optimistic": 0.084, "mamad_coverage_score": 0.5, "informal_redundancy_score": 0.32, "condition_score": 0.7, "variable_status_condition": "proxy"}, {"subdistrict_code": "01", "subdistrict": "Jerusalem", "shelter_supply_score": 0.8, "temporal_accessibility_score": 0.667, "saturation_score": 0.06, "saturation_score_conservative": 0.03, "saturation_score_optimistic": 0.09, "mamad_coverage_score": 0.38, "informal_redundancy_score": 0.45, "condition_score": 0.6, "variable_status_condition": "proxy"}, {"subdistrict_code": "51", "subdistrict": "Ashkelon", "shelter_supply_score": 0.2, "temporal_accessibility_score": 0.333, "saturation_score": 0.024, "saturation_score_conservative": 0.012, "saturation_score_optimistic": 0.036, "mamad_coverage_score": 0.46, "informal_redundancy_score": 0.25, "condition_score": 0.4, "variable_status_condition": "proxy"}, {"subdistrict_code": "52", "subdistrict": "Beer Sheva", "shelter_supply_score": 0.533, "temporal_accessibility_score": 0.667, "saturation_score": 0.044, "saturation_score_conservative": 0.022, "saturation_score_optimistic": 0.066, "mamad_coverage_score": 0.4, "informal_redundancy_score": 0.3, "condition_score": 0.6, "variable_status_condition": "proxy"}, {"subdistrict_code": "21", "subdistrict": "Jezreel", "shelter_supply_score": 0.4, "temporal_accessibility_score": 0.333, "saturation_score": 0.036, "saturation_score_conservative": 0.018, "saturation_score_optimistic": 0.054, "mamad_coverage_score": 0.3, "informal_redundancy_score": 0.18, "condition_score": 0.5, "variable_status_condition": "proxy"}, {"subdistrict_code": "22", "subdistrict": "Akko", "shelter_supply_score": 0.267, "temporal_accessibility_score": 0.333, "saturation_score": 0.028, "saturation_score_conservative": 0.014, "saturation_score_optimistic": 0.042, "mamad_coverage_score": 0.22, "informal_redundancy_score": 0.2, "condition_score": 0.45, "variable_status_condition": "proxy"}, {"subdistrict_code": "23", "subdistrict": "Kinneret", "shelter_supply_score": 0.067, "temporal_accessibility_score": 0.167, "saturation_score": 0.016, "saturation_score_conservative": 0.008, "saturation_score_optimistic": 0.024, "mamad_coverage_score": 0.18, "informal_redundancy_score": 0.1, "condition_score": 0.35, "variable_status_condition": "proxy"}, {"subdistrict_code": "24", "subdistrict": "Golan", "shelter_supply_score": 0.0, "temporal_accessibility_score": 0.167, "saturation_score": 0.012, "saturation_score_conservative": 0.006, "saturation_score_optimistic": 0.018, "mamad_coverage_score": 0.1, "informal_redundancy_score": 0.08, "condition_score": 0.3, "variable_status_condition": "proxy"}, {"subdistrict_code": "71", "subdistrict": "Tzfat", "shelter_supply_score": 0.133, "temporal_accessibility_score": 0.167, "saturation_score": 0.02, "saturation_score_conservative": 0.01, "saturation_score_optimistic": 0.03, "mamad_coverage_score": 0.18, "informal_redundancy_score": 0.1, "condition_score": 0.38, "variable_status_condition": "proxy"}, {"subdistrict_code": "72", "subdistrict": "Krayot", "shelter_supply_score": 0.6, "temporal_accessibility_score": 0.333, "saturation_score": 0.048, "saturation_score_conservative": 0.024, "saturation_score_optimistic": 0.072, "mamad_coverage_score": 0.4, "informal_redundancy_score": 0.32, "condition_score": 0.6, "variable_status_condition": "proxy"}], "effective": [{"subdistrict_code": "41", "security_index_nominal": 0.75, "subdistrict": "Tel Aviv", "functional_accessibility_index": 0.606, "fai_category": "Moderate", "effective_security_index": 0.649, "security_overestimation_gap": -0.101, "security_category_nominal": "Secure", "security_category_effective": "Moderate", "reclassification_flag": true}, {"subdistrict_code": "33", "security_index_nominal": 0.6, "subdistrict": "Petah Tikva", "functional_accessibility_index": 0.56, "fai_category": "Moderate", "effective_security_index": 0.572, "security_overestimation_gap": -0.028, "security_category_nominal": "Moderate", "security_category_effective": "Moderate", "reclassification_flag": false}, {"subdistrict_code": "32", "security_index_nominal": 0.82, "subdistrict": "Rehovot", "functional_accessibility_index": 0.664, "fai_category": "Secure", "effective_security_index": 0.711, "security_overestimation_gap": -0.109, "security_category_nominal": "Secure", "security_category_effective": "Secure", "reclassification_flag": false}, {"subdistrict_code": "31", "security_index_nominal": 0.52, "subdistrict": "Ramla", "functional_accessibility_index": 0.496, "fai_category": "Moderate", "effective_security_index": 0.503, "security_overestimation_gap": -0.017, "security_category_nominal": "Moderate", "security_category_effective": "Moderate", "reclassification_flag": false}, {"subdistrict_code": "12", "security_index_nominal": 0.4, "subdistrict": "Haifa", "functional_accessibility_index": 0.376, "fai_category": "Low", "effective_security_index": 0.383, "security_overestimation_gap": -0.017, "security_category_nominal": "Low", "security_category_effective": "Low", "reclassification_flag": false}, {"subdistrict_code": "11", "security_index_nominal": 0.68, "subdistrict": "Hadera", "functional_accessibility_index": 0.572, "fai_category": "Moderate", "effective_security_index": 0.604, "security_overestimation_gap": -0.076, "security_category_nominal": "Secure", "security_category_effective": "Moderate", "reclassification_flag": true}, {"subdistrict_code": "01", "security_index_nominal": 0.72, "subdistrict": "Jerusalem", "functional_accessibility_index": 0.481, "fai_category": "Moderate", "effective_security_index": 0.553, "security_overestimation_gap": -0.167, "security_category_nominal": "Secure", "security_category_effective": "Moderate", "reclassification_flag": true}, {"subdistrict_code": "51", "security_index_nominal": 0.3, "subdistrict": "Ashkelon", "functional_accessibility_index": 0.251, "fai_category": "Low", "effective_security_index": 0.266, "security_overestimation_gap": -0.034, "security_category_nominal": "Low", "security_category_effective": "Low", "reclassification_flag": false}, {"subdistrict_code": "52", "security_index_nominal": 0.58, "subdistrict": "Beer Sheva", "functional_accessibility_index": 0.419, "fai_category": "Low", "effective_security_index": 0.467, "security_overestimation_gap": -0.113, "security_category_nominal": "Moderate", "security_category_effective": "Moderate", "reclassification_flag": false}, {"subdistrict_code": "21", "security_index_nominal": 0.47, "subdistrict": "Jezreel", "functional_accessibility_index": 0.276, "fai_category": "Low", "effective_security_index": 0.334, "security_overestimation_gap": -0.136, "security_category_nominal": "Moderate", "security_category_effective": "Low", "reclassification_flag": true}, {"subdistrict_code": "22", "security_index_nominal": 0.38, "subdistrict": "Akko", "functional_accessibility_index": 0.232, "fai_category": "Critical", "effective_security_index": 0.276, "security_overestimation_gap": -0.104, "security_category_nominal": "Low", "security_category_effective": "Low", "reclassification_flag": false}, {"subdistrict_code": "23", "security_index_nominal": 0.2, "subdistrict": "Kinneret", "functional_accessibility_index": 0.126, "fai_category": "Critical", "effective_security_index": 0.148, "security_overestimation_gap": -0.052, "security_category_nominal": "Critical", "security_category_effective": "Critical", "reclassification_flag": false}, {"subdistrict_code": "24", "security_index_nominal": 0.15, "subdistrict": "Golan", "functional_accessibility_index": 0.094, "fai_category": "Critical", "effective_security_index": 0.111, "security_overestimation_gap": -0.039, "security_category_nominal": "Critical", "security_category_effective": "Critical", "reclassification_flag": false}, {"subdistrict_code": "71", "security_index_nominal": 0.28, "subdistrict": "Tzfat", "functional_accessibility_index": 0.143, "fai_category": "Critical", "effective_security_index": 0.184, "security_overestimation_gap": -0.096, "security_category_nominal": "Low", "security_category_effective": "Critical", "reclassification_flag": true}, {"subdistrict_code": "72", "security_index_nominal": 0.61, "subdistrict": "Krayot", "functional_accessibility_index": 0.351, "fai_category": "Low", "effective_security_index": 0.429, "security_overestimation_gap": -0.181, "security_category_nominal": "Moderate", "security_category_effective": "Low", "reclassification_flag": true}], "displacement": [{"subdistrict_code": "41", "subdistrict": "Tel Aviv", "internal_displacement_pressure_proxy": 0.414}, {"subdistrict_code": "33", "subdistrict": "Petah Tikva", "internal_displacement_pressure_proxy": 0.402}, {"subdistrict_code": "32", "subdistrict": "Rehovot", "internal_displacement_pressure_proxy": 0.357}, {"subdistrict_code": "31", "subdistrict": "Ramla", "internal_displacement_pressure_proxy": 0.441}, {"subdistrict_code": "12", "subdistrict": "Haifa", "internal_displacement_pressure_proxy": 0.497}, {"subdistrict_code": "11", "subdistrict": "Hadera", "internal_displacement_pressure_proxy": 0.408}, {"subdistrict_code": "01", "subdistrict": "Jerusalem", "internal_displacement_pressure_proxy": 0.46}, {"subdistrict_code": "51", "subdistrict": "Ashkelon", "internal_displacement_pressure_proxy": 0.518}, {"subdistrict_code": "52", "subdistrict": "Beer Sheva", "internal_displacement_pressure_proxy": 0.474}, {"subdistrict_code": "21", "subdistrict": "Jezreel", "internal_displacement_pressure_proxy": 0.537}, {"subdistrict_code": "22", "subdistrict": "Akko", "internal_displacement_pressure_proxy": 0.571}, {"subdistrict_code": "23", "subdistrict": "Kinneret", "internal_displacement_pressure_proxy": 0.626}, {"subdistrict_code": "24", "subdistrict": "Golan", "internal_displacement_pressure_proxy": 0.652}, {"subdistrict_code": "71", "subdistrict": "Tzfat", "internal_displacement_pressure_proxy": 0.621}, {"subdistrict_code": "72", "subdistrict": "Krayot", "internal_displacement_pressure_proxy": 0.495}], "weights": {"baseline": {"shelter_supply": 0.2, "temporal_accessibility": 0.25, "saturation": 0.25, "mamad_coverage": 0.15, "condition": 0.1, "informal_redundancy": 0.05}, "temporal_stress": {"shelter_supply": 0.15, "temporal_accessibility": 0.4, "saturation": 0.2, "mamad_coverage": 0.15, "condition": 0.05, "informal_redundancy": 0.05}, "saturation_stress": {"shelter_supply": 0.15, "temporal_accessibility": 0.2, "saturation": 0.4, "mamad_coverage": 0.15, "condition": 0.05, "informal_redundancy": 0.05}, "mamad_dependency": {"shelter_supply": 0.15, "temporal_accessibility": 0.2, "saturation": 0.2, "mamad_coverage": 0.3, "condition": 0.1, "informal_redundancy": 0.05}}, "palette": {"primary": "#2F5D62", "secondary": "#2F5D62", "accent": "#8C2D1F", "warning": "#D9941A", "muted": "#9CA3AF", "grid": "#E5E7EB", "border": "#D1D5DB", "text": "#374151", "background": "#F8F8F6", "white": "#FFFFFF", "fai_critical": "#9A031E", "fai_low": "#D8814A", "fai_moderate": "#D8B365", "fai_secure": "#5C8C7E", "fai_strong": "#2F5D62"}, "badges": {"Critical": "#8C2D1F", "Low": "#B05B3B", "Moderate": "#D9941A", "Secure": "#2F5D62"}};const SCENARIOS = PAYLOAD.weights;const DATA = PAYLOAD.subdistricts.map(function(r){var eff = (PAYLOAD.effective.find(function(e){return e.subdistrict_code===r.subdistrict_code;})) || {};return {name  : r.subdistrict,v1    : (eff.security_index_nominal || 0),sup   : r.shelter_supply_score,temp  : r.temporal_accessibility_score,sat   : r.saturation_score,mamad : r.mamad_coverage_score,cond  : r.condition_score,redun : r.informal_redundancy_score};});var W = {w1:0.25,w2:0.25,w3:0.20,w4:0.15,w5:0.10,w6:0.05};function loadScenario(name){var w = SCENARIOS[name];document.querySelectorAll(".scenario-btn").forEach(function(b){b.classList.toggle("active", b.getAttribute("data-scen")===name);});document.getElementById("w1").value = Math.round(w.saturation*100);document.getElementById("w2").value = Math.round(w.temporal_accessibility*100);document.getElementById("w3").value = Math.round(w.shelter_supply*100);document.getElementById("w4").value = Math.round(w.mamad_coverage*100);document.getElementById("w5").value = Math.round(w.condition*100);document.getElementById("w6").value = Math.round(w.informal_redundancy*100);updateWeights(); renderTable();}function computeFAI(r){return W.w1*r.sat + W.w2*r.temp + W.w3*r.sup + W.w4*r.mamad + W.w5*r.cond + W.w6*r.redun;}function cat(s){if(s>=0.65) return "Secure";if(s>=0.45) return "Moderate";if(s>=0.25) return "Low";return "Critical";}function badgeCls(c){return {Secure:"badge-secure",Moderate:"badge-moderate",Low:"badge-low",Critical:"badge-critical"}[c];}function barColor(v){if(v>=0.65) return "#2F5D62"; if(v>=0.45) return "#D9941A"; if(v>=0.25) return "#B05B3B"; return "#8C2D1F";}function pressureLabel(sat){if(sat < 0.15) return '<span class="pres-label pres-critical">Critical</span>';if(sat < 0.30) return '<span class="pres-label pres-severe">Severe</span>';if(sat < 0.45) return '<span class="pres-label pres-high">High</span>';if(sat < 0.65) return '<span class="pres-label pres-moderate">Moderate</span>';if(sat < 0.80) return '<span class="pres-label pres-low">Low</span>';return '<span class="pres-label pres-optimal">Optimal</span>';}function updateWeights(){["w1","w2","w3","w4","w5","w6"].forEach(function(id){W[id] = parseInt(document.getElementById(id).value)/100;document.getElementById(id+"v").textContent = W[id].toFixed(2);});var t = Object.values(W).reduce(function(a,b){return a+b;},0);var td = document.getElementById("total-display");var tm = document.getElementById("total-msg");td.textContent = t.toFixed(2);var ok = Math.abs(t-1.0)<0.01;td.style.color = ok ? "#2F5D62" : "#8B1E3F";tm.innerHTML  = ok ? "&#10003; valid" : "&#10007; must sum to 1.00";tm.style.color = ok ? "#5C8C7E" : "#8B1E3F";document.getElementById("btn-calc").disabled = !ok;}function recalculate(){renderTable(); switchTab("table");}function renderTable(){var sorted = DATA.map(function(r){return Object.assign({},r,{fai:computeFAI(r)});}).sort(function(a,b){return b.fai-a.fai;});document.getElementById("table-body").innerHTML = sorted.map(function(r,i){var d    = r.fai - r.v1;var dPP  = (d*100).toFixed(1);var dStr = d > 0.005? '<span class="delta-up">+' + dPP + ' pp</span>': (d < -0.005? '<span class="delta-down">' + dPP + ' pp</span>': '<span class="delta-same">&mdash;</span>');var c    = cat(r.fai);var barW = (r.fai*100).toFixed(0);return "<tr>"+"<td>"+(i+1)+"</td>"+"<td>"+r.name+"</td>"+"<td>"+(r.v1*100).toFixed(1)+"%</td>"+"<td><strong>"+(r.fai*100).toFixed(1)+"%</strong><div class='bar-bg'><div class='bar-fill' style='width:"+barW+"%;background:"+barColor(r.fai)+"'></div></div></td>"+"<td>"+dStr+"</td>"+"<td>"+pressureLabel(r.sat)+"</td>"+"<td>"+(r.temp*100).toFixed(0)+"%</td>"+"<td>"+(r.sup*100).toFixed(0)+"%</td>"+"<td>"+(r.mamad*100).toFixed(0)+"%</td>"+"<td>"+(r.cond*100).toFixed(0)+"%</td>"+"<td>"+(r.redun*100).toFixed(0)+"%</td>"+"<td><span class='badge "+badgeCls(c)+"'>"+c+"</span></td>"+"</tr>";}).join("");}function switchTab(name){["weights","table","sources","glossary","notes"].forEach(function(n){document.getElementById("panel-"+n).classList.toggle("active", n===name);});document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("active", t.getAttribute("data-tab")===name);});}function toggleCard(el){var detail = el.nextElementSibling;var open   = detail.style.display === "block";detail.style.display = open ? "none" : "block";el.innerHTML = (open ? "&#9656;" : "&#9662;") + el.innerHTML.slice(1);}loadScenario("baseline");</script><footer class="project-footer"><div class="footer-signature"><div class="footer-block"><span class="footer-block-label">Author</span><span class="footer-name">Nathaly Badra</span><span class="footer-role">Urban Data Analyst &mdash; Urban Economics &amp; Public Policy</span></div><div class="footer-block"><span class="footer-block-label">Portfolio</span><div class="footer-icon-row"><svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 3.5C1 2.95 1.45 2.5 2 2.5H5.2L6.3 1H2C1.17 1 0.5 1.67 0.5 2.5V8.5C0.5 9.33 1.17 10 2 10H11C11.83 10 12.5 9.33 12.5 8.5V4C12.5 3.17 11.83 2.5 11 2.5H7L5.9 3.5H11C11.28 3.5 11.5 3.72 11.5 4V8.5C11.5 8.78 11.28 9 11 9H2C1.72 9 1.5 8.78 1.5 8.5V3.5H1Z" fill="#5AAFAA"/></svg><span>Urban data, mobility, and territorial resilience</span></div></div><div class="footer-block"><span class="footer-block-label">Web</span><div class="footer-icon-row"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6.5" cy="6.5" r="5.5" stroke="#5AAFAA" stroke-width="1.2"/><path d="M6.5 1C5.2 2.8 4.5 4.6 4.5 6.5C4.5 8.4 5.2 10.2 6.5 12" stroke="#5AAFAA" stroke-width="1" fill="none"/><path d="M6.5 1C7.8 2.8 8.5 4.6 8.5 6.5C8.5 8.4 7.8 10.2 6.5 12" stroke="#5AAFAA" stroke-width="1" fill="none"/><line x1="1" y1="6.5" x2="12" y2="6.5" stroke="#5AAFAA" stroke-width="1"/></svg><a href="https://nbadra.com" target="_blank" rel="noopener" class="footer-link">https://nbadra.com</a></div></div></div></footer>
+<style id="tf-embed-chrome-suppression">
+/* RECO-LAB embed mode: hide product-level chrome that duplicates the index shell.
+   Appended by the RECO-LAB integration build. No analytical content is altered:
+   no data, no weights, no formulas, no tables, no charts are touched. */
+.project-header,.satellite-bridge,.project-footer,footer.project-footer{display:none!important;}
+html,body{margin:0!important;padding:0!important;background:transparent!important;}
+body>.header:first-of-type,body>.header{margin-top:0!important;}
+</style>
+<style id="rl-fai-embedpad">html[data-embed="1"] body{padding:20px 22px 24px!important;}html[data-embed="1"] .header{margin-top:0!important;}html[data-embed="1"] .project-header,html[data-embed="1"] .satellite-bridge,html[data-embed="1"] .project-footer{display:none!important;}</style>
+<style id="rl-fai-tablefit">
+/* ══════════════════════════════════════════════════════════════════
+   RECO-LAB · FAI · comparative table · fit pass
+   The headings were set in mono, uppercase, at 0.07em tracking, on a
+   twelve-column fixed layout. Two of them ("accessibility gap" and
+   "alert accessibility") measured wider than the share of the row they
+   were given, so the label ran under its neighbour. The fix is the one
+   the instrument allows: shorten the headings to their term, set them
+   in the sans face at the same optical size, and redistribute the
+   columns so no critical column is starved. The table stays inside the
+   panel on desktop and notebook; the card layout below 760px is where
+   the horizontal scroll belongs, and it is unchanged.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* -- typography ---------------------------------------------------- */
+#panel-table table{table-layout:fixed;width:100%;font-size:11.5px;}
+#panel-table th{
+  font-family:var(--fx-sans,'IBM Plex Sans',Helvetica,Arial,sans-serif);
+  font-size:11px;line-height:1.3;font-weight:600;
+  letter-spacing:.045em;text-transform:uppercase;
+  text-align:center;vertical-align:middle;
+  padding:11px 7px;
+  white-space:normal;overflow-wrap:normal;word-break:normal;hyphens:none;
+}
+#panel-table td{font-size:11.5px;line-height:1.32;padding:8px 7px;vertical-align:middle;}
+#panel-table td:nth-child(1){font-size:11px;}
+#panel-table td:nth-child(4) strong{font-size:11.5px;font-weight:600;}
+
+/* -- column shares · sum 100 --------------------------------------
+   Measured, not guessed: the four columns whose heading is a single
+   unbreakable word (gap, alert, miklat, condition) set their own floor,
+   and the two chip columns carry the same share so a chip is the same
+   width in either of them, in either language. */
+#panel-table th:nth-child(1),#panel-table td:nth-child(1){width:3%;}
+#panel-table th:nth-child(2),#panel-table td:nth-child(2){width:12.5%;}
+#panel-table th:nth-child(3),#panel-table td:nth-child(3){width:8.5%;}
+#panel-table th:nth-child(4),#panel-table td:nth-child(4){width:11.5%;}
+#panel-table th:nth-child(5),#panel-table td:nth-child(5){width:6%;}
+#panel-table th:nth-child(6),#panel-table td:nth-child(6){width:12%;}
+#panel-table th:nth-child(7),#panel-table td:nth-child(7){width:6%;}
+#panel-table th:nth-child(8),#panel-table td:nth-child(8){width:6%;}
+#panel-table th:nth-child(9),#panel-table td:nth-child(9){width:6%;}
+#panel-table th:nth-child(10),#panel-table td:nth-child(10){width:8.5%;}
+#panel-table th:nth-child(11),#panel-table td:nth-child(11){width:8%;}
+#panel-table th:nth-child(12),#panel-table td:nth-child(12){width:12%;}
+
+/* -- chips · the two chip columns carry the same share, so a chip that
+      fills its column is the same width in either column and in either
+      language, at any viewport, without a hard pixel width that could
+      overflow the cell. --------------------------------------------- */
+#panel-table td:nth-child(6) .pres-label,
+#panel-table td:nth-child(12) .badge{
+  display:inline-block;box-sizing:border-box;
+  width:100%;max-width:112px;min-width:0;
+  padding:4px 6px;text-align:center;
+  font-size:11px;line-height:1.3;letter-spacing:.02em;
+  white-space:nowrap;
+}
+
+/* -- the panel holds the table; no slider on desktop or notebook ---- */
+.table-wrap{overflow-x:visible;}
+#panel-table table{min-width:0;max-width:100%;}
+
+/* -- tablet · same table, one step down in the heading scale -------- */
+@media (max-width:1080px){
+  #panel-table th{font-size:11px;letter-spacing:.01em;padding:10px 4px;}
+  #panel-table td{padding:8px 4px;}
+}
+
+/* -- narrow tablet · the only band where the table may slide, and it
+      is below every notebook width the build supports --------------- */
+@media (max-width:880px){
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  #panel-table table{min-width:880px;}
+}
+
+/* -- mobile · the card layout owns this width, chips go fluid ------- */
+@media (max-width:760px){
+  .table-wrap{overflow-x:visible;}
+  #panel-table table{min-width:0;}
+  #panel-table td:nth-child(6) .pres-label,
+  #panel-table td:nth-child(12) .badge{width:auto;max-width:none;white-space:normal;}
+  #panel-table td{font-size:12px;}
+}
+
+/* -- the note under the table · a note is still meant to be read.
+      #9CA3AF at 11px sits under this build's contrast floor. --------- */
+.footnote{color:#5A6672;font-size:11.5px;line-height:1.7;}
+.footnote b{color:#24484C;font-weight:600;}
+
+/* -- glossary grid · one breakpoint in both languages --------------- */
+@media (max-width:820px){
+  .g-grid{grid-template-columns:1fr;}
+  .g-card-full{grid-column:auto;}
+}
+</style>
+</body></html>

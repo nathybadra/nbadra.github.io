@@ -1,0 +1,1840 @@
+/* ══════════════════════════════════════════════════════════════════
+   RECO-LAB · unify-final-2026-08.css
+   Capa final de unificación · agosto 2026
+
+   Se carga SIEMPRE en último lugar, después de shell-unified. No
+   reemplaza ninguna hoja anterior: sólo cierra las diferencias que
+   quedaban entre la home, Project 01, Project 02 y Métodos.
+
+   Orden de las hojas en las cuatro páginas:
+     system-2.9 → v3-reco-lab → shell-2026-08 → corrections-2026-08
+     → global-current (sólo home) → shell-unified-2026-08 → ESTA
+
+   Nada aquí baja el cuerpo tipográfico para hacer entrar contenido:
+   todo se resuelve con layout, ancho máximo, altura, grilla,
+   interlineado y breakpoints.
+   ══════════════════════════════════════════════════════════════════ */
+
+
+/* ══ 0 · MEDIDA ÚNICA DEL SITIO ═══════════════════════════════════
+   Un solo contenedor para las cuatro páginas. La home usa .row, el
+   shell usa .rlx-row, Métodos usa .rl-shell-row y las páginas de
+   proyecto usan .wrap: los cuatro son el mismo contenedor y hasta
+   ahora daban 1184px útiles sobre 1351 disponibles, con 84px muertos
+   a cada lado.
+
+   La medida sube a 1360px de caja con un margen lateral proporcional,
+   de modo que el ancho útil queda en ~1286px a 1366 y ~1291px a 1440:
+   el contenido respira hasta un margen consistente y no cambia de
+   ancho entre los dos tamaños de escritorio. */
+:root{
+  --rl-measure:1360px;
+  --rl-gutter:clamp(22px,2.4vw,40px);
+}
+
+.row,
+.rlx-row,
+.rl-shell-row,
+.wrap{
+  width:100%;
+  max-width:var(--rl-measure);
+  margin-inline:auto;
+  padding-inline:var(--rl-gutter);
+  box-sizing:border-box;
+}
+
+
+/* ══ 1 · HEADER ═══════════════════════════════════════════════════
+   Las seis opciones centrales quedaban pegadas al wordmark: su centro
+   óptico caía en 470px sobre una página de 1440, es decir 250px a la
+   izquierda del centro real. La barra corría además a ancho completo,
+   así que el wordmark caía 48px por fuera del borde del contenido.
+
+   La fila vuelve al contenedor del sitio y la grilla pasa a ser
+   simétrica: dos columnas laterales de 1fr y una central automática.
+   El nav queda centrado sobre el eje de la página por construcción,
+   sin salir del flujo, de modo que nunca puede solaparse con los
+   controles de la derecha. */
+.rlx-hdr .rlx-hdr-row{
+  max-width:var(--rl-measure);
+  padding-inline:var(--rl-gutter);
+}
+
+@media (min-width:901px){
+  .rlx-hdr-row{
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+    gap:16px;
+  }
+  .rlx-hdr-row > .rlx-wordmark{justify-self:start;}
+  .rlx-hdr-row > .rlx-nav{justify-self:center;padding-left:0;}
+  .rlx-hdr-row > .rlx-end{justify-self:end;}
+}
+
+.rlx-nav{padding-left:0;gap:16px;}
+
+/* Los controles ceden unos pocos píxeles de padding para que la
+   columna derecha entre en su mitad de la grilla simétrica. La
+   tipografía no cambia. */
+@media (min-width:901px){
+  .rlx-end{gap:10px;}
+  .rlx-mood button{padding:0 9px;}
+  .rlx-lang button{padding:0 10px;}
+  .rlx-contact{padding:0 14px;}
+}
+
+
+/* ══ 1b · PUENTE DE TOKENS DE ACENTO ══════════════════════════════
+   --accent y --accent-700 se declaran en global-current.css, que sólo
+   carga la home. Las tres páginas de proyecto cargan esta hoja sin
+   aquella, así que cada `color:var(--accent)` quedaba sin valor y la
+   propiedad se resolvía por herencia: por eso "RECO-LAB" perdía su
+   azul y quedaba blanco al entrar a un proyecto, y el numeral de cada
+   sección perdía su acento.
+
+   Los valores son exactamente los tres pasos ya aprobados de la home,
+   uno por modo, así que la home no cambia de color en ningún píxel:
+   sólo dejan de faltar donde faltaban. */
+:root{
+  --accent:#5980a6;
+  --accent-700:#416180;
+  --accent-panel:#8fb2d4;
+  --teal:#4fb3a5;
+}
+html[data-theme="dark"]{
+  --accent:#7ea6cc;
+  --accent-700:#a9c6e0;
+  --accent-panel:#7ea6cc;
+}
+html[data-theme="night"]{
+  --accent:#6d93b8;
+  --accent-700:#93b3d1;
+  --accent-panel:#6d93b8;
+  --teal:#3f9d91;
+}
+
+
+/* ══ 2 · HERO · una sola composición ══════════════════════════════
+   "RECO-LAB" se partía en dos líneas de cuerpos distintos: RECO a
+   74px y -LAB a 43px en una segunda línea, porque el <em> heredaba
+   display:block y un font-size propio. Vuelve a ser una palabra. */
+.hero h1{
+  white-space:nowrap;
+  margin-bottom:var(--space-4);
+}
+.hero h1 em{
+  display:inline !important;
+  font-size:inherit !important;
+  line-height:inherit !important;
+  font-weight:inherit;
+  letter-spacing:inherit;
+  font-style:normal;
+  /* Mismo azul primario del header y del pie. Ningún azul nuevo. */
+  color:var(--accent);
+}
+
+/* Menos aire muerto arriba: el hero abría con 56px de padding propio
+   más 25px de la grilla más 56px de centrado vertical, o sea 138px de
+   vacío entre la barra y la primera línea. La sección abre pegada al
+   header y la grilla alinea por arriba, que es donde vive la lectura. */
+.hero{padding-top:clamp(14px,1.8vh,26px);}
+.hero-grid{
+  padding-top:clamp(10px,1.4vh,20px);
+  padding-bottom:clamp(30px,4.2vh,52px);
+  /* La columna de texto pesa un poco más que la del globo: es la que
+     tiene que sostener los cinco campos en una sola línea sin bajar
+     el cuerpo tipográfico. */
+  grid-template-columns:minmax(0,1.06fr) minmax(0,0.94fr);
+  align-items:center;
+}
+
+/* El globo gana presencia y queda centrado en su mitad, sin sangrar
+   ni desbalancear la columna de texto: su alto ya no arrastra el
+   centrado vertical de la columna de lectura. */
+.hero-globe{max-width:520px;margin-inline:auto;}
+.globe-figure{margin-inline:auto;width:100%;}
+reco-globe{max-height:none;width:100%;}
+
+/* Los cinco campos son la firma del laboratorio, no una leyenda:
+   subían y bajaban con el viewport hasta 12,4px para entrar en una
+   línea. Con la columna más ancha entran a cuerpo de lectura. */
+.hero-fields{font-size:clamp(13px,1.03vw,14.2px);}
+
+/* Alcance territorial: debajo del globo y los cuatro territorios en
+   una sola línea, sin envolver, en desktop y notebook. */
+.hero-strip{margin-top:clamp(14px,2vh,22px);}
+.hero-scope{
+  display:flex;flex-wrap:nowrap;align-items:baseline;
+  gap:clamp(10px,1.4vw,20px);
+  overflow:visible;
+}
+.hero-scope li{white-space:nowrap;flex:0 0 auto;}
+@media (max-width:520px){
+  .hero-scope{flex-wrap:wrap;}
+}
+
+/* Los cinco campos, una sola línea en escritorio y notebook. */
+@media (min-width:1024px){
+  .hero-fields{white-space:nowrap;}
+}
+
+
+/* ══ 3 · ANCHO DE CONTENIDO ═══════════════════════════════════════
+   Criterio único, el que ya funcionaba en Project 02: la medida de
+   lectura es amplia y no queda a media página cuando el contenedor
+   permite más. */
+.section-inner,
+.line-detail,
+.phases,
+.frame-block,
+.limits-block,
+.progression{min-width:0;}
+
+.lede,
+.line-panel-lede,
+.phase-body p,
+.frame-block p,
+.progression p,
+.about-body p,
+.work-panel p,
+.systems-foot p{max-width:88ch;}
+
+.hero-lead{max-width:46ch;}
+.hero-close{max-width:56ch;}
+
+/* Título arriba, bajada debajo. Nunca en la misma línea. */
+.about-grid{
+  display:block;
+}
+.about-grid .about-aside{margin-bottom:var(--space-5);}
+.about-grid .about-aside .h2{max-width:26ch;}
+.about-grid .about-body{max-width:88ch;}
+
+
+/* ══ 4 · ESQUINAS ═════════════════════════════════════════════════
+   Ninguna caja con esquina puntiaguda. Las islas de papel ya tenían
+   radio, pero sólo recortaban su contenido en oscuro y noche: en modo
+   claro la barra de título cuadrada asomaba por las esquinas del
+   contenedor redondeado. El recorte pasa a ser incondicional. */
+.rl-embed,
+.rl-matrix,
+.rl-table-wrap,
+.cluster-viz,
+.rl-fig-plot,
+.rl-fig-duo,
+.rl-fig-block,
+.rl-pair-frame,
+.rl-card-media--contain,
+.rl-card-media--live{
+  border-radius:var(--r-card,14px);
+  overflow:hidden;
+}
+
+.rl-mod,
+.rl-pair-col,
+.rl-fig-panel,
+.rl-technote,
+.rl-fai-intro,
+.rl-fai-left,
+.rl-fai-dim,
+.rl-scenarios,
+.rl-reading,
+.rl-read,
+.ivub-callout,
+.findings .finding,
+.cv-col,
+.rl-regime,
+.rl-ax,
+.rl-method,
+.rl-method-head,
+.rl-method-mod,
+.methods-meta > div,
+.layer-defs .layer-def,
+.status-line,
+.line-panel,
+.work-panel,
+.found,
+.mod,
+.project,
+.hero-strip{
+  border-radius:var(--r-card,14px);
+}
+
+.rl-method{overflow:hidden;}
+.rl-method-head{border-radius:var(--r-card,14px) var(--r-card,14px) 0 0;}
+.rl-method.is-open .rl-method-head{border-radius:var(--r-card,14px) var(--r-card,14px) 0 0;}
+
+/* Cabecera y cuerpo de un embed viven dentro de un contenedor ya
+   recortado, pero cuando se muestran solos conservan su propio radio. */
+.rl-embed-head{border-radius:var(--r-card,14px) var(--r-card,14px) 0 0;}
+.rl-embed-body{border-radius:0 0 var(--r-card,14px) var(--r-card,14px);}
+
+/* Tablas dentro de la isla: las celdas de encabezado no deben cortar
+   la esquina del contenedor. */
+.rl-table-wrap table{border-collapse:separate;border-spacing:0;}
+
+
+/* ══ 5 · UPI · ejes dentro de la tarjeta ══════════════════════════
+   La barra de 4px de cada eje se dibujaba con ::before en left:0 sin
+   recorte, así que salía por las esquinas redondeadas de la tarjeta.
+   Y el padding lateral de la capa de correcciones (24px) pisaba el
+   padding-left de 30px que reservaba el sitio de la barra. */
+.rl-ax{
+  position:relative;
+  overflow:hidden;
+  padding:20px 24px 20px 30px;
+}
+.rl-ax::before{
+  left:0;top:0;bottom:0;width:4px;
+  border-radius:0;
+}
+.rl-ax b,
+.rl-ax p{max-width:100%;overflow-wrap:anywhere;}
+
+/* Las dos leyendas viven dentro de .rl-matrix, que no tenía respiro
+   lateral: quedaban tocando el canto de la isla. */
+/* La capa de shell fija `padding:0 14px` sólo en oscuro y noche, con
+   una especificidad mayor: el mismo respiro se declara aquí para los
+   tres modos, de modo que la matriz se ve igual en claro. */
+html[data-theme] body.rlx-project .rl-axhelp,
+html[data-theme] body.rlx-project .rl-regimes,
+.rl-axhelp,
+.rl-regimes{
+  padding-inline:clamp(18px,1.8vw,26px);
+}
+html[data-theme] body.rlx-project .rl-regimes,
+.rl-regimes{padding-bottom:clamp(18px,1.8vw,26px);}
+html[data-theme] body.rlx-project .rl-matrix-foot,
+.rl-matrix-foot{padding-inline:clamp(18px,1.8vw,26px);}
+
+
+/* ══ 6 · EMBEDS · nada cortado ════════════════════════════════════
+   Título, leyenda y pie tienen que entrar dentro del contenedor. El
+   explorador FAI se pinchaba en la altura declarada y perdía su
+   última pestaña. */
+.rl-embed-body{min-height:420px;}
+.rl-embed-body iframe{display:block;width:100%;height:100%;border:0;}
+
+body.rlx-project .rl-embed-body.h-1040{
+  height:1180px;min-height:980px;
+}
+@media (max-width:1400px){
+  body.rlx-project .rl-embed-body.h-1040{height:1120px;min-height:940px;}
+}
+@media (max-width:900px){
+  body.rlx-project .rl-embed-body.h-1040{height:1020px;min-height:860px;}
+}
+
+/* El mapa no puede quedar cortado entre el título y la leyenda: el
+   alto ligado al viewport dejaba el pie del output fuera del marco. */
+.rl-embed-body.h-map{
+  height:clamp(560px, calc(100vh - var(--rl-hdr-h,65px) - 140px), 820px);
+}
+@media (max-width:900px){
+  .rl-embed-body.h-map{height:600px;}
+}
+
+.rl-embed-body.h-760{min-height:640px;}
+.rl-embed-body.h-900{min-height:760px;}
+
+
+/* ══ 7 · MOOD · nada invisible, nada blanco fuera de lugar ════════
+   Las islas de papel (embed, matriz, plot, tabla) siguen siendo
+   documentos claros en los tres modos: es una decisión previa y se
+   respeta. Todo lo que NO es figura analítica pasa a los tokens del
+   modo activo. */
+html[data-theme="dark"] :is(.rl-reading,.rl-read,.rl-scenarios,.rl-technote,.rl-fai-intro,.rl-mod,.ivub-callout,.methods-meta > div,.layer-defs .layer-def,.status-line),
+html[data-theme="night"] :is(.rl-reading,.rl-read,.rl-scenarios,.rl-technote,.rl-fai-intro,.rl-mod,.ivub-callout,.methods-meta > div,.layer-defs .layer-def,.status-line){
+  background:var(--surface);
+  color:var(--ink);
+  border-color:var(--rule-strong);
+}
+
+/* Ninguna leyenda, dato ni pie puede perderse al cambiar de modo. */
+html[data-theme="dark"] :is(.rl-matrix-foot .src,.rl-fig-foot,.rl-embed-head .t,.methods-meta .v,.methods-meta .k),
+html[data-theme="night"] :is(.rl-matrix-foot .src,.rl-fig-foot,.rl-embed-head .t,.methods-meta .v,.methods-meta .k){
+  color:inherit;
+}
+html[data-theme="dark"] .methods-meta .v,
+html[data-theme="night"] .methods-meta .v{color:#ffffff;}
+html[data-theme="dark"] .methods-meta .k,
+html[data-theme="night"] .methods-meta .k{color:rgba(255,255,255,0.66);}
+
+/* La franja de estados (Disponible · Parcial · Limitada · Derivada ·
+   Proxy) quedaba como texto claro sobre fondo claro en noche. */
+html[data-theme="dark"] .status-line span,
+html[data-theme="night"] .status-line span{
+  background:rgba(255,255,255,0.06);
+  border-color:rgba(255,255,255,0.16);
+  color:var(--ink);
+}
+
+
+/* ══ 7b · PLACA NAVY DE SISTEMAS · TINTA FIJADA ═══════════════════
+   Medido en los tres modos con las transiciones desactivadas, para
+   no leer un color a mitad de camino.
+
+   "Sistemas analíticos" es una placa navy en los tres modos por
+   diseño (#1d2d3d en claro, #050a10 en noche): su fondo no sigue al
+   modo, pero su tinta sí lo hacía. En modo Claro la sigla del marco
+   (IVUB) y las bajadas de los cuatro módulos caían en tinta casi
+   negra sobre la placa navy, 1,90:1. La placa mantiene su navy y su
+   tinta queda fijada con ella.
+
+   Las tarjetas de "Líneas de investigación", en cambio, sí cambian
+   de fondo con el modo y no necesitan fijación: se dejan como
+   estaban. */
+.systems .found .code-tag,
+.systems .mod .code-tag,
+.systems .found-eyebrow,
+.systems .mod-eyebrow{color:rgba(233,238,242,0.88);}
+.systems .found h3,
+.systems .mod h4,
+.systems .found p,
+.systems .mod p{color:#e9eef2;}
+
+/* El botón del marco IVUB vive sobre la placa navy: en modo Claro
+   quedaba navy sobre navy. Se invierte sobre la placa, en los tres
+   modos, sin introducir ningún color nuevo. */
+.systems .found .btn-primary{
+  background:#e9eef2;color:#0f1c26;border-color:#e9eef2;
+}
+.systems .found .btn-primary:hover,
+.systems .found .btn-primary:focus-visible{
+  background:var(--accent);border-color:var(--accent);color:#0f1c26;
+}
+
+/* La llamada del panel de línea se pintaba en un azul claro sobre
+   papel blanco. Vuelve al azul primario, en su paso oscuro para
+   modo Claro: es el mismo azul, no otro. */
+.line-cta{color:var(--accent-700,#3f6488);}
+html[data-theme="dark"] .line-cta,
+html[data-theme="night"] .line-cta{color:#93b3d1;}
+
+/* Las etiquetas de módulo de cada línea de investigación llevaban el
+   acento de su propia línea como tinta de texto sobre 11,25px: entre
+   2,52:1 y 4,39:1 según la línea y el modo. El acento sigue marcando
+   la tarjeta por su canto y su número; la etiqueta vuelve a tinta
+   secundaria legible. */
+.lines-grid .line .line-tag,
+.lines-grid .line .line-tag *{color:var(--muted);}
+
+/* El botón secundario del hero quedaba en tinta clara sobre el
+   fondo claro del hero: 1,15:1, invisible en modo Claro. */
+.hero .btn-secondary{color:var(--ink);border-color:var(--ink);}
+html[data-theme="dark"] .hero .btn-secondary,
+html[data-theme="night"] .hero .btn-secondary{
+  color:#e9eef2;border-color:rgba(233,238,242,0.55);
+}
+
+
+/* ══ 8 · SIN MOSTAZA, SIN FLECHAS DECORATIVAS ═════════════════════
+   El mostaza (--gold #c8901f) no vuelve a títulos ni a etiquetas
+   generales. Donde marcaba una fase o un módulo, se reemplaza por la
+   terra institucional. */
+.rl-mx-phase[style*="#c8901f"],
+.phase[style*="#c8901f"]{--phase:#a2705a !important;}
+
+.rl-sec-eyebrow .num,
+.rl-sec-title,
+.eyebrow,
+.rl-mp-secnum,
+.rl-reading-eyebrow,
+.rl-mod-eyebrow{color:inherit;}
+
+/* Flechas decorativas: no aportan información y competían con el
+   propio texto de la acción. */
+.rl-method-toggle .arr,
+.rl-method-mod > summary .arr,
+.rl-pager-btn::before,
+.rl-pager-btn::after,
+.rl-dash-cta::after,
+.rl-pair-cta::after,
+.line-cta::after,
+.mod-link::after,
+.rl-mx-prog-chain i{
+  display:none !important;
+  content:none !important;
+}
+
+/* El indicador de abierto/cerrado del acordeón se resuelve con el
+   signo +/- que el sistema ya tenía, no con una flecha. */
+.phase > summary .pm,
+.rl-mx-phase > summary .rl-mx-pm{display:inline-block;}
+
+
+/* ══ 9 · MÉTODOS ══════════════════════════════════════════════════
+   Los cuatro datos de gobierno de la página dejan de ser bloques
+   fríos y pasan a tarjetas pequeñas premium. */
+.methods-meta,
+.rl-mx-meta,
+.rl-mp-meta{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:clamp(12px,1.2vw,16px);
+  background:transparent;border:0;padding:0;
+}
+.methods-meta > div,
+.rl-mx-meta > div,
+.rl-mp-meta > div{
+  display:flex;flex-direction:column;gap:7px;
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-radius:var(--r-card,14px);
+  padding:16px 18px;
+  box-shadow:0 20px 40px -34px rgba(14,20,24,0.30);
+}
+.methods-meta > div .k,
+.rl-mx-meta > div .k,
+.rl-mp-meta > div .k{
+  font-size:12.4px;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--muted);
+}
+.methods-meta > div .v,
+.rl-mx-meta > div .v,
+.rl-mp-meta > div .v{
+  font-size:15px;line-height:1.55;color:var(--ink);
+}
+html[data-theme="dark"] :is(.methods-meta,.rl-mx-meta,.rl-mp-meta) > div,
+html[data-theme="night"] :is(.methods-meta,.rl-mx-meta,.rl-mp-meta) > div{
+  background:rgba(255,255,255,0.045);
+  border-color:rgba(255,255,255,0.15);
+  box-shadow:0 22px 44px -34px rgba(0,0,0,0.7);
+}
+
+/* El marco analítico progresivo, por cápsulas interconectadas y no
+   como una única barra distribuida. */
+.progression-chain,
+.rl-mx-prog-chain{
+  display:flex;flex-wrap:wrap;align-items:stretch;
+  gap:10px;
+  background:transparent;border:0;padding:0;
+}
+.progression-chain > span,
+.rl-mx-prog-chain > span{
+  position:relative;
+  display:inline-flex;align-items:center;
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-radius:999px;
+  padding:10px 18px;
+  font-size:13.5px;line-height:1.4;color:var(--ink);
+  border-left:0;
+}
+/* El vínculo entre cápsulas se dibuja, no se escribe: un hairline
+   corto que las encadena sin volver a introducir una flecha. */
+.progression-chain > span + span::before,
+.rl-mx-prog-chain > span + span::before{
+  content:"";position:absolute;left:-11px;top:50%;
+  width:11px;height:1px;background:var(--rule-strong);
+}
+html[data-theme="dark"] :is(.progression-chain,.rl-mx-prog-chain) > span,
+html[data-theme="night"] :is(.progression-chain,.rl-mx-prog-chain) > span{
+  background:rgba(255,255,255,0.05);
+  border-color:rgba(255,255,255,0.16);
+  color:var(--ink);
+}
+
+/* Acordeones de método cerrados por defecto y sin grilla de botones
+   que duplique lo que el propio acordeón ya lista. */
+.phase-map{display:none;}
+
+.phase > summary,
+.rl-mx-phase > summary{cursor:pointer;border-radius:var(--r-card,14px);}
+.phase[open] > summary,
+.rl-mx-phase[open] > summary{border-radius:var(--r-card,14px) var(--r-card,14px) 0 0;}
+.phase,
+.rl-mx-phase{border-radius:var(--r-card,14px);overflow:hidden;}
+
+
+/* ══ 10 · PROJECT 01 · unificado con Project 02 ═══════════════════
+   Misma familia tipográfica, mismos cuerpos, misma alineación y los
+   mismos contenedores que Project 02.
+
+   La barra institucional tornasolada del callout vuelve: es la firma
+   del proyecto y había quedado reemplazada por un azul plano ajeno a
+   la identidad. Se reconstruye con los tres tonos del sistema
+   (navy → azul primario → teal → terra), no con un azul nuevo. */
+.ivub-callout{
+  position:relative;
+  overflow:hidden;
+  padding-left:clamp(22px,2.2vw,30px);
+}
+.ivub-callout::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
+  background:linear-gradient(
+    180deg,
+    #1d2d3d 0%,
+    var(--accent,#5980a6) 34%,
+    var(--teal-deep,#2F5D62) 68%,
+    var(--terra-deep,#B05B3B) 100%
+  );
+}
+
+#project-1 .rl-sec-title,
+#project-2 .rl-sec-title{font-size:clamp(21px,1.7vw,26px);line-height:1.28;}
+#project-1 .rl-sec-desc,
+#project-2 .rl-sec-desc{max-width:88ch;}
+#project-1 .proj-narrative p,
+#project-2 .proj-narrative p{max-width:88ch;}
+
+
+/* ══ 11 · TIPOGRAFÍA ══════════════════════════════════════════════
+   Se respeta la tipografía del shell. Ningún cuerpo baja para hacer
+   entrar contenido: los ajustes viven en el layout. */
+.rl-sec-eyebrow,
+.rl-mp-secnum,
+.eyebrow{letter-spacing:0.14em;}
+
+/* Ninguna etiqueta general en mostaza. */
+.chip,
+.code-tag,
+.state-tag,
+.rl-chip{color:var(--ink);}
+
+
+/* ══ 10b · LEGIBILIDAD DE PIES, FUENTES Y ETIQUETAS ═══════════════
+   Medido sobre las tres páginas y los tres modos: las líneas de
+   fuente y las bajadas de figura se pintaban con --muted-2, que da
+   2,81:1 en claro y 4,12:1 en noche sobre 11,5–12px. Son contenido
+   (de dónde sale el dato), no decoración, así que suben a la tinta
+   secundaria plena. Ningún cuerpo cambia. */
+.rl-fig-src,
+.rl-fig-sub,
+.rl-fig-foot .src,
+.rl-matrix-foot .src,
+.rl-embed-foot,
+.rl-sec-desc,
+.rl-fig-eyebrow,
+.rl-fig-head .k{color:var(--muted);}
+
+/* El ojo de cada sección de proyecto ("Mapa territorial", "Dashboard
+   IVUB macro") es el índice de lectura de la página: 2,81:1 sobre
+   11,5px lo dejaba por debajo del piso legible en claro. */
+.rl-sec-eyebrow{color:var(--muted);}
+.rl-sec-eyebrow .num{color:var(--accent);}
+html[data-theme="dark"] .rl-sec-eyebrow,
+html[data-theme="night"] .rl-sec-eyebrow{color:rgba(233,239,244,0.80);}
+
+/* Bloque de cierre de Métodos: las dos tarjetas "Continuar" tenían
+   la etiqueta a 2,88:1 y la bajada a 4,40:1 sobre 11–14px. */
+.rl-mp-next{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:clamp(14px,1.4vw,20px);
+  /* El contenedor es sólo grilla: la superficie la llevan las dos
+     tarjetas, no la caja que las ordena. */
+  background:transparent;border:0;padding:0;
+}
+.rl-mp-next > div{
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-radius:var(--r-card,14px);
+  padding:20px 22px;
+}
+.rl-mp-next .k{color:var(--muted);}
+.rl-mp-next p{color:var(--muted);}
+html[data-theme="dark"] .rl-mp-next > div,
+html[data-theme="night"] .rl-mp-next > div{
+  background:rgba(255,255,255,0.045);
+  border-color:rgba(255,255,255,0.15);
+}
+html[data-theme="dark"] :is(.rl-mp-next .k,.rl-mp-next p),
+html[data-theme="night"] :is(.rl-mp-next .k,.rl-mp-next p){
+  color:rgba(233,239,244,0.80);
+}
+
+/* Las etiquetas de banda del ranking IVUB llevaban el color de su
+   propia banda como tinta de texto: 2,65:1 en oscuro, y la banda II
+   caía además en un dorado fuera de identidad. El color de la banda
+   sigue estando, en su muestra; el texto vuelve a tinta plena. */
+.cluster-viz .cv-col .cv-tag,
+.cluster-viz .cv-col .cv-tag *{color:var(--ink);}
+.cluster-viz .cv-col .cv-tag .sw{flex:none;}
+
+html[data-theme="dark"] :is(.rl-fig-src,.rl-fig-sub,.rl-fig-foot .src,.rl-matrix-foot .src,.rl-fig-eyebrow),
+html[data-theme="night"] :is(.rl-fig-src,.rl-fig-sub,.rl-fig-foot .src,.rl-matrix-foot .src,.rl-fig-eyebrow){
+  color:rgba(233,239,244,0.78);
+}
+/* Dentro de una isla de papel el suelo sigue siendo claro en los tres
+   modos, así que la tinta clara de la regla anterior dejaría el
+   encabezado de la tabla ilegible. Ahí manda la tinta del papel. */
+html[data-theme="dark"] :is(.rl-embed,.rl-fig-plot,.rl-matrix,.rl-table-wrap) :is(.rl-fig-src,.rl-fig-sub,.rl-fig-eyebrow,.rl-fig-foot .src,.rl-matrix-foot .src),
+html[data-theme="night"] :is(.rl-embed,.rl-fig-plot,.rl-matrix,.rl-table-wrap) :is(.rl-fig-src,.rl-fig-sub,.rl-fig-eyebrow,.rl-fig-foot .src,.rl-matrix-foot .src){
+  color:var(--muted);
+}
+
+/* Títulos de panel de figura y pastillas de régimen de la tabla:
+   3,07:1 en claro y 4,12:1 en noche sobre 11,5–12px. */
+.rl-fig-panel .pt{color:var(--muted);}
+html[data-theme="dark"] .rl-fig-panel .pt,
+html[data-theme="night"] .rl-fig-panel .pt{color:rgba(233,239,244,0.80);}
+.rl-table-wrap .regime .rl-pill{color:#7A2418;}
+
+/* La bajada del módulo HAR quedaba a 4,36:1 en claro. */
+.rl-reading.is-har .rl-reading-eyebrow{color:#9E5033;}
+html[data-theme="dark"] .rl-reading.is-har .rl-reading-eyebrow,
+html[data-theme="night"] .rl-reading.is-har .rl-reading-eyebrow{color:#d79a7c;}
+
+/* La bajada del explorador FAI era la única etiqueta del sitio en
+   mostaza (#9A6A12): pasa al teal institucional del propio módulo,
+   igual que TMD, HAR y UPI llevan el suyo. */
+.rl-reading.is-fai .rl-reading-eyebrow,
+.rl-fai-intro .rl-reading-eyebrow{color:var(--teal-deep);}
+
+/* Cajas del bloque FAI y pies de figura: mismas esquinas que el
+   resto del sistema. */
+.rl-fai-right,
+.rl-fai-close,
+.rl-fig-foot,
+.rl-matrix-foot{border-radius:var(--r-card,14px);}
+.rl-fig-block > .rl-fig-foot:last-child,
+.rl-matrix > .rl-matrix-foot:last-child{
+  border-radius:0 0 var(--r-card,14px) var(--r-card,14px);
+}
+
+
+/* ══ 11b · UN SOLO AZUL DE ACENTO ═════════════════════════════════
+   Los <em> de los titulares de sección usaban tres acentos distintos
+   al mismo tiempo: teal en Temáticas / Proyectos / Métodos, azul
+   primario en Sistemas y un azul más claro en Sobre. Queda uno solo,
+   el del header y el pie. */
+.hero h1 em,
+.section-head .h2 em,
+.about-aside .h2 em,
+.limits-block .h2 em,
+.rlx-wordmark em{color:var(--accent);}
+
+/* Los cinco campos bajo RECO-LAB, en el pie, en una sola línea. */
+@media (min-width:1024px){
+  .rlx-fields .txt{white-space:nowrap;}
+}
+
+
+/* ══ 12 · MOBILE ══════════════════════════════════════════════════ */
+@media (max-width:900px){
+  /* En mobile la tabla de absorción baja a 11px y sus celdas pasaban
+     a --muted-2: 3,07:1 sobre el papel blanco de la isla. */
+  .rl-table-wrap tbody td,
+  .rl-table-wrap tbody td:nth-child(2),
+  .rl-table-wrap tbody td span{color:var(--muted);}
+  .rl-table-wrap td.name{color:var(--ink);}
+
+  .hero-grid{grid-template-columns:minmax(0,1fr);}
+  .hero h1{white-space:nowrap;}
+  .hero-globe{max-width:440px;}
+  .about-grid{display:block;}
+  .methods-meta,
+  .rl-mx-meta,
+  .rl-mp-meta{grid-template-columns:1fr;}
+  .rl-axhelp{grid-template-columns:1fr;}
+}
+@media (max-width:620px){
+  .progression-chain > span + span::before,
+  .rl-mx-prog-chain > span + span::before{display:none;}
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   13 · CORRECCIÓN DE LAYOUT · agosto 2026
+   Segunda pasada sobre la misma capa. Nada de lo anterior se elimina:
+   lo que sigue cierra los puntos que quedaron abiertos después de
+   medir las cuatro páginas en los tres modos, a 1366 y 1440.
+   ══════════════════════════════════════════════════════════════════ */
+
+
+/* ── 13.1 · Project 01 · el texto de apertura ocupa el contenedor ──
+   La narrativa de apertura estaba clavada en 780px dentro de un
+   contenedor de 1240: media página vacía a la derecha. No se resuelve
+   estirando la medida de lectura hasta 1286px, que sería ilegible,
+   sino repartiendo los dos párrafos en dos columnas. Cada uno queda
+   en ~600px de medida y el bloque llena el ancho. */
+.proj-narrative{
+  max-width:none;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+  gap:clamp(20px,2.2vw,34px);
+  align-items:start;
+}
+.proj-narrative > p{max-width:none;margin:0;}
+
+/* La bajada de cada sección acompaña al título y ya no se corta a
+   dos tercios del contenedor. */
+#project-1 .rl-sec-desc,
+#project-2 .rl-sec-desc,
+.rl-sec-desc{max-width:104ch;}
+
+/* La ficha de metadatos del case tenía canto vivo contra el borde
+   izquierdo: se cierra con la misma esquina del sistema. */
+.proj-meta{
+  border-radius:var(--r-card,14px);
+  padding:14px 0 14px 26px;
+}
+
+
+/* ── 13.2 · Project 01 · la barra tornasolada, una sola vez ────────
+   El callout llevaba dos barras superpuestas: el borde plano de 4px
+   que hereda del sistema 2.9 (teal en claro, gris en oscuro y noche)
+   y encima el degradado institucional de 5px que reconstruye la firma
+   del proyecto. Se ve como una barra plana con una línea de color al
+   lado. Queda sólo el degradado. */
+.ivub-callout{
+  border-left:0;
+  padding-left:clamp(24px,2.4vw,34px);
+}
+
+/* La franja de bandas del ranking conserva su acento por banda: es
+   codificación de dato, no decoración, y no se toca. Lo que sí se
+   unifica es el canto de la isla, para que las tres columnas cierren
+   dentro de la misma esquina. */
+.cluster-viz{overflow:hidden;}
+.cluster-viz .cv-grid{border-radius:0;}
+
+
+/* ── 13.3 · Project 02 · contenedores sin vacío ────────────────────
+   El explorador FAI declaraba 1120px de alto para un panel que ocupa
+   890: 230px de blanco muerto debajo del panel en la primera carga.
+   La altura declarada baja al alto real del panel por defecto y el
+   ajuste fino lo sigue haciendo el medidor de site.js, que ahora sabe
+   encoger además de crecer. */
+body.rlx-project .rl-embed-body.h-1040{
+  height:900px;min-height:700px;
+}
+@media (max-width:1400px){
+  body.rlx-project .rl-embed-body.h-1040{height:900px;min-height:700px;}
+}
+@media (max-width:900px){
+  body.rlx-project .rl-embed-body.h-1040{height:900px;min-height:700px;}
+}
+
+/* El gráfico de variación de alquileres cerraba en 699px dentro de un
+   marco de 720: una banda blanca debajo de la leyenda. */
+body.rlx-project .rl-embed-body.h-980{height:700px;min-height:620px;}
+
+/* Pies, notas y fuentes: el último bloque de una isla cierra con la
+   esquina de la isla y nunca con un canto recto. */
+.rl-fig-block,
+.rl-fig-duo,
+.rl-technote,
+.rl-fai-close{overflow:hidden;}
+.rl-embed > *:last-child,
+.rl-fig-block > *:last-child,
+.rl-matrix > *:last-child{
+  border-bottom-left-radius:var(--r-card,14px);
+  border-bottom-right-radius:var(--r-card,14px);
+}
+
+
+/* ── 13.4 · Temáticas · el número de cada tarjeta se lee en Claro ──
+   Medido con las transiciones desactivadas: el numeral de cada línea
+   se pinta con el acento propio de la línea sobre papel blanco, y da
+   entre 2,52:1 y 4,20:1 a 12,65px en modo Claro. El acento no se
+   reemplaza por gris — eso borraría la identidad de la línea — sino
+   que se lleva a su paso oscuro mezclándolo con la tinta, y a su paso
+   luminoso en oscuro y noche. El matiz se conserva en los tres modos.
+   Medido después del cambio: 5,07:1 a 8,66:1 en Claro. */
+/* Los tres pares de selectores tienen que pesar lo mismo en la
+   cascada: con `.lines-grid .line .line-num` en la regla clara y sólo
+   `.line-num` en la oscura, el paso oscurecido de Claro seguía ganando
+   en Oscuro y dejaba el numeral en 1,83:1 sobre la tarjeta navy. */
+.lines-grid .line .line-num,
+.line-panel .line-panel-num,
+.line-num,
+.line-panel-num{
+  color:color-mix(in srgb, var(--line-accent,#5980a6) 58%, #0e1519);
+}
+html[data-theme="dark"] .lines-grid .line .line-num,
+html[data-theme="dark"] .line-panel .line-panel-num,
+html[data-theme="dark"] .line-num,
+html[data-theme="dark"] .line-panel-num,
+html[data-theme="night"] .lines-grid .line .line-num,
+html[data-theme="night"] .line-panel .line-panel-num,
+html[data-theme="night"] .line-num,
+html[data-theme="night"] .line-panel-num{
+  color:color-mix(in srgb, var(--line-accent,#6d93b8) 72%, #ffffff);
+}
+/* Métodos tiene el mismo caso: el numeral de cada fase se pinta con
+   la tinta de fase declarada en el propio elemento (--phase), y en los
+   tres modos caía entre 2,52:1 y 4,43:1 a 12px. La fase sigue marcando
+   el acordeón por su canto; el numeral se lleva al paso legible de esa
+   misma fase, sin cambiar de matiz ni de cuerpo. */
+.rl-mx-num,
+.phase .phase-num{
+  color:color-mix(in srgb, var(--phase,#5980a6) 58%, #0e1519);
+}
+html[data-theme="dark"] :is(.rl-mx-num,.phase .phase-num),
+html[data-theme="night"] :is(.rl-mx-num,.phase .phase-num){
+  color:color-mix(in srgb, var(--phase,#6d93b8) 68%, #ffffff);
+}
+
+/* Sin color-mix el numeral vuelve a la tinta plena antes que
+   desaparecer: ningún acento puede quedar por debajo del piso. */
+@supports not (color:color-mix(in srgb, red 50%, blue)){
+  .line-num,.line-panel-num,.rl-mx-num{color:var(--ink,#1d1f20);}
+}
+
+
+/* ── 13.5 · Métodos · las cuatro fichas de gobierno, como tarjetas ─
+   Ya eran tarjetas; les faltaba el canto de acento que las separa de
+   una caja de formulario y las alinea con el resto del sistema. */
+.methods-meta > div,
+.rl-mx-meta > div,
+.rl-mp-meta > div{
+  position:relative;
+  overflow:hidden;
+  padding-left:20px;
+}
+.methods-meta > div::before,
+.rl-mx-meta > div::before,
+.rl-mp-meta > div::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--accent) 0%,var(--teal,#4fb3a5) 100%);
+  opacity:.85;
+}
+
+/* Ninguna caja del sistema con esquina viva. */
+.rl-mx-status,
+.rl-mx-defs,
+.rl-mx-chain,
+.rl-mx-lines,
+.rl-mp-next,
+.progression-chain{border-radius:0;}
+.rl-mx-def,
+.rl-mx-frame,
+.rl-mx-phase,
+.rl-mx-prog,
+.rl-mp-head-grid > .rl-mp-meta > div{border-radius:var(--r-card,14px);}
+
+
+/* ── 13.6 · Piso tipográfico ───────────────────────────────────────
+   Ninguna leyenda, dato o nota por debajo de 11px, en ninguna página
+   ni en ningún modo. El piso se declara, no se confía a la herencia. */
+.rl-fig-src,.rl-fig-sub,.rl-fig-foot,.rl-matrix-foot,
+.rl-embed-foot,.rl-sec-eyebrow,.rl-fig-eyebrow,
+.cv-tag,.cv-tile .tmeta,.methods-meta .k,.rl-mp-meta .k,
+.rl-mx-status span,.status-line span,.hero-kicker .txt{
+  font-size:max(11.25px,1em);
+}
+.rl-fig-src,.rl-fig-sub,.rl-fig-foot,.rl-matrix-foot,
+.rl-embed-foot{font-size:11.75px;line-height:1.55;}
+
+
+/* ── 13.6b · Dos acentos que no despejaban en Claro ────────────────
+   Medido con las transiciones desactivadas, sobre el papel blanco de
+   las páginas de proyecto:
+     · el numeral de cada sección (.rl-sec-eyebrow .num) daba 3,38:1 a
+       11,5px con el acento medio;
+     · la clave de la tabla de absorción daba 3,07:1 a 11px.
+   El numeral no se apoya en el papel de la página: es una pastilla
+   navy en los tres modos (#1d2d3d en claro, #132029 en oscuro,
+   #0a1119 en noche). Por eso oscurecer su tinta lo empeoraba: sobre
+   navy hay que aclararla. En claro pasa al paso luminoso del mismo
+   azul, el que la home ya usa sobre la placa de Sistemas. En oscuro y
+   noche el acento medio ya despeja sobre su propia pastilla y se deja
+   como estaba. La clave de la tabla sí se apoya en papel, y ahí manda
+   la tinta secundaria plena. */
+.rl-sec-eyebrow .num{
+  color:var(--accent-panel,#8fb2d4);
+  border-radius:5px;
+}
+html[data-theme="dark"] .rl-sec-eyebrow .num,
+html[data-theme="night"] .rl-sec-eyebrow .num{color:var(--accent);}
+
+.rl-table-key,
+.rl-table-key span,
+.rl-table-head .rl-table-key{color:#5a5a5d;}
+
+
+/* ── 13.7 · Sin desborde horizontal ────────────────────────────────
+   Con la medida más ancha ningún bloque puede empujar la página.
+
+   El recorte se pone en las islas, no en el documento: `overflow-x`
+   en <html> o en <body> convierte al cuerpo en su propio contenedor
+   de scroll y rompe el `position:sticky` de la barra. Medido en las
+   cuatro páginas, los tres modos y los dos idiomas a 1366 y 1440:
+   scrollWidth == ancho de viewport, así que no hay nada que recortar
+   a nivel de documento. */
+.rl-embed,
+.rl-fig-block,
+.rl-matrix,
+.rl-table-wrap,
+.cluster-viz,
+.rl-fig-plot,
+.rl-fig-duo{max-width:100%;}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   14 · ANCHO, TIPOGRAFÍA Y CONSISTENCIA · 16 de agosto de 2026
+
+   Tercera pasada sobre la misma capa. Dos criterios, y ninguno se
+   resuelve achicando texto:
+
+     · el ancho útil manda. Ninguna medida de lectura queda clavada a
+       la mitad del contenedor cuando hay sitio;
+     · la taxonomía tipográfica es la acordada, y se declara aquí una
+       sola vez para las cuatro páginas.
+
+   Escala:
+     barra 14–16 medium · H1 hero 48–64 bold · bajada hero 18–20
+     CTA 15–16 semibold · H2 panel 24–28 · H3 bloque 18–20
+     cuerpo 16 / 1.6 · KPI 32–36 · leyenda 12 mínimo
+     pie 13–14 · fuentes y créditos 11–12
+   ══════════════════════════════════════════════════════════════════ */
+
+
+/* ── 14.1 · Barra · 14–16 medium ───────────────────────────────────
+   La navegación estaba en 14,2px regular y los tres controles entre
+   11,25 y 12,65px, por debajo del piso de la barra. */
+.rlx-nav a{font-size:14.6px;font-weight:500;}
+.rlx-contact{font-size:14px;font-weight:600;}
+.rlx-mood button,
+.rlx-lang button{font-size:13px;font-weight:600;}
+.rlx-drawer nav a{font-size:15px;font-weight:500;}
+
+/* Con la tipografía de barra más grande los tres controles crecen:
+   ceden padding para que la columna derecha siga entrando en su
+   mitad de la grilla simétrica y el nav no se descentre. */
+@media (min-width:901px){
+  .rlx-end{gap:9px;}
+  .rlx-mood button{padding:0 8px;}
+  .rlx-lang button{padding:0 9px;}
+  .rlx-contact{padding:0 13px;}
+  .rlx-nav{gap:14px;}
+}
+
+
+/* ── 14.2 · Hero de la home ────────────────────────────────────────
+   El wordmark del hero llegaba a 74px, fuera del techo de 64. */
+.hero h1{font-size:clamp(48px,4.6vw,64px);line-height:1.04;}
+.hero-kicker .txt{font-size:12px;letter-spacing:0.14em;}
+.hero-fields{font-size:clamp(14px,1.06vw,15px);line-height:1.6;}
+.hero-lead{font-size:19px;line-height:1.55;max-width:52ch;}
+.hero-close{font-size:16px;line-height:1.62;max-width:60ch;}
+.hero-ctas .btn{font-size:15.5px;font-weight:600;}
+.hero-strip .k{font-size:12px;}
+.hero-scope li{font-size:14px;}
+
+
+/* ── 14.3 · Títulos ────────────────────────────────────────────────
+   Los titulares de sección de la home llegaban a 44px y el título de
+   proyecto a 40, muy por encima del techo de 28 de un H2 de panel.
+   Bajan a la escala acordada; el hero es el único display de la
+   página y deja de competir con seis titulares del mismo tamaño. */
+.section-head .h2,
+.about-aside .h2,
+.limits-block .h2,
+.rl-mx-h3{font-size:clamp(24px,2.05vw,28px);line-height:1.24;}
+
+.proj-title{font-size:clamp(24px,2.05vw,28px);line-height:1.22;}
+
+/* El H1 de Métodos es el hero de su página, no un H2 de panel. */
+.rl-mp-head h1{font-size:clamp(40px,3.6vw,52px);line-height:1.08;}
+.rl-mp-lead{font-size:19px;line-height:1.55;}
+.rl-mp-note{font-size:16px;line-height:1.62;}
+
+/* H3 de bloque · 18–20 */
+.line h3,
+.project h3,
+.systems .found h3,
+.systems .mod h4,
+.rl-sec-title,
+.rl-mx-title,
+.rl-mx-frame h3,
+.cv-name,
+.finding h4,
+.rl-method-mod > summary .t{font-size:19.5px;line-height:1.32;}
+
+
+/* ── 14.4 · Cuerpo · 16 / 1.6 ──────────────────────────────────────
+   El texto de análisis vivía entre 14,2 y 15,5px. Sube al cuerpo de
+   lectura acordado, con el interlineado dentro de 1.5–1.7. */
+.about-body p,
+.work-panel p,
+.line p,
+.line-panel-lede,
+.project p,
+.systems .mod p,
+.systems .found p,
+.systems-foot p,
+.lede,
+.proj-narrative p,
+.rl-sec-desc,
+.rl-read p,
+.rl-reading p,
+.rl-mod p,
+.rl-fai-intro p,
+.rl-fai-close p,
+.rl-scenarios p,
+.rl-technote p,
+.rl-method-body p,
+.rl-mx-body p,
+.rl-mx-frame p,
+.rl-mx-prog p,
+.rl-mx-def p,
+.rl-mx-lines .t,
+.rl-mx-lines li,
+.finding p,
+.cv-desc,
+.rl-regime p,
+.rl-ax p,
+.ivub-callout .cs-line,
+.phase-body p,
+.frame-block p,
+.progression p{font-size:16px;line-height:1.62;}
+
+/* Los dos pies de acción conservan su jerarquía de CTA. */
+.rl-dash-cta .t,
+.rl-pair-cta .t,
+.rl-pager-btn .t{font-size:15.5px;font-weight:600;}
+.rl-dash-cta .d,
+.rl-pair-cta .d,
+.rl-pager-btn .d{font-size:13.5px;line-height:1.5;}
+
+
+/* ── 14.5 · Leyendas 12 mínimo · fuentes y créditos 11–12 ──────────
+   Nada de esto baja: son los pisos, no los techos. */
+.eyebrow,
+.rl-sec-eyebrow,
+.rl-fig-eyebrow,
+.rl-reading-eyebrow,
+.rl-mod-eyebrow,
+.rl-mp-secnum,
+.rl-mp-kicker,
+.cv-tag,
+.proj-num,
+.proj-sub,
+.proj-meta,
+.proj-meta span,
+.module-label,
+.ivub-callout .module-label,
+.rl-embed-head .t,
+.rl-embed-head a,
+.rl-ax b,
+.methods-meta .k,
+.rl-mx-meta .k,
+.rl-mp-meta .k,
+.rl-method-head .h,
+.cv-tile .tname,
+.cv-tile .tmeta,
+.cv-tile .tscore,
+.rl-mx-status span,
+.status-line span,
+.rl-mx-chain span,
+.rl-mx-lines .k{font-size:12.4px;line-height:1.5;}
+
+.methods-meta .v,
+.rl-mx-meta .v,
+.rl-mp-meta .v{font-size:15px;line-height:1.55;}
+
+.rl-fig-src,
+.rl-fig-sub,
+.rl-fig-foot,
+.rl-fig-foot .src,
+.rl-matrix-foot,
+.rl-matrix-foot .src,
+.rl-embed-foot,
+.rl-table-key,
+.rl-fig-head .k{font-size:11.75px;line-height:1.55;}
+
+/* KPI · 32–36 */
+.kpi .v,
+.kpi-value,
+.rl-kpi .v{font-size:clamp(32px,2.6vw,36px);line-height:1.1;}
+
+
+/* ── 14.6 · Ancho útil · ninguna columna angosta sin motivo ────────
+   Medido en las cuatro páginas: la narrativa de proyecto quedaba en
+   792px, las bajadas de sección en 936, el cuerpo de las notas
+   metodológicas en 835, el encuadre de módulos de Métodos en 738
+   sobre un contenedor de 1197, y la bajada del hero de Métodos en
+   538 sobre 795. Todas pasan al ancho de su contenedor.
+
+   A 16px y ~1280px de caja la medida cruda sería incómoda, así que
+   el texto largo respira con un tope generoso en `ch` en vez de un
+   valor fijo en píxeles: sigue el cuerpo, no el viewport. */
+.proj-narrative p,
+.rl-sec-desc,
+.rl-read p,
+.rl-reading,
+.rl-reading p,
+.rl-mod p,
+.rl-method-body p,
+.rl-method-body,
+.rl-mx-body p,
+.rl-mx-frame p,
+.rl-mx-frame h3,
+.rl-mx-prog p,
+.rl-mp-lead,
+.rl-mp-note,
+.rl-fig-sub,
+.about-body p,
+.work-panel p,
+.lede,
+.line-panel-lede,
+.systems-foot p{max-width:none;}
+
+.rl-mx-frame p,
+.rl-mx-body p,
+.rl-method-body p,
+.proj-narrative p,
+.rl-read p,
+.rl-reading p,
+.about-body p,
+.work-panel p{max-width:92ch;}
+
+/* La introducción de Project 01 y Project 02 vuelve a ser un solo
+   bloque corrido: dos columnas cortas de tres líneas cada una se
+   leían como dos textos desalineados, no como una entrada. */
+.proj-narrative{
+  display:block;
+  max-width:none;
+}
+.proj-narrative > p{max-width:92ch;}
+.proj-narrative > p + p{margin-top:var(--space-4,14px);}
+
+/* Las notas metodológicas desplegables ocupan el ancho de la página. */
+.rl-method,
+.rl-method-modules,
+.rl-method-mod,
+.rl-method-body{width:100%;}
+.rl-method-body{padding-inline:clamp(20px,2vw,30px);}
+
+
+/* ── 14.7 · Sobre · dos editoriales, no un párrafo largo ───────────
+   "Cómo trabaja RECO-LAB" venía pegado a "Sobre RECO-LAB" como si
+   fuera el mismo texto. Pasa a bloque propio, con aire y un canto
+   que lo abre, y los dos aprovechan el ancho. */
+.about-grid,
+.about-grid .about-body{max-width:none;}
+.about-grid .about-aside .h2{max-width:34ch;}
+
+/* "Cómo trabaja" ya era una tarjeta con superficie y borde propios:
+   lo que faltaba era aire por encima para que dejara de leerse como la
+   continuación del párrafo anterior. Conserva su plato y su esquina —
+   ponerla en canto vivo la habría dejado como la única caja puntiaguda
+   de la home. */
+.work-panel{
+  margin-top:clamp(38px,4.4vh,60px);
+  border-radius:var(--r-card,14px);
+}
+.work-panel > .eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  margin-bottom:var(--space-4,14px);
+}
+.work-panel > .eyebrow::before{
+  content:"";width:26px;height:2px;flex:none;
+  background:var(--accent);
+}
+
+
+/* ── 14.8 · Métodos ────────────────────────────────────────────────
+   El hero alineaba por abajo: la columna de texto arrancaba 99px por
+   debajo de las cuatro fichas. Las dos columnas se centran entre sí. */
+.rl-mp-head-grid{align-items:center;}
+
+/* Las cuatro fichas de gobierno, más compactas y con más presencia:
+   menos alto muerto, la etiqueta en versalitas y el valor en tinta
+   plena. El canto de acento ya venía de la pasada anterior. */
+.rl-mp-meta,
+.methods-meta,
+.rl-mx-meta{gap:10px;}
+.rl-mp-meta > div,
+.methods-meta > div,
+.rl-mx-meta > div{
+  gap:5px;
+  padding:13px 16px 13px 18px;
+}
+.rl-mp-meta > div .k,
+.methods-meta > div .k,
+.rl-mx-meta > div .k{letter-spacing:0.13em;text-transform:uppercase;}
+
+/* El encuadre de los módulos dejaba media página vacía a la derecha:
+   su título estaba topado en 449px y sus párrafos en 738. */
+.rl-mx-frame{padding:clamp(28px,2.8vw,40px);}
+.rl-mx-frame h3{max-width:44ch;}
+.rl-mx-lines li{gap:14px;align-items:baseline;}
+.rl-mx-lines .k{flex:0 0 52px;}
+.rl-mx-lines .t{flex:1 1 auto;max-width:none;}
+
+/* Los acordeones ocupan el ancho y respiran por dentro. */
+.rl-mx-phase,
+.rl-mx-phases,
+.rl-mx-prog{width:100%;max-width:none;}
+.rl-mx-phase > summary{padding:18px clamp(20px,2vw,28px);}
+.rl-mx-body{padding:4px clamp(20px,2vw,28px) 24px;}
+
+
+/* ── 14.9 · El número sale de la caja ──────────────────────────────
+   El numeral de sección y el de fase eran una pastilla dentro de otra
+   caja: un redondel encajado en un rectángulo para un dato de dos
+   cifras. El número se saca de la caja y queda como numeral, no como
+   etiqueta. Al perder la pastilla navy vuelve a apoyarse en el papel
+   de la página, así que su tinta vuelve al paso oscuro del acento en
+   Claro y al medio en Oscuro y Noche. */
+.rl-sec-eyebrow .num,
+.rl-mx-num,
+.eyebrow .num{
+  background:transparent;
+  border:0;
+  padding:0;
+  border-radius:0;
+  font-variant-numeric:tabular-nums;
+  font-weight:700;
+}
+.rl-sec-eyebrow .num{color:var(--accent-700,#416180);}
+html[data-theme="dark"] .rl-sec-eyebrow .num,
+html[data-theme="night"] .rl-sec-eyebrow .num{color:var(--accent);}
+
+.rl-mx-num{
+  color:color-mix(in srgb, var(--phase,#5980a6) 58%, #0e1519);
+  flex:0 0 auto;margin-right:4px;
+}
+html[data-theme="dark"] .rl-mx-num,
+html[data-theme="night"] .rl-mx-num{
+  color:color-mix(in srgb, var(--phase,#6d93b8) 68%, #ffffff);
+}
+
+
+/* ── 14.10 · Pie · compacto y menos dominante ──────────────────────
+   El pie medía 570px y abría con una fila propia — wordmark, campos y
+   bajada apilados — encima de la grilla de tres columnas. Esa fila se
+   integra a la primera columna de la grilla (ver el HTML), así que
+   marca, firma y redes quedan en la misma línea que Navegación y
+   Proyectos en vez de encima.
+
+   En Oscuro y Noche la placa era más oscura que el propio fondo y se
+   imponía como un bloque negro al final de la página. Sube dos pasos
+   para quedar por dentro del fondo, no por debajo. */
+.rlx-ftr{padding-top:clamp(26px,3vh,36px);}
+.rlx-ftr-grid{
+  padding-top:0;
+  padding-bottom:clamp(18px,2vh,26px);
+  gap:clamp(28px,3.4vw,52px);
+  grid-template-columns:minmax(0,1.5fr) minmax(0,0.85fr) minmax(0,1.25fr);
+  align-items:start;
+}
+.rlx-ftr-bot{padding:14px 0 20px;}
+
+html[data-theme="dark"] .rlx-ftr{background:#1a2b36;}
+html[data-theme="night"] .rlx-ftr{background:#131f29;}
+
+/* Marca y firma, dentro de la primera columna. */
+.rlx-ftr-brand{display:flex;flex-direction:column;gap:10px;border-radius:0;}
+.rlx-ftr-brand .rlx-fields{margin:0;}
+.rlx-ftr-brand .rlx-blurb{margin:0;max-width:46ch;}
+.rlx-ftr-brand .rlx-name{margin-top:8px;}
+
+/* Pie · 13–14. Créditos y fuentes · 11–12. */
+.rlx-ftr .rlx-wordmark{font-size:19px;}
+.rlx-fields .txt,
+.rlx-ftr-h{font-size:13px;}
+.rlx-blurb,
+.rlx-role{font-size:13.5px;line-height:1.55;}
+.rlx-list a,
+.rlx-list .flat{font-size:13.6px;}
+.rlx-btn{font-size:13.5px;padding:8px 15px;border-radius:999px;}
+.rlx-ftr-bot{font-size:11.9px;}
+
+/* El CV es un enlace de navegación más, nunca un botón. */
+.rlx-list .is-cv{
+  background:none;border:0;padding:0;border-radius:0;
+  font-weight:inherit;
+}
+
+
+/* ── 14.12 · Piso de leyenda, sin excepciones ──────────────────────
+   Barrido elemento por elemento sobre las cuatro páginas: todo lo que
+   seguía en 11,25px y no es una línea de fuente o de crédito sube al
+   piso de leyenda. Las fuentes y los créditos quedan en 11,75, dentro
+   de su propia banda de 11–12. */
+.chip,
+.badge,
+.line-tag,
+.line-tag *,
+.sep,
+.project .n,
+.projects .n,
+.rlx-list .n,
+.eyebrow .num,
+.section-head .num,
+.rlx-drawer-controls .k,
+.rlx-drawer-controls .k *,
+.hero-strip .k,
+.proj-head .geo,
+.card-meta,
+.card-meta span,
+.state-tag,
+.code-tag,
+.rl-chip{font-size:12.4px;line-height:1.5;}
+
+/* El nombre y la etiqueta de cada línea de investigación son lectura,
+   no decoración. */
+.line-name{font-size:16px;line-height:1.45;}
+
+
+/* ── 14.13 · Los últimos por debajo del piso ───────────────────────
+   Segundo barrido, ya con la escala aplicada: quedaban nueve rótulos
+   heredando 11–11,25px desde su contenedor. Se los toma en el
+   contenedor, que es donde se declara el cuerpo, y no en el <span>
+   de idioma, que sólo hereda. */
+.line-block .k,
+.line-panel .k,
+.found-eyebrow,
+.mod-eyebrow,
+.systems .branch,
+.project-meta,
+.project-foot .state-tag,
+.project .state-tag,
+.found-top .found-eyebrow{font-size:12.4px;line-height:1.5;}
+
+/* Las dos fichas en documentación llevan su etiqueta de estado bajo un
+   selector de tres clases, que ganaba al piso general. */
+.project.is-record .state-tag,
+.project.is-record .project-meta{font-size:12.4px;line-height:1.5;}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   15 · LA ESCALA, APLICADA DONDE LA CASCADA LA BLOQUEABA
+
+   Medido regla por regla sobre las páginas de proyecto: la §14 perdía
+   contra tres orígenes de mayor peso, así que la escala se declaraba
+   pero no llegaba a pintar.
+
+     · `shell-unified` fija cuerpos con `body.rlx-project .x` (0,3,1);
+     · `system-2.9` fija varios con `#project-1 .x` (1,2,0);
+     · las reglas de ancho de las pasadas anteriores de esta misma
+       hoja usaban `#project-1` y ganaban a sus propias sucesoras.
+
+   Aquí se repiten los mismos valores de la §14 con el peso necesario.
+   No hay ningún valor nuevo: es la misma taxonomía, aplicada.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 15.1 · Cuerpo 16 / 1.62 en las páginas de proyecto ───────────── */
+body.rlx-project .proj-narrative p,
+body.rlx-project .rl-read p,
+body.rlx-project .rl-reading p,
+body.rlx-project .rl-mod p,
+body.rlx-project .rl-method-body p,
+body.rlx-project .rl-mx-body p,
+body.rlx-project .rl-mx-frame p,
+body.rlx-project .rl-mx-prog p,
+body.rlx-project .rl-mx-def p,
+body.rlx-project .rl-sec-desc,
+body.rlx-project .rl-fai-intro p,
+body.rlx-project .rl-scenarios p,
+body.rlx-project .rl-technote p,
+body.rlx-project .finding p,
+body.rlx-project .rl-regime p,
+body.rlx-project .rl-ax p,
+body.rlx-project .ivub-callout .cs-line,
+body.rlx-project .rl-mp-note{font-size:16px;line-height:1.62;}
+
+body.rlx-project .rl-mp-lead{font-size:19px;line-height:1.55;}
+
+/* ── 15.2 · Leyendas · piso de 12 ─────────────────────────────────── */
+body.rlx-project .proj-num,
+body.rlx-project .proj-sub,
+body.rlx-project .proj-meta,
+body.rlx-project .proj-meta span,
+body.rlx-project .rl-sec-eyebrow,
+body.rlx-project .rl-mp-secnum,
+body.rlx-project .rl-mp-kicker,
+body.rlx-project .rl-ax b,
+body.rlx-project .module-label,
+body.rlx-project .ivub-callout .module-label,
+body.rlx-project .rl-method-head .h,
+body.rlx-project .rl-embed-head .t,
+body.rlx-project .rl-embed-head a,
+.rl-sec-eyebrow .num,
+.cluster-viz .cv-tag,
+.cluster-viz .cv-tile .tname,
+.cluster-viz .cv-tile .tmeta,
+.cluster-viz .cv-tile .tscore{font-size:12.4px;line-height:1.5;}
+
+/* Fuentes y créditos · 11–12, su propia banda. */
+body.rlx-project .rl-fig-src,
+body.rlx-project .rl-fig-sub,
+body.rlx-project .rl-fig-foot,
+body.rlx-project .rl-matrix-foot,
+body.rlx-project .rl-embed-foot,
+body.rlx-project .rl-table-key{font-size:11.75px;line-height:1.55;}
+
+/* ── 15.3 · H3 de bloque · 18–20 ──────────────────────────────────
+   `system-2.9` los fija por id, así que la escala se repite por id. */
+#project-1 .finding h4,
+#project-2 .finding h4,
+#project-1 .rl-sec-title,
+#project-2 .rl-sec-title,
+#project-1 .cv-name,
+#project-2 .cv-name,
+.cluster-viz .cv-name,
+body.rlx-project .rl-sec-title,
+body.rlx-project .rl-method-mod > summary .t{font-size:19.5px;line-height:1.32;}
+
+.cluster-viz .cv-desc,
+.cluster-viz .cv-action strong{font-size:16px;line-height:1.6;}
+
+/* ── 15.4 · Ancho de lectura ──────────────────────────────────────
+   El criterio: el contenedor llega al borde de la página y el texto
+   corre hasta 110ch, que a 16px son ~1055 de los 1284 disponibles.
+   Llena el bloque sin convertirse en una línea de 145 caracteres.
+   Los descriptores de una o dos líneas no llevan tope: son título. */
+#project-1 .proj-narrative p,
+#project-2 .proj-narrative p,
+body.rlx-project .proj-narrative > p,
+body.rlx-project .rl-read p,
+body.rlx-project .rl-reading p,
+body.rlx-project .rl-mod p,
+body.rlx-project .rl-method-body p,
+body.rlx-project .rl-mx-body p,
+body.rlx-project .rl-mx-frame p,
+body.rlx-project .rl-mx-prog p,
+.about-body p,
+.work-panel p{max-width:110ch;}
+
+#project-1 .rl-sec-desc,
+#project-2 .rl-sec-desc,
+body.rlx-project .rl-sec-desc,
+body.rlx-project .rl-mp-lead,
+body.rlx-project .rl-mp-note,
+body.rlx-project .rl-fig-sub,
+body.rlx-project .rl-reading,
+body.rlx-project .rl-method-body{max-width:none;}
+
+/* La introducción de proyecto, un solo bloque corrido. */
+body.rlx-project .proj-narrative{display:block;max-width:none;}
+
+/* ── 15.5 · El numeral de sección, fuera de la caja ───────────────
+   `v3-reco-lab` le daba pastilla y 11,5px con dos clases. */
+body.rlx-project .rl-sec-eyebrow .num,
+.rl-sec-eyebrow .num{
+  background:transparent;border:0;padding:0;border-radius:0;
+  font-weight:700;font-variant-numeric:tabular-nums;
+}
+
+/* Tercer barrido: los tres rótulos que seguían en 11px dentro de las
+   páginas de proyecto. El numeral del módulo de la nota sale también
+   de su pastilla, por el mismo criterio que el de sección. */
+body.rlx-project .cluster-viz .cv-action .ca-eye,
+body.rlx-project .rl-method-toggle .hint,
+body.rlx-project .rl-method-toggle .hint span,
+body.rlx-project .rl-method-mod > summary .n{font-size:12.4px;line-height:1.5;}
+
+body.rlx-project .rl-method-mod > summary .n{
+  background:transparent;border:0;padding:0;border-radius:0;
+  font-weight:700;font-variant-numeric:tabular-nums;
+}
+
+/* Cuarto barrido, sobre Project 02: los rótulos de par, de panel de
+   figura, del bloque FAI y de escenarios seguían entre 11 y 11,5px.
+   Suben al piso de leyenda. Las etiquetas dentro de las figuras SVG
+   (`text`/`tspan`) y las líneas de fuente quedan donde estaban: 11–12
+   es su banda declarada, no un descuido. */
+body.rlx-project .rl-pair-tag,
+body.rlx-project .rl-pair-cta,
+body.rlx-project .rl-pair-cta span,
+body.rlx-project .rl-fig-panel .pt,
+body.rlx-project .rl-fai-eyebrow,
+body.rlx-project .rl-fai-dim .dn,
+body.rlx-project .rl-scenarios-h{font-size:12.4px;line-height:1.5;}
+
+/* Las líneas de fuente se normalizan dentro de su banda. */
+body.rlx-project .rl-matrix-foot .src,
+body.rlx-project .rl-fig-foot .src{font-size:11.75px;}
+
+/* Los nombres de territorio de la lista de regímenes UPI son leyenda
+   de dato, no rótulo sobre un mapa: les corresponde el piso de 12. */
+body.rlx-project .rl-regime .rt,
+body.rlx-project .rl-regime .rt b,
+body.rlx-project .rl-regime b.cap{font-size:12.4px;line-height:1.5;}
+
+/* Al sacar el numeral del módulo de su pastilla quedó apoyado en el
+   fondo del propio módulo, donde su teal claro daba 3,35:1 en Oscuro y
+   3,89:1 en Noche a 12,4px. Vuelve al azul de acento, que es el que ya
+   despeja sobre esa superficie en los tres modos. */
+body.rlx-project .rl-method-mod > summary .n{color:var(--accent-700,#416180);}
+html[data-theme="dark"] body.rlx-project .rl-method-mod > summary .n,
+html[data-theme="night"] body.rlx-project .rl-method-mod > summary .n{color:var(--accent);}
+
+/* El cuerpo del módulo abierto es el último bloque del acordeón: cierra
+   con la esquina del contenedor y no con un canto recto. */
+body.rlx-project .rl-method-mod{overflow:hidden;border-radius:var(--r-card,14px);}
+body.rlx-project .rl-method-body{
+  border-bottom-left-radius:var(--r-card,14px);
+  border-bottom-right-radius:var(--r-card,14px);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   16 · CORRECCIÓN FINAL ACOTADA · 16 de agosto de 2026
+
+   Cuarta pasada sobre la misma capa. No rediseña: cierra los puntos
+   de layout, ancho, jerarquía y detalle que quedaron abiertos.
+   Header, hero, modos, ES/EN y estructura no se tocan. Ningún cuerpo
+   tipográfico baja; todo se resuelve con caja, medida y ritmo.
+
+   Medido a 1440, 1366, 1280, 1024 y 768, en Claro / Oscuro / Noche y
+   en los dos idiomas, con las transiciones desactivadas.
+   ══════════════════════════════════════════════════════════════════ */
+
+
+/* ── 16.1 · Una sola división debajo del hero ──────────────────────
+   Había dos reglas horizontales a 56px una de otra: el borde inferior
+   del propio hero (y=1252 a 1440) y el borde superior de
+   `.section-inner`, que es el separador de sección que usan las cinco
+   secciones de la home (y=1308). La segunda es la del sistema y se
+   queda; la del hero sobra y se retira.
+
+   Con la línea única el corte del hero sube: menos aire muerto entre
+   la última línea del hero y la división, de modo que el arranque del
+   módulo siguiente entra en el primer viewport. */
+.hero{border-bottom:0;padding-bottom:clamp(26px,3vh,40px);}
+.hero-grid{padding-bottom:clamp(18px,2.4vh,32px);}
+#topics{padding-top:clamp(30px,3.4vh,42px);}
+#topics > .row > .section-inner{padding-top:clamp(26px,2.8vh,34px);}
+
+
+/* ── 16.2 · El ancho útil manda ────────────────────────────────────
+   Criterio único para las cuatro páginas: el texto general debajo del
+   título de sección corre hasta el borde de su contenedor. Nada queda
+   clavado a media página cuando hay sitio.
+
+   Medido antes de la corrección, sobre un contenedor de 1292px a
+   1440: las bajadas de sección de la home en 880, el encuadre de
+   módulos y las notas metodológicas en 1056, y los párrafos de
+   Métodos y del bloque progresivo en 796. Todos pasan al ancho de su
+   contenedor. El cuerpo sigue en 16px con interlineado 1.5–1.7: la
+   línea se ensancha, la letra no se achica. */
+.section-head{max-width:none;}
+/* El titular conserva su medida corta: es título, no lectura. */
+.section-head .h2,
+.about-aside .h2,
+.limits-block .h2{max-width:880px;}
+
+.lede,
+.line-panel-lede,
+.frame-block p,
+.progression p,
+.phase-body p,
+.about-body p,
+.work-panel p,
+.systems-foot p,
+.module-lines .t{max-width:none;}
+
+body.rlx-project .rl-mx-body p,
+body.rlx-project .rl-mx-frame p,
+body.rlx-project .rl-mx-frame h3,
+body.rlx-project .rl-mx-prog p,
+body.rlx-project .rl-mx-def p,
+body.rlx-project .rl-mx-lines .t,
+body.rlx-project .rl-method-body p,
+body.rlx-project .rl-read p,
+body.rlx-project .rl-reading p,
+body.rlx-project .rl-mod p,
+body.rlx-project .proj-narrative > p,
+body.rlx-project .rl-sec-desc,
+#project-1 .proj-narrative p,
+#project-2 .proj-narrative p,
+#project-1 .rl-sec-desc,
+#project-2 .rl-sec-desc{max-width:none;}
+
+/* Los desplegables abiertos respiran por dentro y ocupan el ancho. */
+body.rlx-project .rl-mx-body,
+body.rlx-project .rl-method-body,
+.phase-body{width:auto;max-width:none;}
+
+
+/* ── 16.3 · Project 01 · introducción en una columna ───────────────
+   La entrada del IVUB no se lee en dos columnas cortas desalineadas:
+   es un solo bloque corrido, del mismo ancho que el resto de la
+   página. La tipografía es la misma que Project 02 — la fija §15 con
+   `body.rlx-project`, común a las dos páginas. */
+body.rlx-project .proj-narrative,
+#project-1 .proj-narrative{
+  display:block;
+  max-width:none;
+  grid-template-columns:none;
+}
+body.rlx-project .proj-narrative > p + p{margin-top:var(--space-4,14px);}
+
+/* ── 16.4 · Project 01 · el mapa y su lectura, sin línea entre medio
+   El párrafo que sigue al explorador es análisis directo de esa
+   figura, no una sección nueva: la regla horizontal los separaba como
+   si fueran dos bloques independientes. La lectura que sigue al
+   ranking de bandas conserva la suya, porque ahí sí abre bloque. */
+.rl-embed + .rl-read{
+  border-top:0;
+  margin-top:clamp(14px,1.6vh,20px);
+}
+
+
+/* ── 16.5 · Métodos · el marco progresivo, cápsulas encadenadas ────
+   Los cinco pasos ocupaban 937 de los 1211px disponibles y terminaban
+   a un cuarto del bloque, con un hairline mudo entre cápsula y
+   cápsula. Pasan a repartirse el ancho completo, en una sola línea de
+   izquierda a derecha, y el vínculo se dibuja como flecha: la
+   secuencia se lee como secuencia.
+
+   Esto no reintroduce las flechas decorativas que §8 retiró — aquellas
+   colgaban de enlaces y botones, donde no informaban. Aquí la
+   dirección ES el dato. */
+.progression-chain,
+.rl-mx-prog-chain{
+  display:flex;
+  flex-wrap:nowrap;
+  align-items:stretch;
+  width:100%;
+  gap:0;
+}
+/* `1 1 auto`, no `1 1 0`: el sobrante se reparte a partir del ancho
+   real de cada rótulo, así que "Movilidad y desplazamiento" no queda
+   con la misma caja que "Accesibilidad" y entra en una línea. */
+.progression-chain > span,
+.rl-mx-prog-chain > span{
+  flex:1 1 auto;
+  min-width:0;
+  justify-content:center;
+  text-align:center;
+  padding:11px 10px;
+  margin-right:30px;
+  border-radius:999px;
+  hyphens:auto;
+}
+.progression-chain > span:last-child,
+.rl-mx-prog-chain > span:last-child{margin-right:0;}
+
+/* En Métodos había una cápsula dentro de la cápsula: `v3-reco-lab`
+   estiliza `.rl-mx-prog-chain span` — todos los descendientes — así
+   que el <span> de idioma que vive dentro del paso llevaba su propio
+   borde, su propio fondo y 6px/14px de padding. Se neutraliza el
+   interior y manda el paso.
+
+   `display` no se toca a propósito: es la propiedad con la que el
+   sitio conmuta ES/EN, y forzarla aquí mostraría los dos idiomas a la
+   vez. */
+.progression-chain > span > span,
+.rl-mx-prog-chain > span > span{
+  background:none;
+  border:0;
+  padding:0;
+  margin:0;
+  border-radius:0;
+  font-size:inherit;
+  line-height:inherit;
+  letter-spacing:inherit;
+  color:inherit;
+}
+/* El paso lleva el mismo cuerpo en las dos páginas. */
+.progression-chain > span,
+.rl-mx-prog-chain > span{font-size:13.5px;letter-spacing:0.02em;}
+
+/* El tramo de unión: hairline hasta la punta y punta de flecha. */
+.progression-chain > span + span::before,
+.rl-mx-prog-chain > span + span::before{
+  content:"";position:absolute;left:-30px;top:50%;
+  width:30px;height:1px;background:var(--rule-strong);
+  transform:none;
+}
+.progression-chain > span + span::after,
+.rl-mx-prog-chain > span + span::after{
+  content:"";position:absolute;left:-13px;top:50%;
+  width:6px;height:6px;
+  border-top:1px solid var(--rule-strong);
+  border-right:1px solid var(--rule-strong);
+  transform:translateY(-50%) rotate(45deg);
+}
+html[data-theme="dark"] :is(.progression-chain,.rl-mx-prog-chain) > span + span::before,
+html[data-theme="night"] :is(.progression-chain,.rl-mx-prog-chain) > span + span::before{
+  background:rgba(255,255,255,0.28);
+}
+html[data-theme="dark"] :is(.progression-chain,.rl-mx-prog-chain) > span + span::after,
+html[data-theme="night"] :is(.progression-chain,.rl-mx-prog-chain) > span + span::after{
+  border-color:rgba(255,255,255,0.28);
+}
+
+/* Por debajo de tablet la cadena vuelve a envolverse: una sola línea
+   de cinco cápsulas no cabe sin partir palabras. */
+@media (max-width:760px){
+  .progression-chain,
+  .rl-mx-prog-chain{flex-wrap:wrap;gap:10px;}
+  .progression-chain > span,
+  .rl-mx-prog-chain > span{flex:0 1 auto;margin-right:0;}
+  .progression-chain > span + span::before,
+  .rl-mx-prog-chain > span + span::before,
+  .progression-chain > span + span::after,
+  .rl-mx-prog-chain > span + span::after{display:none;}
+}
+
+
+/* ── 16.6 · Sin guion largo delante de un rótulo ───────────────────
+   "Cómo trabaja RECO-LAB" abría con una barra de 26px que no era
+   puntuación ni dato. El bloque ya se separa por su plato y su aire. */
+.work-panel > .eyebrow::before{content:none;display:none;}
+
+
+/* ── 16.7 · Pie · columnas alineadas, compacto y sin invadir ───────
+   Dos defectos medidos:
+
+     · el pie abría con una regla horizontal encima de RECO-LAB, la
+       única del documento que no separaba dos secciones de contenido;
+     · los cinco campos del laboratorio corrían en `white-space:nowrap`
+       dentro de una columna que a 1024 mide 372px para un texto de
+       551: la línea cruzaba 160px dentro de la columna de Navegación.
+
+   La regla se retira y los campos vuelven a envolver. Las tres
+   columnas — identidad y contacto · navegación · proyectos — se
+   reparten con una proporción que le da a la identidad el ancho que
+   su contenido necesita, y el pie baja de alto sin perder nada. */
+.rlx-ftr-grid{border-top:0;}
+
+@media (min-width:901px){
+  .rlx-ftr-grid{
+    grid-template-columns:minmax(0,1.5fr) minmax(0,0.82fr) minmax(0,1.12fr);
+    gap:clamp(24px,2.6vw,44px);
+  }
+}
+
+/* Los campos nunca en una sola línea forzada dentro del pie. */
+.rlx-ftr .rlx-fields .txt,
+.rlx-ftr-brand .rlx-fields .txt{white-space:normal;}
+.rlx-ftr .rlx-fields{align-items:flex-start;}
+
+/* Alto: el pie informa, no domina el final de la página. */
+.rlx-ftr{padding-top:clamp(20px,2.2vh,28px);}
+.rlx-ftr-grid{padding-bottom:clamp(12px,1.4vh,18px);}
+.rlx-ftr-brand{gap:7px;}
+.rlx-ftr-brand .rlx-blurb{max-width:52ch;}
+.rlx-ftr-brand .rlx-name{margin-top:5px;}
+.rlx-ftr-brand .rlx-btns{margin-top:9px;gap:8px;}
+.rlx-ftr .rlx-btn{padding:7px 14px;}
+.rlx-ftr .rlx-list{gap:6px;}
+.rlx-ftr .rlx-list li{margin-bottom:0;}
+.rlx-ftr .rlx-list a,
+.rlx-ftr .rlx-list .flat{padding-block:1px;line-height:1.5;}
+.rlx-ftr .rlx-ftr-h{margin-bottom:8px;}
+.rlx-ftr-bot{padding:9px 0 14px;}
+
+/* Las tres columnas alinean por su primera línea de rótulo. */
+.rlx-ftr-grid > * {align-self:start;}
+
+/* El CV sigue siendo un enlace de navegación, nunca un botón, y no se
+   repite en ninguna otra parte del pie. */
+.rlx-ftr .rlx-list .is-cv{
+  background:none;border:0;padding-inline:0;border-radius:0;
+  font-weight:inherit;
+}
+
+
+/* ── 16.8 · Ninguna esquina viva ───────────────────────────────────
+   Última verificación de la regla del sistema: las cajas que esta
+   pasada toca conservan o recuperan su radio. */
+.line-panel,
+.frame-block,
+.progression,
+.work-panel,
+.phase,
+.rl-mx-phase,
+.rl-mx-frame,
+.rl-mx-prog,
+.rl-method{border-radius:var(--r-card,14px);}
+/* `.rl-read` queda fuera a propósito: es un bloque de texto sin plato,
+   sostenido por un hairline superior. Redondearlo curvaría los
+   extremos de una línea, no las esquinas de una caja. */

@@ -1,0 +1,181 @@
+/* ═══════════════════════════════════════════════════════════════════
+   RECO-LAB · CIERRE · 2026-08-16
+   Capa de corrección final. Se carga la última, sólo en Project 02.
+   Tres correcciones acotadas. Ninguna toca datos, escalas, series ni
+   composición: sólo contraste, estados de enlace y ancho útil.
+   Retirar este único <link> revierte esta pasada y nada más.
+   ═══════════════════════════════════════════════════════════════════ */
+
+
+/* ══ 1 · FIGURA DE RETORNOS · UN SOLO CRITERIO PARA LOS EJES ═══════
+
+   "Retornos israelíes por país de origen · 2021–2024" mezclaba tres
+   tintas en el mismo par de paneles, y dos de ellas se caían según el
+   modo. Medido sobre el fondo compuesto de cada panel:
+
+                                        Claro    Oscuro   Noche
+     Años del eje X (panel izq.)        17,99    1,14 ✗   1,02 ✗
+     Países del eje Y (panel der.)      17,99   13,54    14,27
+     Valores de tick (#9A9286)           3,07 ✗ 13,54    14,27
+     Cifras de fin de barra (#005F73)    7,28    2,17 ✗   2,53 ✗
+     Rótulos del total observado         8,37    1,89 ✗   2,20 ✗
+
+   El fallo de los años tenía una causa concreta: `corrections-2026-08`
+   ya subía a `var(--ink)` los rótulos fijos de la SVG, pero enganchaba
+   `text[fill="#1A1612"]` y `g[fill="#9A9286"]`. Los años viven en un
+   `g[fill="#1A1612"]` —grupo, no texto, y con la otra tinta—, que es
+   justamente la combinación que faltaba en aquella lista. Por eso el
+   panel derecho se leía y el izquierdo no.
+
+   Aquí el criterio pasa a ser uno solo, declarado como token del panel
+   y no repetido rótulo por rótulo:
+
+     · Claro          → #33404B, tinta fría única (10,6:1 sobre papel).
+                        Sustituye a la vez al negro cálido y al gris
+                        #9A9286, que era el que no llegaba.
+     · Oscuro / Noche → var(--ink). Es el claro legible que ya usaba el
+                        resto del gráfico; ahora lo usan todos los ejes.
+
+   Los rótulos de dato que tampoco llegaban en oscuro/noche suben al
+   paso claro de su propio color: el teal de las cifras y el terracota
+   del total observado conservan su hue y su significado de serie.
+
+   Las marcas —barras, línea, puntos, filete de quiebre— no se tocan:
+   son datos dibujados, no rótulos, y el pedido acota a ejes y labels. */
+
+.rl-fig-panel{
+  --rl-ax-ink:#33404B;
+}
+html[data-theme="dark"] .rl-fig-panel,
+html[data-theme="night"] .rl-fig-panel{
+  --rl-ax-ink:var(--ink);
+}
+
+/* Ticks, rótulos de categoría y títulos de eje: una sola tinta.
+   Se repite el gancho por modo porque la regla de `corrections` está
+   escrita como `html[data-theme="…"] .rl-fig-panel svg text[fill]` y
+   una clase suelta no la alcanza. */
+html .rl-fig-panel svg :is(g,text)[fill="#1A1612"],
+html .rl-fig-panel svg :is(g,text)[fill="#9A9286"],
+html[data-theme="light"] .rl-fig-panel svg :is(g,text)[fill="#1A1612"],
+html[data-theme="light"] .rl-fig-panel svg :is(g,text)[fill="#9A9286"],
+html[data-theme="dark"] .rl-fig-panel svg :is(g,text)[fill="#1A1612"],
+html[data-theme="dark"] .rl-fig-panel svg :is(g,text)[fill="#9A9286"],
+html[data-theme="night"] .rl-fig-panel svg :is(g,text)[fill="#1A1612"],
+html[data-theme="night"] .rl-fig-panel svg :is(g,text)[fill="#9A9286"]{
+  fill:var(--rl-ax-ink);
+}
+
+/* Cifras al final de cada barra del ranking acumulado. En claro el teal
+   profundo ya llega; en oscuro y noche sube al paso claro del mismo
+   token, sin cambiar de familia. */
+html[data-theme="dark"] .rl-fig-panel svg :is(g,text)[fill="#005F73"],
+html[data-theme="night"] .rl-fig-panel svg :is(g,text)[fill="#005F73"]{
+  fill:var(--teal-deep);
+}
+
+/* Rótulos de la serie de total observado y anotación del quiebre.
+   `:is(g,text)` deja fuera a propósito los `circle` y las `line`:
+   los puntos y el filete del quiebre son marca, no rótulo. */
+html[data-theme="dark"] .rl-fig-panel svg :is(g,text)[fill="#8C2D1F"],
+html[data-theme="night"] .rl-fig-panel svg :is(g,text)[fill="#8C2D1F"]{
+  fill:var(--terra-deep);
+}
+
+
+/* ══ 2 · "ABRIR MAPA INTERACTIVO" · ESTADOS LEGIBLES ═══════════════
+
+   `.rl-pair-cta:hover` pedía `background:var(--offwhite)` y
+   `color:var(--institutional)`. En claro son dos valores distintos y
+   funciona. En oscuro los dos tokens valen #132029, y en noche los dos
+   valen #0A1119: fondo y texto exactamente del mismo color, así que al
+   pasar el mouse el rótulo no se atenuaba, desaparecía.
+
+   El estado se reescribe con tinta propia por modo y se extiende a
+   `:focus-visible` y `:active`, que no existían. Ni el texto ni la
+   posición del enlace cambian. */
+
+/* Sólo tokens: la tira conserva su forma. `final-acotada` ya fijó que
+   una tira interna no redondea si no toca el borde de su tarjeta, y
+   ésta cierra la columna con un filete superior, no como botón. */
+.rl-pair-cta{
+  --rl-cta-bg:#EEF1F4;
+  --rl-cta-ink:#1E2D3D;
+}
+html[data-theme="dark"] .rl-pair-cta,
+html[data-theme="night"] .rl-pair-cta{
+  --rl-cta-bg:rgba(233,238,242,0.10);
+  --rl-cta-ink:var(--ink);
+}
+
+html .rl-pair-cta:hover,
+html .rl-pair-cta:focus-visible,
+html .rl-pair-cta:active,
+html[data-theme="dark"] .rl-pair-cta:hover,
+html[data-theme="dark"] .rl-pair-cta:focus-visible,
+html[data-theme="dark"] .rl-pair-cta:active,
+html[data-theme="night"] .rl-pair-cta:hover,
+html[data-theme="night"] .rl-pair-cta:focus-visible,
+html[data-theme="night"] .rl-pair-cta:active{
+  background:var(--rl-cta-bg);
+  color:var(--rl-cta-ink);
+}
+/* El rótulo va dentro de un <span>. Se le pide herencia explícita para
+   que ninguna regla anterior lo deje con el color de reposo mientras el
+   ancla ya cambió. Sólo `color`: tocar `display` aquí rompería los
+   spans de idioma. */
+.rl-pair-cta:hover > span,
+.rl-pair-cta:focus-visible > span,
+.rl-pair-cta:active > span{color:inherit;}
+
+.rl-pair-cta:focus-visible{
+  outline:2px solid var(--teal-deep);
+  outline-offset:-2px;
+}
+
+/* El tercer enlace con el mismo rótulo vive en la cabecera de un embed,
+   que es isla de papel en los tres modos. Ahí el hover ya llegaba;
+   faltaba el foco de teclado y fijar la tinta para que no herede. */
+html .rl-embed-head a:hover,
+html .rl-embed-head a:focus-visible,
+html .rl-embed-head a:active,
+html[data-theme="dark"] .rl-embed-head a:hover,
+html[data-theme="dark"] .rl-embed-head a:focus-visible,
+html[data-theme="dark"] .rl-embed-head a:active,
+html[data-theme="night"] .rl-embed-head a:hover,
+html[data-theme="night"] .rl-embed-head a:focus-visible,
+html[data-theme="night"] .rl-embed-head a:active{
+  color:var(--teal-deep);
+  text-decoration:none;
+}
+.rl-embed-head a:focus-visible{
+  outline:2px solid var(--teal-deep);
+  outline-offset:3px;
+  border-radius:var(--r-btn,10px);
+}
+
+
+/* ══ 3 · CIERRE DEL BLOQUE FAI · ANCHO ÚTIL ════════════════════════
+
+   El párrafo de cierre del FAI llevaba `max-width:104ch`. Sobre el
+   ancho del bloque eso lo dejaba en 998px de 1419px disponibles: 70,4 %,
+   con casi un tercio del plato vacío a la derecha.
+
+   Es el mismo caso ya resuelto en `qa-final` para los escenarios de
+   ponderación (`.rl-scenarios > p{max-width:none}`), que hoy ocupa el
+   99,7 %: texto general de ancho completo bajo un bloque, no una
+   composición a dos columnas. Se aplica el mismo criterio.
+
+   El retiro interno no cambia: los 36px horizontales alinean el cierre
+   con el texto de la columna izquierda del propio bloque, que es lo que
+   lo mantiene despegado del borde. No se convierte en tarjeta nueva ni
+   se toca el contenido. */
+.rl-fai-close > p{
+  max-width:none;
+  text-wrap:pretty;
+}
+/* Por debajo del corte a una columna el bloque ya baja a 22px; se
+   confirma aquí para que el cierre nunca quede pegado al canto. */
+@media (max-width:860px){
+  .rl-fai-close{padding:20px 22px 24px;}
+}

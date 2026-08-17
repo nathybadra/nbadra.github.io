@@ -1,0 +1,432 @@
+/* ══════════════════════════════════════════════════════════════════
+   RECO-LAB · shell unificado · agosto 2026
+
+   Una sola barra y un solo pie para las tres páginas de la revisión
+   (RECO_LAB_GLOBAL_CURRENT, Project 01, Project 02). La hoja es
+   autónoma: define sus propios tokens sobre .rlx-hdr / .rlx-drawer /
+   .rlx-ftr, de modo que funciona igual sobre la hoja global de la home
+   y sobre el sistema 2.9 de las páginas de proyecto, sin depender de
+   qué :root gane la cascada.
+
+   Reglas de la pasada:
+     · mismo orden, escala y espaciado que el archivo de referencia;
+     · sin "Perfil" en la barra; en español "Sobre", en inglés "About";
+     · Claro / Oscuro / Noche como segmented control con thumb;
+     · sin flechas y sin mostaza;
+     · el CV vive una sola vez, en el pie, como enlace discreto.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Tokens del shell ─────────────────────────────────────────────
+   Prefijados --sh-* para que ninguna hoja de la página los pise. */
+.rlx-hdr,.rlx-drawer,.rlx-ftr{
+  --sh-bg:#1d2d3d;
+  --sh-accent:#5980a6;
+  --sh-panel:#8fb2d4;
+  --sh-teal:#4fb3a5;
+  --sh-fs-00:11.25px; --sh-fs-01:12.65px; --sh-fs-02:14.2px;
+  --sh-fs-04:18px;    --sh-fs-05:20.25px;
+  --sh-pill:999px;    --sh-sm:10px;       --sh-md:14px;
+  --sh-display:'Barlow Condensed','Barlow',system-ui,sans-serif;
+  --sh-shell:'Barlow',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --sh-ui:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --sh-mono:'IBM Plex Mono',ui-monospace,monospace;
+  --sh-fast:.16s ease;
+  --sh-move:.24s cubic-bezier(.2,.6,.3,1);
+}
+html[data-theme="dark"] .rlx-hdr,
+html[data-theme="dark"] .rlx-drawer,
+html[data-theme="dark"] .rlx-ftr{
+  --sh-bg:#132029; --sh-accent:#7ea6cc; --sh-panel:#7ea6cc;
+}
+html[data-theme="night"] .rlx-hdr,
+html[data-theme="night"] .rlx-drawer,
+html[data-theme="night"] .rlx-ftr{
+  --sh-bg:#050a10; --sh-accent:#6d93b8; --sh-panel:#6d93b8; --sh-teal:#3f9d91;
+}
+
+.rlx-row{
+  width:100%;max-width:1240px;margin:0 auto;padding:0 28px;
+  box-sizing:border-box;
+}
+
+/* ══ HEADER ══════════════════════════════════════════════════════ */
+.rlx-hdr{
+  position:sticky;top:0;z-index:80;
+  background:var(--sh-bg);
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.rlx-hdr *,.rlx-drawer *,.rlx-ftr *{box-sizing:border-box;}
+.rlx-hdr-row{
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;gap:24px;height:64px;
+}
+.rlx-wordmark{
+  font-family:var(--sh-ui);font-weight:700;font-size:var(--sh-fs-04);
+  letter-spacing:-0.02em;color:#fff;white-space:nowrap;
+  text-decoration:none;line-height:1;
+}
+.rlx-wordmark em{font-style:normal;color:var(--sh-panel);}
+.rlx-wordmark:hover,.rlx-wordmark:focus-visible{color:#fff;}
+
+.rlx-nav{
+  display:flex;align-items:center;justify-content:flex-start;gap:18px;
+  min-width:0;font-family:var(--sh-shell);
+  padding-left:clamp(12px,2.5vw,40px);
+}
+.rlx-nav a{
+  font-size:var(--sh-fs-02);letter-spacing:0.02em;line-height:1;
+  color:rgba(255,255,255,0.74);text-decoration:none;white-space:nowrap;
+  padding-bottom:3px;border-bottom:1px solid transparent;
+  transition:color var(--sh-fast),border-color var(--sh-fast);
+}
+.rlx-nav a:hover{color:#fff;}
+.rlx-nav a.is-active,.rlx-nav a[aria-current="page"]{color:#fff;border-bottom-color:var(--sh-accent);}
+
+.rlx-end{display:flex;align-items:center;justify-content:flex-end;gap:14px;}
+.rlx-end > .rlx-mood,
+.rlx-end > .rlx-lang,
+.rlx-end > .rlx-contact{height:34px;flex:none;}
+
+/* Selector de modo · segmented control con thumb deslizante. */
+.rlx-mood{
+  position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:stretch;
+  border:1px solid rgba(255,255,255,0.22);border-radius:var(--sh-pill);
+  padding:3px;background:rgba(255,255,255,0.05);
+  isolation:isolate;
+}
+.rlx-mood button + button::before{
+  content:"";position:absolute;left:0;top:7px;bottom:7px;width:1px;
+  background:rgba(255,255,255,0.16);
+  transition:opacity var(--sh-move);
+}
+.rlx-mood button[aria-pressed="true"]::before,
+.rlx-mood button[aria-pressed="true"] + button::before{opacity:0;}
+.rlx-mood-thumb{
+  position:absolute;z-index:0;top:3px;bottom:3px;left:3px;
+  width:calc((100% - 6px) / 3);
+  border-radius:var(--sh-pill);background:#ffffff;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.9);
+  transition:transform var(--sh-move);
+  pointer-events:none;
+}
+html[data-theme="dark"] .rlx-mood-thumb{transform:translateX(100%);}
+html[data-theme="night"] .rlx-mood-thumb{transform:translateX(200%);}
+.rlx-mood button{
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--sh-mono);font-weight:600;font-size:var(--sh-fs-00);
+  letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;text-align:center;
+  background:none;border:0;padding:0 12px;cursor:pointer;
+  color:rgba(255,255,255,0.62);line-height:1.4;
+  border-radius:var(--sh-pill);
+  transition:color var(--sh-fast);
+}
+.rlx-mood button:hover{color:rgba(255,255,255,0.92);}
+.rlx-mood button[aria-pressed="true"]{color:var(--sh-bg);}
+html[data-theme="dark"] .rlx-mood button[aria-pressed="true"],
+html[data-theme="night"] .rlx-mood button[aria-pressed="true"]{color:#0f1c26;}
+
+.rlx-lang{
+  display:flex;align-items:stretch;border:1px solid rgba(255,255,255,0.22);
+  border-radius:var(--sh-pill);overflow:hidden;
+}
+.rlx-lang button{
+  display:flex;align-items:center;
+  font-family:var(--sh-ui);font-weight:600;font-size:var(--sh-fs-01);
+  letter-spacing:0.08em;padding:0 13px;
+  border:0;background:transparent;color:rgba(255,255,255,0.7);
+  cursor:pointer;line-height:1.35;
+  transition:background var(--sh-fast),color var(--sh-fast);
+}
+.rlx-lang button:hover{color:#fff;}
+.rlx-lang button.is-on,
+.rlx-lang button.active,
+.rlx-lang button[aria-pressed="true"]{background:#fff;color:var(--sh-bg);}
+
+.rlx-contact{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--sh-ui);font-weight:600;font-size:var(--sh-fs-01);
+  line-height:1;letter-spacing:0.06em;text-transform:uppercase;
+  color:#fff;background:transparent;text-decoration:none;
+  border:1px solid var(--sh-accent);border-radius:var(--sh-pill);
+  padding:0 18px;white-space:nowrap;
+  transition:background var(--sh-fast),border-color var(--sh-fast);
+}
+.rlx-contact:hover,.rlx-contact:focus-visible{background:var(--sh-accent);color:#fff;}
+
+.rlx-burger{
+  display:none;border:1px solid rgba(255,255,255,0.22);
+  border-radius:var(--sh-sm);background:transparent;
+  color:#fff;font-size:var(--sh-fs-02);line-height:1;padding:8px 11px;cursor:pointer;
+}
+.rlx-drawer{display:none;background:var(--sh-bg);}
+.rlx-drawer[data-open="true"]{display:block;}
+.rlx-drawer nav{
+  display:flex;flex-direction:column;
+  border-top:1px solid rgba(255,255,255,0.14);
+  padding:16px 0 32px;
+}
+.rlx-drawer nav a{
+  font-family:var(--sh-shell);font-size:var(--sh-fs-02);line-height:1.5;
+  color:rgba(255,255,255,0.84);text-decoration:none;
+  padding:11px 2px;border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.rlx-drawer nav a:last-child{border-bottom:0;}
+.rlx-drawer nav a:hover{color:#fff;}
+.rlx-drawer-controls{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:16px 2px 8px;
+  border-top:1px solid rgba(255,255,255,0.14);
+}
+.rlx-drawer-controls .k{
+  font-size:var(--sh-fs-00);letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(255,255,255,0.56);
+}
+
+/* ══ FOOTER ══════════════════════════════════════════════════════ */
+.rlx-ftr{
+  background:var(--sh-bg);color:rgba(255,255,255,0.72);
+  padding:clamp(40px,6vh,64px) 0 0;margin-top:clamp(48px,7vh,80px);
+}
+.rlx-ftr-top{
+  padding-bottom:clamp(20px,3vh,28px);
+  display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+}
+.rlx-ftr .rlx-wordmark{
+  align-self:flex-start;
+  font-family:var(--sh-display);font-weight:700;
+  font-size:var(--sh-fs-05);line-height:1.1;letter-spacing:-0.02em;
+}
+.rlx-ftr .rlx-wordmark em{color:var(--sh-accent);}
+.rlx-fields{
+  display:flex;align-items:baseline;gap:9px;
+  font-size:var(--sh-fs-00);line-height:1.6;letter-spacing:0.1em;text-transform:uppercase;
+  color:#ffffff;margin-top:0;white-space:nowrap;
+}
+.rlx-fields .dot{
+  width:6px;height:6px;border-radius:50%;background:var(--sh-teal);
+  flex:none;margin-top:7px;
+}
+.rlx-fields .txt{min-width:0;}
+.rlx-blurb{
+  font-size:var(--sh-fs-01);line-height:1.6;max-width:74ch;
+  margin:0;color:rgba(255,255,255,0.62);
+}
+.rlx-ftr-grid{
+  display:grid;grid-template-columns:minmax(260px,1.2fr) minmax(0,0.8fr) minmax(0,1.3fr);
+  gap:clamp(28px,5vw,72px);padding-bottom:clamp(30px,5vh,44px);
+  border-top:1px solid rgba(255,255,255,0.14);
+  padding-top:clamp(26px,4vh,38px);
+}
+.rlx-name{font-family:var(--sh-display);font-weight:600;font-size:var(--sh-fs-04);color:#fff;line-height:1.2;}
+.rlx-role{font-size:var(--sh-fs-01);line-height:1.5;color:rgba(255,255,255,0.6);margin-top:3px;}
+.rlx-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;}
+.rlx-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--sh-ui);font-weight:600;font-size:var(--sh-fs-01);line-height:1.2;
+  color:#fff;text-decoration:none;
+  border:1px solid rgba(255,255,255,0.28);border-radius:var(--sh-pill);
+  padding:9px 17px;transition:border-color var(--sh-fast),color var(--sh-fast);
+}
+.rlx-btn:hover,.rlx-btn:focus-visible{border-color:var(--sh-accent);color:var(--sh-panel);}
+.rlx-btn svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;
+  stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.rlx-ftr-h{
+  font-size:var(--sh-fs-00);letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(255,255,255,0.56);margin-bottom:24px;
+}
+.rlx-list{display:flex;flex-direction:column;gap:11px;list-style:none;margin:0;padding:0;}
+.rlx-list a,.rlx-list .flat{
+  display:flex;gap:9px;align-items:flex-start;
+  font-size:var(--sh-fs-02);line-height:1.5;text-decoration:none;color:rgba(255,255,255,0.75);
+}
+.rlx-list a:hover,.rlx-list a:focus-visible{color:var(--sh-panel);}
+.rlx-list .n{
+  font-family:var(--sh-ui);font-size:var(--sh-fs-00);line-height:1.85;color:var(--sh-panel);flex:none;
+}
+.rlx-list .t{min-width:0;}
+.rlx-list .flat{color:rgba(255,255,255,0.6);}
+.rlx-list.is-projects li{margin-bottom:2px;}
+.rlx-list.is-projects .tt{display:block;font-size:var(--sh-fs-02);line-height:1.45;}
+.rlx-list.is-projects .flat .tt{color:rgba(255,255,255,0.55);}
+.rlx-list .is-cv{letter-spacing:0.06em;}
+.rlx-ftr-bot{
+  border-top:1px solid rgba(255,255,255,0.14);
+  padding:24px 0 40px;text-align:center;
+  font-size:var(--sh-fs-00);letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.56);
+}
+
+/* ══ Responsive del shell ════════════════════════════════════════ */
+@media (max-width:1180px){
+  .rlx-nav{gap:14px;padding-left:16px;}
+  .rlx-fields{white-space:normal;}
+}
+@media (max-width:1080px){
+  .rlx-nav{display:none;}
+  .rlx-burger{display:inline-block;}
+}
+@media (max-width:900px){
+  .rlx-ftr-grid{grid-template-columns:1fr;gap:clamp(26px,5vh,36px);}
+}
+@media (max-width:760px){
+  .rlx-fields{white-space:normal;}
+}
+@media (max-width:720px){
+  .rlx-row{padding:0 20px;}
+  .rlx-hdr-row{height:60px;gap:14px;}
+  .rlx-end .rlx-mood{display:none;}
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   PÁGINAS DE PROYECTO · ajustes de esta pasada
+   Sólo shell, tipografía, contenedores y modos. No se toca ninguna
+   metodología, ningún dato ni ningún embed.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* 1 · Sin mostaza: los acentos de acción pasan a la identidad azul
+       del shell. Los colores de dato (terracota, teal, regímenes)
+       quedan intactos, porque son lectura y no decoración. */
+body.rlx-project{
+  --brand-amber:#5980a6;
+  --brand-amber-hover:#7ea6cc;
+  --cta-primary:#5980a6;
+  --amber:#5980a6;
+}
+html[data-theme="dark"] body.rlx-project,
+html[data-theme="night"] body.rlx-project{
+  --brand-amber:#7ea6cc;
+  --brand-amber-hover:#9dc0dd;
+  --cta-primary:#7ea6cc;
+  --amber:#7ea6cc;
+}
+body.rlx-project .project-block::before{
+  background:linear-gradient(90deg,#5980a6 0%,#4fb3a5 100%);opacity:0.9;
+}
+body.rlx-project .proj-num{color:#41627f;}
+body.rlx-project .proj-num::before{background:#41627f;}
+body.rlx-project .proj-sub strong{color:#41627f;}
+html[data-theme="dark"] body.rlx-project .proj-num,
+html[data-theme="night"] body.rlx-project .proj-num,
+html[data-theme="dark"] body.rlx-project .proj-sub strong,
+html[data-theme="night"] body.rlx-project .proj-sub strong{color:#8fb2d4;}
+html[data-theme="dark"] body.rlx-project .proj-num::before,
+html[data-theme="night"] body.rlx-project .proj-num::before{background:#8fb2d4;}
+
+/* 2 · Sin flechas: las que quedaban eran decorativas y ya no se
+       escriben en el marcado. Esta regla cubre cualquier resto. */
+body.rlx-project .rl-dash-cta .arr,
+body.rlx-project .rl-pager .arr,
+body.rlx-project .rl-action .arr{display:none;}
+body.rlx-project .rl-dash-cta,
+body.rlx-project .rl-pager-btn{gap:14px;}
+
+/* 3 · Tipografía unificada entre Project 01 y Project 02: misma
+       familia, mismo cuerpo y misma justificación editorial. */
+body.rlx-project .proj-narrative p,
+body.rlx-project .rl-read p{
+  font-family:var(--sans);font-size:15px;line-height:1.7;
+  text-align:left;text-wrap:pretty;max-width:none;
+}
+body.rlx-project .rl-sec-desc{text-wrap:pretty;}
+body.rlx-project .cs-line{text-wrap:pretty;}
+
+/* 4 · Fondos por modo: en oscuro y noche ningún contenedor del shell
+       queda en blanco. La hoja de papel claro se reserva para la
+       figura analítica, que es la que no puede adaptarse. */
+html[data-theme="dark"] body.rlx-project .rl-matrix,
+html[data-theme="night"] body.rlx-project .rl-matrix{
+  background:transparent;border-color:rgba(255,255,255,0.12);
+  --surface:transparent;
+  /* El contenedor deja de ser papel claro, así que su tinta vuelve a la
+     del modo: si no, el negro de la hoja analítica se queda sobre el
+     fondo oscuro y las notas y los ejes desaparecen. */
+  --ink:#e9eef2;--ink-deep:#f4f8fb;
+  --muted:rgba(233,238,242,0.74);--muted-2:rgba(233,238,242,0.56);
+  --rule:rgba(255,255,255,0.10);--rule-strong:rgba(255,255,255,0.18);
+  --teal:#69adbe;--teal-deep:#8ac4ce;--terra-deep:#d79a7c;
+  color:var(--ink);
+}
+html[data-theme="night"] body.rlx-project .rl-matrix{
+  --ink:#dbe4ea;--ink-deep:#eaf1f6;
+  --muted:rgba(219,228,234,0.66);--muted-2:rgba(219,228,234,0.48);
+  --rule:rgba(255,255,255,0.07);--rule-strong:rgba(255,255,255,0.13);
+  --teal:#5c98a8;--teal-deep:#79b0bb;--terra-deep:#d79a7c;
+}
+/* La hoja de papel claro se conserva sólo donde vive la figura, con
+   sus tokens de dato originales. */
+html[data-theme="dark"] body.rlx-project .rl-matrix-plot,
+html[data-theme="night"] body.rlx-project .rl-matrix-plot{
+  background:#ffffff;border-radius:14px;margin:14px;padding:20px 22px 8px;
+  --ink:#1A1612;--muted:#6B6355;--muted-2:#9A9286;
+  --rule:rgba(0,18,25,0.08);--rule-strong:rgba(0,18,25,0.16);
+  --teal:#005F73;--teal-deep:#2F5D62;--terra-deep:#B05B3B;
+  color:var(--ink);
+}
+html[data-theme="dark"] body.rlx-project .rl-axhelp,
+html[data-theme="night"] body.rlx-project .rl-axhelp,
+html[data-theme="dark"] body.rlx-project .rl-regimes,
+html[data-theme="night"] body.rlx-project .rl-regimes{
+  background:transparent;border-top:0;padding:0 14px;
+}
+html[data-theme="dark"] body.rlx-project .rl-matrix-foot,
+html[data-theme="night"] body.rlx-project .rl-matrix-foot{
+  background:transparent;border-top:1px solid rgba(255,255,255,0.10);
+  margin-top:16px;
+}
+html[data-theme="dark"] body.rlx-project .rl-ax,
+html[data-theme="night"] body.rlx-project .rl-ax{
+  background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.14);
+}
+
+/* 5 · Piso de lectura: nada por debajo de 11px en ninguna página. */
+body.rlx-project .rl-ax b,
+body.rlx-project .rl-matrix-foot .src,
+body.rlx-project .rl-regime .rt,
+body.rlx-project .module-label,
+body.rlx-project .proj-num,
+body.rlx-project .proj-meta{font-size:11px;}
+
+
+/* 6 · FAI explorer · el marco de 820px cortaba el contenido del
+       explorador. La caja parte de 1040px y el ajuste automático
+       nunca baja de 820. */
+body.rlx-project .rl-embed-body.h-1040{height:1040px;min-height:820px;}
+@media (max-width:900px){
+  body.rlx-project .rl-embed-body.h-1040{height:860px;min-height:700px;}
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   7 · Aislamiento de tokens para el export integrado
+   En el export integrado conviven la hoja de la home y
+   el sistema 2.9 de los proyectos. Los nombres que ambas comparten
+   (--bg, --surface, --muted, --teal) se restituyen aquí dentro de cada
+   bloque de proyecto, de modo que ninguna sección cambia de paleta por
+   el orden de carga.
+   ══════════════════════════════════════════════════════════════════ */
+.project-block{
+  --bg:#FFFFFF;--bg-warm:#F3F5F7;--surface:#FFFFFF;--surface-2:#EEF1F4;
+  --muted:#6B6355;--muted-2:#9A9286;--teal:#005F73;--teal-deep:#2F5D62;
+  --container:1240px;--gutter:28px;
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;
+  --space-5:24px;--space-6:32px;--space-7:40px;--space-8:48px;
+}
+html[data-theme="dark"] .project-block{
+  --bg:#0f1c26;--bg-warm:#132029;--surface:#16242f;--surface-2:#1b2b37;
+  --muted:rgba(233,238,242,0.74);--muted-2:rgba(233,238,242,0.56);
+  --teal:#69adbe;--teal-deep:#8ac4ce;
+}
+html[data-theme="night"] .project-block{
+  --bg:#070d13;--bg-warm:#0a1119;--surface:#0d151d;--surface-2:#111b24;
+  --muted:rgba(219,228,234,0.66);--muted-2:rgba(219,228,234,0.48);
+  --teal:#5c98a8;--teal-deep:#79b0bb;
+}
+/* Separación entre las tres partes del export integrado. */
+.rlx-part-label{
+  max-width:1240px;margin:0 auto;padding:clamp(40px,6vh,72px) 28px 0;
+  font-family:var(--sh-mono,'IBM Plex Mono',ui-monospace,monospace);
+  font-size:11.25px;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--muted-2,#6e6e71);
+}

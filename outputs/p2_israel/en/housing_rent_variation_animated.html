@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Territorial rent acceleration · Israel</title>
+<script>/* reco-lab embed-clean */(function(){var p=new URLSearchParams(location.search);var e=p.get("embed")==="1"||window.self!==window.top;if(e)document.documentElement.setAttribute("data-embed","1");})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+ :root{
+   --ink:#1A1612;--muted:#6B6355;--muted-2:#9A9286;--rule:rgba(0,18,25,0.10);
+   --rule-strong:rgba(0,18,25,0.18);--surface:#FFFFFF;--offwhite:#F6F7F8;
+   --teal:#005F73;--navy:#1E2D3D;--green:#5FAE9A;--amber:#D9941A;--alert:#8C2D1F;
+   --sans:'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+   --mono:'IBM Plex Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace;
+   --serif:'IBM Plex Serif',ui-serif,'Times New Roman',serif;
+ }
+ *{box-sizing:border-box;}
+ html,body{margin:0;padding:0;background:var(--surface);color:var(--ink);}
+ body{font-family:var(--sans);}
+
+ /* ── Portfolio chrome · shown only when the output is opened on its own.
+       Same contract as every other Project 02 output: navy institutional
+       header and footer, hidden the moment the document is embedded. ── */
+ .tf-p-header{background:var(--navy);color:#F5F4F0;border-bottom:1px solid rgba(95,174,154,.22);}
+ .tf-p-nav{max-width:1240px;margin:0 auto;padding:0 28px;height:62px;display:flex;
+   align-items:center;justify-content:space-between;gap:22px;}
+ .tf-p-brand{display:flex;align-items:baseline;gap:14px;text-decoration:none;color:#F5F4F0;}
+ .tf-p-brand .m{font-family:var(--serif);font-weight:500;font-size:18px;letter-spacing:.04em;}
+ .tf-p-brand .m em{font-style:normal;color:var(--green);}
+ .tf-p-links{display:flex;align-items:center;gap:22px;}
+ .tf-p-links a{color:#C7D0D8;text-decoration:none;font-size:12.5px;font-weight:500;
+   letter-spacing:.04em;padding:6px 0;border-bottom:1px solid transparent;}
+ .tf-p-links a:hover{color:#fff;border-bottom-color:var(--green);}
+ .tf-p-cta{display:inline-flex;align-items:center;background:var(--amber);color:var(--navy);
+   text-decoration:none;font-size:12.5px;font-weight:600;padding:10px 18px;border-radius:6px;}
+ @media(max-width:960px){.tf-p-links{display:none;}}
+ .tf-p-footer{background:var(--navy);color:#F5F4F0;padding:28px 0 18px;margin-top:8px;}
+ .tf-p-footer .in{max-width:1240px;margin:0 auto;padding:0 28px;display:flex;
+   justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:flex-start;}
+ .tf-p-footer .nm{font-family:var(--serif);font-size:20px;font-weight:500;}
+ .tf-p-footer .nm em{font-style:normal;color:var(--green);}
+ .tf-p-footer .au{font-size:15px;font-weight:600;}
+ .tf-p-footer .ro{font-size:12.5px;color:rgba(245,244,240,.68);margin-top:3px;}
+ .tf-p-footer .bot{max-width:1240px;margin:18px auto 0;padding:14px 28px 0;
+   border-top:1px solid rgba(245,244,240,.12);text-align:center;font-family:var(--mono);
+   font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,244,240,.55);}
+ html[data-embed="1"] .tf-p-header,html[data-embed="1"] .tf-p-footer{display:none!important;}
+
+ /* ── Figure ─────────────────────────────────────────────────────── */
+ .wrap{padding:18px 24px 20px;}
+ .hd{border-bottom:1px solid var(--rule-strong);padding-bottom:12px;margin-bottom:14px;}
+ .hd h1{font-family:var(--serif);font-weight:400;font-size:21px;line-height:1.22;margin:0 0 6px;letter-spacing:-0.012em;}
+ .hd p{font-size:13px;line-height:1.55;color:var(--muted);margin:0;max-width:104ch;}
+
+ /* The map column is sized to the projection plus the room its labels need,
+    so a de-collided label never has to be clipped or dropped. */
+ .stage{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;}
+ .pnl-t{font-family:var(--mono);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;
+        color:var(--muted-2);font-weight:600;padding-bottom:8px;margin-bottom:9px;
+        border-bottom:1px solid var(--rule);}
+ svg{display:block;width:100%;height:auto;}
+
+ .ctl{display:flex;align-items:flex-end;gap:18px;margin-top:14px;padding-top:13px;
+      border-top:1px solid var(--rule-strong);flex-wrap:wrap;}
+ /* Fixed-size icon controls. A word inside the button made it change width
+    between play and pause, so the whole control row reflowed on every state
+    change. The glyph swaps; the box never does. */
+ .ctl-btns{display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;padding-bottom:2px;}
+ button.pp,button.rs{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:38px;height:38px;min-width:38px;max-width:38px;flex:0 0 38px;padding:0;
+      border-radius:4px;cursor:pointer;line-height:1;
+      font-family:var(--sans);font-size:13px;}
+ button.pp{border:1px solid var(--navy);background:var(--navy);color:#F5F4F0;}
+ button.pp:hover{background:#2A3D4F;border-color:#2A3D4F;}
+ button.rs{border:1px solid var(--rule-strong);background:var(--surface);color:var(--navy);}
+ button.rs:hover{border-color:var(--teal);color:var(--teal);}
+ button.pp svg,button.rs svg{width:15px;height:15px;display:block;}
+ button.pp:focus-visible,button.rs:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+ .per{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--ink);
+      letter-spacing:0.06em;min-width:88px;padding-bottom:4px;}
+ .per span{display:block;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;
+      color:var(--muted-2);font-weight:500;margin-bottom:2px;}
+
+ /* The timeline carries one temporal reference: a dashed vertical mark on
+    October 2023. It is a position on the axis, not a verdict printed over
+    the figure, so it does not follow the series forward. */
+ .tl{position:relative;flex:1;min-width:220px;padding-bottom:2px;}
+ .tl input[type=range]{width:100%;accent-color:#005F73;height:22px;margin:0;display:block;}
+ .tl .mk{position:absolute;top:-2px;height:26px;width:0;border-left:1px dashed var(--alert);
+      pointer-events:none;}
+ .tl .mkl{position:absolute;top:25px;transform:translateX(-50%);white-space:nowrap;
+      font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+      color:var(--alert);font-weight:600;pointer-events:none;}
+
+ .lg{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;margin-top:22px;
+     padding-top:13px;border-top:1px solid var(--rule);}
+ .lg .k{font-family:var(--mono);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;
+     color:var(--muted-2);font-weight:600;}
+ .lg .li{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);}
+ .lg .li i{width:13px;height:13px;border-radius:50%;display:inline-block;}
+ @media (max-width:820px){ .stage{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<header class="tf-p-header">
+  <div class="tf-p-nav">
+    <a class="tf-p-brand" href="../../../index.html"><span class="m">RECO<em>-LAB</em></span></a>
+    <nav class="tf-p-links" aria-label="Primary">
+      <a href="../../../index.html">Home</a>
+      <a href="../../../index.html#topics">Topics</a>
+      <a href="../../../index.html#systems">Systems</a>
+      <a href="../../../index.html#projects">Projects</a>
+      <a href="../../../metodos.html">Methods</a>
+    </nav>
+    <a class="tf-p-cta" href="../../../project-02-housing.html">Project 02</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hd">
+    <h1>Territorial rent acceleration · 2021–2025</h1>
+    <p>Accumulated rent variation against the 2021-Q1 baseline, read by subdistrict and against housing absorption capacity.</p>
+  </div>
+
+  <div class="stage">
+    <div>
+      <div class="pnl-t">Territorial distribution</div>
+      <svg id="map" viewBox="0 0 340 410" role="img" aria-label="Territorial distribution of rent"></svg>
+    </div>
+    <div>
+      <div class="pnl-t">Accumulated variation by subdistrict</div>
+      <svg id="bars" viewBox="0 0 820 410" role="img" aria-label="Accumulated variation by subdistrict"></svg>
+    </div>
+  </div>
+
+  <div class="ctl">
+    <span class="ctl-btns"><button class="pp" id="pp" type="button" aria-label="Play" title="Play"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg></button><button class="rs" id="rs" type="button" aria-label="Reset" title="Reset"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 2.6a5.4 5.4 0 1 1-5.32 6.3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 0.6v4l-3-2z" fill="currentColor"/></svg></button></span>
+    <span class="per"><span>Period</span><b id="per">2021-Q1</b></span>
+    <span class="tl">
+      <input type="range" id="sl" min="0" max="16" value="0" step="1" aria-label="Period" />
+      <span class="mk" id="mk" aria-hidden="true"></span>
+      <span class="mkl" id="mkl" aria-hidden="true">Oct 2023</span>
+    </span>
+  </div>
+
+  <div class="lg">
+    <span class="k">Rent variation</span>
+    <span class="li"><i style="background:#2F5D62"></i>under 10 %</span>
+    <span class="li"><i style="background:#4E8C87"></i>10 to 20 %</span>
+    <span class="li"><i style="background:#D9941A"></i>20 to 28 %</span>
+    <span class="li"><i style="background:#CA6702"></i>28 to 36 %</span>
+    <span class="li"><i style="background:#8C2D1F"></i>36 % or more</span>
+  </div>
+</div>
+
+<footer class="tf-p-footer">
+  <div class="in">
+    <div><div class="nm">RECO<em>-LAB</em></div><div class="ro">Urban Economics &middot; Housing &middot; Displacement &middot; Resilience &middot; Recovery</div></div>
+    <div><div class="au">Nathaly Badra</div><div class="ro">Urban Economist &middot; Resilient Cities &middot; Territorial Recovery</div></div>
+  </div>
+  <div class="bot">&copy; 2026 RECO-LAB &middot; Applied urban research</div>
+</footer>
+
+<script>
+(function(){
+ var NAMES=["Tel Aviv", "Petah Tikva", "Rehovot", "Ramla", "Haifa", "Hadera", "Jerusalem", "Ashkelon", "Beer Sheva", "Jezreel", "Akko", "Kinneret", "Golan", "Tzfat", "Krayot"], DIST=["Tel Aviv", "Central", "Central", "Central", "Haifa", "Haifa", "Jerusalem", "Southern", "Southern", "Northern", "Northern", "Northern", "Northern", "Northern", "Haifa"], LAT=[32.08, 32.09, 31.89, 31.93, 32.79, 32.44, 31.77, 31.67, 31.25, 32.65, 32.92, 32.8, 32.99, 32.97, 32.83], LON=[34.78, 34.88, 34.81, 34.87, 34.99, 34.92, 35.21, 34.57, 34.79, 35.3, 35.08, 35.55, 35.75, 35.49, 35.06];
+ var PER=["2021-Q1", "2021-Q2", "2021-Q3", "2021-Q4", "2022-Q1", "2022-Q2", "2022-Q3", "2022-Q4", "2023-Q1", "2023-Q2", "2023-Q3", "2023-Q4", "2024-Q1", "2024-Q2", "2024-Q3", "2024-Q4", "2025-Q1"], PCT=[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [2.2, 1.6, 1.6, 1.6, 1.6, 1.6, 2.2, 1.0, 1.0, 1.6, 1.0, 1.0, 1.0, 1.0, 1.6], [5.0, 3.7, 3.7, 3.7, 3.7, 3.7, 5.0, 2.5, 2.5, 3.7, 2.5, 2.5, 2.5, 2.5, 3.7], [7.7, 5.8, 5.8, 5.8, 5.8, 5.8, 7.7, 4.0, 4.0, 5.8, 3.9, 4.0, 3.9, 3.9, 5.8], [10.2, 7.6, 7.6, 7.6, 7.6, 7.6, 10.2, 5.1, 5.1, 7.6, 5.1, 5.1, 5.1, 5.1, 7.6], [12.6, 9.3, 9.3, 9.3, 9.3, 9.3, 12.6, 6.1, 6.1, 9.3, 6.2, 6.1, 6.1, 6.2, 9.3], [15.6, 11.6, 11.6, 11.6, 11.6, 11.6, 15.6, 7.7, 7.7, 11.6, 7.7, 7.7, 7.7, 7.7, 11.6], [18.6, 13.9, 13.9, 13.9, 13.9, 13.9, 18.6, 9.2, 9.2, 13.9, 9.3, 9.3, 9.2, 9.3, 13.9], [21.4, 15.8, 15.8, 15.8, 15.8, 15.8, 21.4, 10.4, 10.5, 15.8, 10.4, 10.5, 10.4, 10.4, 15.8], [24.0, 17.6, 17.6, 17.6, 17.6, 17.6, 24.0, 11.5, 11.5, 17.6, 11.6, 11.5, 11.6, 11.5, 17.6], [27.4, 20.1, 20.1, 20.1, 20.1, 20.1, 27.4, 13.2, 13.2, 20.1, 13.2, 13.2, 13.2, 13.2, 20.1], [30.7, 22.5, 22.5, 22.5, 22.5, 22.5, 30.7, 14.8, 14.8, 22.5, 14.8, 14.8, 14.8, 14.8, 22.5], [31.2, 23.0, 23.0, 23.0, 21.2, 21.2, 29.3, 13.5, 13.5, 21.2, 13.5, 13.5, 13.6, 13.6, 21.2], [34.2, 25.8, 25.8, 25.8, 22.4, 22.4, 30.5, 11.6, 11.6, 22.4, 11.6, 11.6, 11.6, 11.6, 22.4], [38.0, 29.4, 29.4, 29.4, 24.2, 24.2, 32.5, 10.3, 10.3, 24.2, 10.3, 10.3, 10.3, 10.3, 24.2], [41.7, 32.8, 32.9, 32.9, 26.0, 26.0, 34.4, 8.8, 8.8, 26.0, 8.8, 8.8, 8.8, 8.8, 26.0], [45.1, 36.0, 36.0, 36.0, 27.3, 27.3, 35.8, 7.1, 7.1, 27.3, 7.1, 7.1, 7.1, 7.1, 27.3]], ILS=[[95.0, 72.0, 68.0, 62.0, 71.0, 58.0, 82.0, 48.0, 42.0, 45.0, 52.0, 44.0, 38.0, 40.0, 61.0], [97.09, 73.15, 69.09, 62.99, 72.14, 58.93, 83.8, 48.48, 42.42, 45.72, 52.52, 44.44, 38.38, 40.4, 61.98], [99.71, 74.69, 70.54, 64.31, 73.65, 60.17, 86.07, 49.21, 43.06, 46.68, 53.31, 45.11, 38.96, 41.01, 63.28], [102.3, 76.18, 71.95, 65.6, 75.12, 61.37, 88.3, 49.9, 43.66, 47.61, 54.05, 45.74, 39.5, 41.58, 64.54], [104.66, 77.48, 73.17, 66.72, 76.4, 62.41, 90.34, 50.44, 44.14, 48.42, 54.65, 46.24, 39.94, 42.04, 65.64], [106.96, 78.72, 74.34, 67.78, 77.62, 63.41, 92.32, 50.95, 44.58, 49.2, 55.2, 46.7, 40.33, 42.46, 66.69], [109.85, 80.37, 75.9, 69.21, 79.25, 64.74, 94.82, 51.71, 45.25, 50.23, 56.02, 47.4, 40.94, 43.09, 68.09], [112.7, 81.98, 77.42, 70.59, 80.84, 66.04, 97.28, 52.44, 45.88, 51.24, 56.81, 48.07, 41.51, 43.7, 69.45], [115.3, 83.37, 78.74, 71.79, 82.21, 67.16, 99.52, 53.01, 46.39, 52.11, 57.43, 48.6, 41.97, 44.18, 70.63], [117.83, 84.7, 80.0, 72.94, 83.53, 68.23, 101.71, 53.54, 46.85, 52.94, 58.01, 49.08, 42.39, 44.62, 71.76], [121.01, 86.48, 81.68, 74.47, 85.28, 69.67, 104.45, 54.35, 47.55, 54.05, 58.88, 49.82, 43.03, 45.29, 73.27], [124.16, 88.21, 83.31, 75.96, 86.99, 71.06, 107.17, 55.11, 48.22, 55.13, 59.7, 50.52, 43.63, 45.92, 74.74], [124.66, 88.57, 83.65, 76.27, 86.03, 70.28, 105.99, 54.5, 47.69, 54.53, 59.04, 49.96, 43.15, 45.42, 73.91], [127.52, 90.6, 85.57, 78.02, 86.89, 70.98, 107.05, 53.58, 46.88, 55.07, 58.04, 49.11, 42.41, 44.65, 74.65], [131.09, 93.14, 87.97, 80.2, 88.19, 72.05, 108.66, 52.93, 46.32, 55.9, 57.34, 48.52, 41.91, 44.11, 75.77], [134.63, 95.65, 90.34, 82.37, 89.43, 73.06, 110.18, 52.24, 45.71, 56.68, 56.6, 47.89, 41.36, 43.54, 76.83], [137.86, 97.95, 92.51, 84.35, 90.41, 73.86, 111.39, 51.41, 44.98, 57.3, 55.69, 47.12, 40.7, 42.84, 77.68]];
+ var LANG="en", UNIT="ILS/m²/month";
+ var BINS=[[10, "#2F5D62"], [20, "#4E8C87"], [28, "#D9941A"], [36, "#CA6702"], [999, "#8C2D1F"]];
+ var BRKI=PER.indexOf("2023-Q4");
+
+ function col(v){ for(var i=0;i<BINS.length;i++){ if(v<BINS[i][0]) return BINS[i][1]; } return BINS[BINS.length-1][1]; }
+ function num(v,d){ var s=v.toFixed(d==null?1:d); return LANG==="es"? s.replace(".",","): s; }
+
+ var NS="http://www.w3.org/2000/svg";
+ function el(n,a){ var e=document.createElementNS(NS,n); for(var k in a) e.setAttribute(k,a[k]); return e; }
+
+ /* ── map · equirectangular, corrected for latitude ─────────────── */
+ var MW=340, MH=410, PAD=24;
+ var la0=Math.min.apply(null,LAT), la1=Math.max.apply(null,LAT);
+ var lo0=Math.min.apply(null,LON), lo1=Math.max.apply(null,LON);
+ var kx=Math.cos((la0+la1)/2*Math.PI/180);
+ var spanX=(lo1-lo0)*kx, spanY=(la1-la0);
+ var sc=Math.min((MW-2*PAD-96)/spanX,(MH-2*PAD-14)/spanY);
+ var offX=PAD+6, offY=(MH-spanY*sc)/2;
+ function px(i){ return offX+((LON[i]-lo0)*kx)*sc; }
+ function py(i){ return offY+((la1-LAT[i])*sc); }
+
+ var maxIls=0; ILS.forEach(function(r){ r.forEach(function(v){ if(v>maxIls) maxIls=v; }); });
+ function rad(v){ return 4.5+9.5*Math.sqrt(v/maxIls); }
+
+ var map=document.getElementById('map'), bars=document.getElementById('bars');
+ var mDots=[], mLbls=[], mLeads=[];
+
+ /* Label de-collision. Fifteen subdistricts inside one degree of longitude
+    put four labels on top of each other around Gush Dan, which is exactly
+    where the reading matters. Each label keeps its own horizontal side and
+    is pushed vertically until no two overlap; a hairline leader ties it
+    back to its point whenever it had to move. */
+ /* LBLH is the em box of the label, not its cap height: two labels a cap
+    height apart still collide once the type is set. */
+ var LBLH=16, FS=11.5, CW=6.05;
+ function layoutLabels(){
+   var items=NAMES.map(function(n,i){
+     var w=n.length*CW+2;
+     var right=(px(i)+11+w) <= (MW-4);
+     return { i:i, w:w, right:right, x:px(i)+(right?11:-11), y0:py(i), y:py(i) };
+   });
+   ['r','l'].forEach(function(side){
+     var g=items.filter(function(it){ return (side==='r')===it.right; });
+     g.sort(function(a,b){ return a.y0-b.y0; });
+     /* forward pass pushes down, backward pass pulls the overflow back up */
+     for(var k=1;k<g.length;k++){ if(g[k].y-g[k-1].y<LBLH) g[k].y=g[k-1].y+LBLH; }
+     var lim=MH-8;
+     if(g.length && g[g.length-1].y>lim){
+       g[g.length-1].y=lim;
+       for(var k2=g.length-2;k2>=0;k2--){ if(g[k2+1].y-g[k2].y<LBLH) g[k2].y=g[k2+1].y-LBLH; }
+     }
+     if(g.length && g[0].y<12){
+       g[0].y=12;
+       for(var k3=1;k3<g.length;k3++){ if(g[k3].y-g[k3-1].y<LBLH) g[k3].y=g[k3-1].y+LBLH; }
+     }
+   });
+   return items;
+ }
+
+ (function buildMap(){
+   var g=el('g',{}); map.appendChild(g);
+   /* graticule: real degree lines, so the points keep a geographic frame
+      without drawing an invented boundary */
+   for(var la=Math.ceil(la0); la<=Math.floor(la1); la++){
+     var y=offY+((la1-la)*sc);
+     g.appendChild(el('line',{x1:8,y1:y,x2:MW-8,y2:y,stroke:'#E6EAED','stroke-width':1}));
+     var t=el('text',{x:9,y:y-4,'font-family':"var(--mono)",'font-size':11,fill:'#B9BFC4'});
+     t.textContent=la+'°N'; g.appendChild(t);
+   }
+   for(var lo=Math.ceil(lo0); lo<=Math.floor(lo1); lo++){
+     var x=offX+((lo-lo0)*kx)*sc;
+     g.appendChild(el('line',{x1:x,y1:8,x2:x,y2:MH-14,stroke:'#E6EAED','stroke-width':1}));
+   }
+
+   var lay=layoutLabels();
+   /* leaders first, then dots, then labels: the type always sits on top */
+   lay.forEach(function(it){
+     var ln=el('line',{x1:0,y1:0,x2:0,y2:0,stroke:'#C9D0D6','stroke-width':0.9});
+     g.appendChild(ln); mLeads[it.i]=ln;
+   });
+   NAMES.forEach(function(n,i){
+     var c=el('circle',{cx:px(i),cy:py(i),r:6,fill:'#2F5D62',stroke:'#FFFFFF','stroke-width':1.6});
+     var ttl=el('title',{}); c.appendChild(ttl); c.__t=ttl;
+     g.appendChild(c); mDots.push(c);
+   });
+   lay.forEach(function(it){
+     var lb=el('text',{
+       x:it.x, y:it.y+4,
+       'text-anchor': it.right?'start':'end',
+       'font-family':"var(--sans)",'font-size':FS,fill:'#1A1612',
+       stroke:'#FFFFFF','stroke-width':3.2,'stroke-linejoin':'round','paint-order':'stroke'
+     });
+     lb.textContent=NAMES[it.i]; g.appendChild(lb); mLbls[it.i]=lb;
+
+     var ld=mLeads[it.i];
+     if(Math.abs(it.y-it.y0)>2){
+       ld.setAttribute('x1', px(it.i)+(it.right?7:-7));
+       ld.setAttribute('y1', it.y0);
+       ld.setAttribute('x2', it.x-(it.right?2:-2));
+       ld.setAttribute('y2', it.y);
+     }
+   });
+ })();
+
+ var bRects=[], bVals=[], bNames=[], ORD=NAMES.map(function(_,i){return i;});
+ var ROWH=24, Y0=12, X0=150, XMAX=740;
+ (function buildBars(){
+   var g=el('g',{}); bars.appendChild(g);
+   for(var t=0;t<=40;t+=10){
+     var x=X0+(t/46)*(XMAX-X0);
+     g.appendChild(el('line',{x1:x,y1:Y0,x2:x,y2:Y0+15*ROWH,stroke:'#EDF0F2','stroke-width':1}));
+     var tx=el('text',{x:x,y:Y0+15*ROWH+20,'text-anchor':'middle','font-family':"var(--mono)",'font-size':12,fill:'#9A9286'});
+     tx.textContent=t+' %'; g.appendChild(tx);
+   }
+   g.appendChild(el('line',{x1:X0,y1:Y0,x2:X0,y2:Y0+15*ROWH,stroke:'#C9D0D6','stroke-width':1}));
+   for(var i=0;i<15;i++){
+     var y=Y0+i*ROWH;
+     var nm=el('text',{x:X0-12,y:y+16,'text-anchor':'end','font-family':"var(--sans)",'font-size':13,fill:'#1A1612'});
+     g.appendChild(nm); bNames.push(nm);
+     var r=el('rect',{x:X0,y:y+5,width:0,height:15,rx:4,fill:'#2F5D62'});
+     var ttl=el('title',{}); r.appendChild(ttl); r.__t=ttl;
+     g.appendChild(r); bRects.push(r);
+     var v=el('text',{x:X0+6,y:y+17,'font-family':"var(--mono)",'font-size':12.5,'font-weight':600,fill:'#2F5D62'});
+     g.appendChild(v); bVals.push(v);
+   }
+ })();
+
+ var per=document.getElementById('per'), sl=document.getElementById('sl');
+
+ /* The October 2023 reference sits on the timeline, at the position the
+    quarter actually occupies. 9px is half the native thumb. */
+ (function placeMark(){
+   var f=BRKI/(PER.length-1);
+   var pos='calc(9px + '+f.toFixed(4)+' * (100% - 18px))';
+   document.getElementById('mk').style.left=pos;
+   document.getElementById('mkl').style.left=pos;
+ })();
+
+ function render(k){
+   var pct=PCT[k], ils=ILS[k];
+   per.textContent=PER[k];
+
+   NAMES.forEach(function(n,i){
+     var c=mDots[i];
+     c.setAttribute('r', rad(ils[i]).toFixed(2));
+     c.setAttribute('fill', col(pct[i]));
+     c.__t.textContent = n+' · '+PER[k]+' · '+num(pct[i])+' % · '+num(ils[i],0)+' '+UNIT;
+   });
+
+   ORD.sort(function(a,b){ return pct[b]-pct[a] || NAMES[a].localeCompare(NAMES[b]); });
+   ORD.forEach(function(src,row){
+     var w=Math.max(0,(pct[src]/46)*(XMAX-X0));
+     bNames[row].textContent=NAMES[src];
+     var r=bRects[row];
+     r.setAttribute('width', w.toFixed(1));
+     r.setAttribute('fill', col(pct[src]));
+     r.__t.textContent = NAMES[src]+' · '+DIST[src]+' · '+num(pct[src])+' % · '+num(ils[src],0)+' '+UNIT;
+     bVals[row].setAttribute('x', X0+w+7);
+     bVals[row].setAttribute('fill', col(pct[src]));
+     bVals[row].textContent='+'+num(pct[src])+' %';
+   });
+ }
+
+ /* ── playback ──────────────────────────────────────────────────── */
+ var i=0, timer=null, userTook=false;
+ var ppBtn=document.getElementById('pp'), rsBtn=document.getElementById('rs');
+ var L_PLAY="Play", L_PAUSE="Pause";
+ var ICON_PLAY='<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>';
+ var ICON_PAUSE='<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="4" y="2.5" width="3" height="11" fill="currentColor"/><rect x="9" y="2.5" width="3" height="11" fill="currentColor"/></svg>';
+
+ /* The glyph and the accessible name change; the button box does not. */
+ function setBtn(playing){
+   ppBtn.innerHTML = playing? ICON_PAUSE : ICON_PLAY;
+   ppBtn.setAttribute('aria-label', playing? L_PAUSE : L_PLAY);
+   ppBtn.setAttribute('title', playing? L_PAUSE : L_PLAY);
+ }
+ function stop(){ if(timer){ clearInterval(timer); timer=null; } setBtn(false); }
+ function start(speed){
+   stop();
+   if(i>=PER.length-1) i=0;
+   var step=Math.max(120, Math.round(760/(speed||1)));
+   setBtn(true);
+   timer=setInterval(function(){
+     i++;
+     if(i>=PER.length){ i=PER.length-1; stop(); return; }
+     sl.value=i; render(i);
+   }, step);
+ }
+
+ ppBtn.addEventListener('click', function(){
+   userTook=true;
+   if(timer) stop(); else start(1);
+ });
+ rsBtn.addEventListener('click', function(){
+   userTook=true; stop(); i=0; sl.value=0; render(0);
+ });
+ sl.addEventListener('input', function(){ userTook=true; stop(); i=+sl.value; render(i); });
+
+ render(0);
+
+ /* ── host receiver · same contract as the Project 01 timeline ──── */
+ function ack(){ try{ (window.parent||window).postMessage({type:'rl-timeline-ready'},'*'); }catch(e){} }
+ window.addEventListener('message', function(ev){
+   var d=ev.data; if(!d||typeof d!=='object') return;
+   if(d.type==='rl-autoplay'){ if(userTook||timer) return; start(d.speed||1.5); ack(); }
+   if(d.type==='rl-pause'){ if(!userTook) stop(); }
+ }, false);
+ ack();
+})();
+</script>
+</body>
+</html>

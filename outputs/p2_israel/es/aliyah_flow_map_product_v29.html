@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_12011e767516ad444f0b8268f43be62e {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-ant-path@1.1.2/dist/leaflet-ant-path.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style id="tf-p2-shell-v29">
+:root{--tf-inst:#1E2D3D;--tf-analytical:#08111B;--tf-teal:#005F73;--tf-green:#5FAE9A;
+ --tf-amber:#D9941A;--tf-ink:#0E1418;--tf-off:#F3F5F7;--tf-rule:rgba(0,18,25,0.16);
+ --tf-serif:'IBM Plex Serif',ui-serif,serif;--tf-sans:'IBM Plex Sans',Helvetica,Arial,sans-serif;
+ --tf-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;--tf-rb:6px;--tf-rp:999px;--tf-r:8px;}
+html,body{margin:0!important;padding:0!important;width:auto!important;height:auto!important;
+ background:var(--tf-off)!important;font-family:var(--tf-sans);}
+.tf-p-header{position:sticky;top:0;z-index:2000;background:var(--tf-inst);color:#F5F4F0;
+ border-bottom:1px solid rgba(95,174,154,.22);font-family:var(--tf-sans);}
+.tf-p-nav{max-width:1240px;margin:0 auto;padding:0 28px;height:66px;display:flex;
+ align-items:center;justify-content:space-between;gap:22px;}
+.tf-p-brand{display:flex;align-items:baseline;gap:14px;text-decoration:none;color:#F5F4F0;}
+.tf-p-brand .m{font-family:var(--tf-serif);font-weight:500;font-size:18px;letter-spacing:.04em;}
+.tf-p-brand .m em{font-style:normal;color:var(--tf-green);}
+.tf-p-brand .t{font-family:var(--tf-mono);font-size:11px;letter-spacing:.22em;
+ text-transform:uppercase;color:rgba(245,244,240,.5);font-weight:500;}
+.tf-p-links{display:flex;align-items:center;gap:22px;}
+.tf-p-links a{color:#C7D0D8;text-decoration:none;font-size:12.5px;font-weight:500;
+ letter-spacing:.04em;padding:6px 0;border-bottom:1px solid transparent;}
+.tf-p-links a:hover{color:#fff;border-bottom-color:var(--tf-green);}
+.tf-p-cta{display:inline-flex;align-items:center;gap:8px;background:var(--tf-amber);
+ color:var(--tf-ink);text-decoration:none;font-size:12.5px;font-weight:600;
+ padding:10px 18px;border-radius:var(--tf-rb);}
+@media(max-width:960px){.tf-p-links,.tf-p-brand .t{display:none;}}
+.tf-p-mast{background:var(--tf-analytical);color:#F5F4F0;padding:40px 0 34px;}
+.tf-p-mast .in{max-width:1240px;margin:0 auto;padding:0 28px;}
+.tf-p-mast .eye{font-family:var(--tf-mono);font-size:11px;letter-spacing:.24em;
+ text-transform:uppercase;color:var(--tf-green);font-weight:600;margin-bottom:14px;}
+.tf-p-mast h1{font-family:var(--tf-serif);font-weight:400;font-size:clamp(24px,3.2vw,36px);
+ line-height:1.16;letter-spacing:-.015em;color:#fff;margin:0 0 10px;}
+.tf-p-mast p{font-weight:300;font-size:clamp(14px,1.5vw,16px);line-height:1.65;
+ color:rgba(245,244,240,.78);max-width:860px;margin:0 0 20px;}
+.tf-p-meta{display:flex;flex-wrap:wrap;gap:10px;}
+.tf-p-meta span{font-family:var(--tf-mono);font-size:11px;letter-spacing:.12em;
+ color:rgba(245,244,240,.72);border:1px solid rgba(245,244,240,.2);
+ border-radius:var(--tf-rp);padding:6px 14px;}
+.tf-p-meta b{color:#fff;font-weight:600;}
+
+/* the map stage: only the map fills it — the legend stays a legend */
+.tf-p-stage{position:relative;width:100%;height:clamp(520px,72vh,760px);
+ background:#0B1622;overflow:hidden;border-top:1px solid rgba(0,18,25,.10);
+ border-bottom:1px solid rgba(0,18,25,.10);}
+.tf-p-stage .folium-map{position:absolute!important;inset:0!important;top:0!important;
+ left:0!important;right:0!important;bottom:0!important;width:100%!important;height:100%!important;}
+.tf-p-stage > .tf-map-legend{position:absolute!important;left:20px!important;bottom:20px!important;
+ top:auto!important;right:auto!important;width:auto!important;height:auto!important;
+ inset:auto auto 20px 20px!important;z-index:1400!important;max-height:calc(100% - 40px);
+ overflow:auto;border-radius:var(--tf-r)!important;}
+@media (max-width:760px){
+ .tf-p-stage{height:clamp(400px,62vh,540px);}
+ .tf-p-stage > .tf-map-legend{inset:auto 12px 12px 12px!important;max-height:44%;}
+}
+.tf-p-srcbox{max-width:1240px;margin:0 auto;padding:26px 28px 0;}
+.tf-p-srcbox h2{font-family:var(--tf-mono);font-size:11px;letter-spacing:.22em;
+ text-transform:uppercase;color:var(--tf-teal);font-weight:600;margin:0 0 8px;}
+.tf-p-srcbox p{font-size:13.5px;line-height:1.65;color:#3A4750;margin:0 0 14px;max-width:900px;}
+.tf-p-back-wrap{max-width:1240px;margin:0 auto;padding:14px 28px 40px;}
+.tf-p-back{display:inline-flex;align-items:center;gap:11px;text-decoration:none;
+ font-size:13.5px;font-weight:500;color:var(--tf-inst);border:1px solid var(--tf-rule);
+ border-radius:var(--tf-rb);padding:12px 20px;background:#fff;}
+.tf-p-back:hover{border-color:var(--tf-teal);color:var(--tf-teal);}
+.tf-p-footer{background:var(--tf-inst);color:#F5F4F0;padding:30px 0 20px;}
+.tf-p-footer .in{max-width:1240px;margin:0 auto;padding:0 28px;display:flex;
+ justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:flex-start;}
+.tf-p-footer .nm{font-family:var(--tf-serif);font-size:20px;font-weight:500;font-style:italic;}
+.tf-p-footer .nm em{font-style:italic;color:var(--tf-green);}
+.tf-p-footer .au{font-size:16px;font-weight:600;}
+.tf-p-footer .ro{font-size:12.5px;color:rgba(245,244,240,.62);margin-top:3px;}
+.tf-p-footer .bot{max-width:1240px;margin:18px auto 0;padding:14px 28px 0;
+ border-top:1px solid rgba(245,244,240,.1);text-align:center;font-family:var(--tf-mono);
+ font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,244,240,.45);}
+/* embed mode: the index shows the map, nothing else */
+html[data-embed="1"] .tf-p-header,html[data-embed="1"] .tf-p-mast,
+html[data-embed="1"] .tf-p-srcbox,html[data-embed="1"] .tf-p-back-wrap,
+html[data-embed="1"] .tf-p-footer{display:none!important;}
+html[data-embed="1"] .tf-p-stage{height:100vh;border:0;}
+/* in an embed the frame is narrow but short: the legend keeps its own width and
+   is scaled to fit rather than stretched edge-to-edge and clipped. */
+html[data-embed="1"] .tf-p-stage > .tf-map-legend{
+ inset:auto auto 12px 12px!important;width:auto!important;right:auto!important;
+ max-height:calc(100% - 24px)!important;transform:scale(.86);transform-origin:bottom left;}
+</style>
+<script>/* reco-lab embed-mode */(function(){var p=new URLSearchParams(location.search);
+var e=p.get("embed")==="1"||window.self!==window.top;
+if(e)document.documentElement.setAttribute("data-embed","1");})();</script>
+<style id='reco-lab-embed'>html[data-embed="1"] .tf-header,html[data-embed="1"] .tf-footer,html[data-embed="1"] .tf-p-header,html[data-embed="1"] .tf-p-footer,html[data-embed="1"] .site-header,html[data-embed="1"] .site-footer,html[data-embed="1"] header.site,html[data-embed="1"] footer.site,html[data-embed="1"] .product-footer,html[data-embed="1"] .project-footer,html[data-embed="1"] .tf-nav,html[data-embed="1"] .tf-nav-return,html[data-embed="1"] .global-cta,html[data-embed="1"] .tf-langtoggle,html[data-embed="1"] .nav-return,html[data-embed="1"] .back-to-lab{display:none!important;}html[data-embed="1"] body{padding-top:0!important;margin-top:0!important;}html[data-embed="1"]{scroll-padding-top:0!important;}html[data-embed="1"] body{overflow-x:hidden!important;}</style>
+<style id='reco-lab-embed-back'>html[data-embed="1"] .tf-p-back,html[data-embed="1"] .tf-p-nav,html[data-embed="1"] .tf-back,html[data-embed="1"] .back-link,html[data-embed="1"] .tf-p-return,html[data-embed="1"] .product-nav,html[data-embed="1"] .tf-p-cta{display:none!important;}html[data-embed="1"],html[data-embed="1"] body{overflow-y:hidden!important;scrollbar-width:none!important;}html[data-embed="1"]::-webkit-scrollbar,html[data-embed="1"] body::-webkit-scrollbar{width:0!important;height:0!important;display:none!important;}</style>
+<style id="rl-type-floor">
+/* Leaflet ships its layer switcher at 0.65em and its attribution at 10px,
+   which lands under the 11px floor the portfolio holds for technical type.
+   Raised here rather than in the site stylesheet: the map is a separate
+   document and never sees the host cascade. */
+.leaflet-control-layers-list,
+.leaflet-control-layers label,
+.leaflet-control-layers span{font-size:12px!important;line-height:1.5!important;}
+.leaflet-control-attribution,
+.leaflet-control-attribution a,
+.leaflet-control-attribution span{font-size:11px!important;}
+</style>
+</head>
+<body>
+<header class="tf-p-header">
+  <div class="tf-p-nav">
+    <a class="tf-p-brand" href="../../../index.html">
+      <span class="m">RECO<em>-LAB</em></span><span class="t">Laboratorio de Inteligencia Urbana</span>
+    </a>
+    <nav class="tf-p-links" aria-label="Principal">
+      <a href="../../../index.html#topics">Temáticas</a>
+      <a href="../../../index.html#systems">Sistemas</a>
+      <a href="../../../index.html#projects">Proyectos</a>
+      <a href="../../../metodos.html">Métodos</a>
+    </nav>
+    <a class="tf-p-cta" href="../../../project-02-housing.html">Proyecto 02 <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</header>
+<section class="tf-p-mast">
+  <div class="in">
+    <div class="eye">Proyecto 02 &middot; TMD</div>
+    <h1>Aliyah &middot; flujos de origen hacia Israel</h1>
+    <p>Volumen anual de aliyah por pa&iacute;s de origen. El grosor de cada l&iacute;nea expresa el volumen del flujo; el destino se representa a escala nacional.</p>
+    <div class="tf-p-meta"><span><b>&Aacute;mbito:</b> flujos internacionales</span><span><b>Per&iacute;odo:</b> 2022&ndash;2024</span><span><b>Destino:</b> Israel</span></div>
+  </div>
+</section>
+<div class="tf-p-stage">
+    
+    <div class="tf-map-legend" style="position:absolute;bottom:20px;left:20px;z-index:9999;background:rgba(18,18,18,0.92);padding:14px 18px;border-radius:5px;border:1px solid rgba(255,255,255,0.15);font-family:Arial;font-size:11px;line-height:1.9;box-shadow:2px 2px 12px rgba(0,0,0,0.5);min-width:190px;"><b style="font-size:13px;color:white">Flujos de aliyah</b><br><span style="font-size:11px;color:rgba(255,255,255,0.5)">Jewish Agency 2022–2024 | Línea = volumen<br>OBSERVADO anual | Destino = PROXY</span><br><div style="display:flex;align-items:center;gap:8px;margin-top:3px"><div style="width:22px;height:3px;background:#2ec4b6;border-radius:2px"></div><span style="color:white">Ucrania</span><span style="color:rgba(255,255,255,0.45);font-size:11px;margin-left:auto">35,500</span></div><div style="display:flex;align-items:center;gap:8px;margin-top:3px"><div style="width:22px;height:3px;background:#e63946;border-radius:2px"></div><span style="color:white">Rusia</span><span style="color:rgba(255,255,255,0.45);font-size:11px;margin-left:auto">17,300</span></div><div style="display:flex;align-items:center;gap:8px;margin-top:3px"><div style="width:22px;height:3px;background:#457b9d;border-radius:2px"></div><span style="color:white">Francia</span><span style="color:rgba(255,255,255,0.45);font-size:11px;margin-left:auto">14,200</span></div><div style="display:flex;align-items:center;gap:8px;margin-top:3px"><div style="width:22px;height:3px;background:#4361ee;border-radius:2px"></div><span style="color:white">EE. UU.</span><span style="color:rgba(255,255,255,0.45);font-size:11px;margin-left:auto">10,700</span></div><div style="display:flex;align-items:center;gap:8px;margin-top:3px"><div style="width:22px;height:3px;background:#2a9d8f;border-radius:2px"></div><span style="color:white">Argentina</span><span style="color:rgba(255,255,255,0.45);font-size:11px;margin-left:auto">9,600</span></div><div style="display:flex;align-items:center;gap:8px;margin-top:3px"><div style="width:22px;height:3px;background:#e9c46a;border-radius:2px"></div><span style="color:white">Etiopía</span><span style="color:rgba(255,255,255,0.45);font-size:11px;margin-left:auto">7,800</span></div><div style="display:flex;align-items:center;gap:8px;margin-top:3px"><div style="width:22px;height:3px;background:#f4a261;border-radius:2px"></div><span style="color:white">Brasil</span><span style="color:rgba(255,255,255,0.45);font-size:11px;margin-left:auto">5,100</span></div></div>
+    
+            <div class="folium-map" id="map_12011e767516ad444f0b8268f43be62e" ></div>
+        
+</div>
+<div class="tf-p-srcbox">
+  <h2>Fuentes</h2>
+  <p>Jewish Agency &middot; Knesset RIC &middot; CBS.</p>
+  <h2>Limitaciones</h2>
+  <p>El mapa representa <b>pa&iacute;ses de origen</b> y un destino agregado a escala nacional; no describe la distribuci&oacute;n interna de la aliyah entre distritos ni subdistritos israel&iacute;es. Los vol&uacute;menes anuales son observados; la asignaci&oacute;n de destino es un proxy. Las cifras se leen como &oacute;rdenes de magnitud, no como conteos exactos.</p>
+</div>
+<div class="tf-p-back-wrap">
+  <a class="tf-p-back" href="../../../project-02-housing.html"><span aria-hidden="true">&larr;</span> Volver al Proyecto 02</a>
+</div>
+<footer class="tf-p-footer">
+  <div class="in">
+    <div><div class="nm">RECO<em>-LAB</em></div><div class="ro">Laboratorio de Inteligencia Urbana</div></div>
+    <div><div class="au">Nathaly Badra</div><div class="ro">Economista Urbana &middot; Ciudades Inteligentes y Resilientes &middot; Recuperaci&oacute;n Territorial</div></div>
+  </div>
+  <div class="bot">&copy; 2026 RECO-LAB &middot; Laboratorio de Inteligencia Urbana</div>
+</footer>
+</body>
+<script>
+    
+    
+            var map_12011e767516ad444f0b8268f43be62e = L.map(
+                "map_12011e767516ad444f0b8268f43be62e",
+                {
+                    center: [30.0, 18.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 3,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_be0ec7727487cb776361155d797c6040 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_be0ec7727487cb776361155d797c6040.addTo(map_12011e767516ad444f0b8268f43be62e);
+        
+    
+            var marker_ce2f0e5e740d04567a757b136ea36b3e = L.marker(
+                [32.07, 34.78],
+                {
+}
+            ).addTo(map_12011e767516ad444f0b8268f43be62e);
+        
+    
+            var div_icon_be8626d313387666c7b8947b2c989fe0 = L.divIcon({
+  "html": "\u003cdiv style=\"background:#FF6933;color:white;font-weight:bold;font-size:12px;padding:5px 12px;border-radius:3px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.4)\"\u003eIsrael (destino)\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_ce2f0e5e740d04567a757b136ea36b3e.setIcon(div_icon_be8626d313387666c7b8947b2c989fe0);
+            
+    
+            var feature_group_9233e8b6d6e138de8627b02eb1e64f12 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            ant_path_2b06097b49817be2400d5fd1a17ca03a = L.polyline.antPath(
+              [[50.45, 30.52], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#2ec4b6",
+  "weight": 9,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#2ec4b6",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            ant_path_2b06097b49817be2400d5fd1a17ca03a.bindTooltip(
+                `<div>
+                     Ukraine hacia Israel (2022): 27,500 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_57c75e1d3ecb47269de91e3ad7f0f326 = L.circleMarker(
+                [50.45, 30.52],
+                {"bubblingMouseEvents": true, "color": "#2ec4b6", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ec4b6", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            circle_marker_57c75e1d3ecb47269de91e3ad7f0f326.bindTooltip(
+                `<div>
+                     Ukraine: 27,500 olim (2022)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_cef8380dacc52ab1ba6b48f301e9619b = L.polyline.antPath(
+              [[55.75, 37.62], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#e63946",
+  "weight": 4.072727272727272,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#e63946",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            ant_path_cef8380dacc52ab1ba6b48f301e9619b.bindTooltip(
+                `<div>
+                     Russia hacia Israel (2022): 8,000 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_584652454d49cf4f8d95ccbc4aee1b81 = L.circleMarker(
+                [55.75, 37.62],
+                {"bubblingMouseEvents": true, "color": "#e63946", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e63946", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6.3999999999999995, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            circle_marker_584652454d49cf4f8d95ccbc4aee1b81.bindTooltip(
+                `<div>
+                     Russia: 8,000 olim (2022)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_3fec60228052b65f051c82f31d53f874 = L.polyline.antPath(
+              [[48.85, 2.35], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#457b9d",
+  "weight": 2.9527272727272726,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#457b9d",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            ant_path_3fec60228052b65f051c82f31d53f874.bindTooltip(
+                `<div>
+                     France hacia Israel (2022): 5,800 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ad8c747da6412cc7cb52c2fdc8621535 = L.circleMarker(
+                [48.85, 2.35],
+                {"bubblingMouseEvents": true, "color": "#457b9d", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#457b9d", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            circle_marker_ad8c747da6412cc7cb52c2fdc8621535.bindTooltip(
+                `<div>
+                     France: 5,800 olim (2022)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_c31aa3c2a0bbd12172b760fa63cbf70f = L.polyline.antPath(
+              [[38.9, -77.04], [31.77, 35.21]],
+              {
+  "stroke": true,
+  "color": "#4361ee",
+  "weight": 2.24,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#4361ee",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            ant_path_c31aa3c2a0bbd12172b760fa63cbf70f.bindTooltip(
+                `<div>
+                     USA hacia Israel (2022): 4,400 olim | Destino proxy: Jerusalem
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d2bfb4bc6a03f6ea4ddad903b4160c14 = L.circleMarker(
+                [38.9, -77.04],
+                {"bubblingMouseEvents": true, "color": "#4361ee", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4361ee", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            circle_marker_d2bfb4bc6a03f6ea4ddad903b4160c14.bindTooltip(
+                `<div>
+                     USA: 4,400 olim (2022)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_f706c3188cf1a0aff4ffddd0c6ab3ffc = L.polyline.antPath(
+              [[-34.6, -58.38], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#2a9d8f",
+  "weight": 1.9345454545454546,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#2a9d8f",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            ant_path_f706c3188cf1a0aff4ffddd0c6ab3ffc.bindTooltip(
+                `<div>
+                     Argentina hacia Israel (2022): 3,800 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7b3b6ac85d99bf797e26b30fea741fe4 = L.circleMarker(
+                [-34.6, -58.38],
+                {"bubblingMouseEvents": true, "color": "#2a9d8f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2a9d8f", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            circle_marker_7b3b6ac85d99bf797e26b30fea741fe4.bindTooltip(
+                `<div>
+                     Argentina: 3,800 olim (2022)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_a34e396d2003ea499fca32b68a5ac11d = L.polyline.antPath(
+              [[9.03, 38.74], [31.25, 34.79]],
+              {
+  "stroke": true,
+  "color": "#e9c46a",
+  "weight": 1.5,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#e9c46a",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            ant_path_a34e396d2003ea499fca32b68a5ac11d.bindTooltip(
+                `<div>
+                     Ethiopia hacia Israel (2022): 2,400 olim | Destino proxy: Beer Sheva
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ef00ae65f3d57691311ba8e87852678a = L.circleMarker(
+                [9.03, 38.74],
+                {"bubblingMouseEvents": true, "color": "#e9c46a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e9c46a", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            circle_marker_ef00ae65f3d57691311ba8e87852678a.bindTooltip(
+                `<div>
+                     Ethiopia: 2,400 olim (2022)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_ea18d10ac90aa8287ca6f879deecab2d = L.polyline.antPath(
+              [[-15.78, -47.93], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#f4a261",
+  "weight": 1.5,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#f4a261",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            ant_path_ea18d10ac90aa8287ca6f879deecab2d.bindTooltip(
+                `<div>
+                     Brazil hacia Israel (2022): 1,900 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_45853b472a5e5ae4a3c74243c4dea5e4 = L.circleMarker(
+                [-15.78, -47.93],
+                {"bubblingMouseEvents": true, "color": "#f4a261", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f4a261", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_9233e8b6d6e138de8627b02eb1e64f12);
+        
+    
+            circle_marker_45853b472a5e5ae4a3c74243c4dea5e4.bindTooltip(
+                `<div>
+                     Brazil: 1,900 olim (2022)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var feature_group_b8492660e2f86c0728c04a4359f70576 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            ant_path_d14fdbd1a2588200c6dff4231b958625 = L.polyline.antPath(
+              [[50.45, 30.52], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#2ec4b6",
+  "weight": 3.1563636363636363,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#2ec4b6",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            ant_path_d14fdbd1a2588200c6dff4231b958625.bindTooltip(
+                `<div>
+                     Ukraine hacia Israel (2023): 6,200 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6eae18f4ad074d19a41aa0362f74e26d = L.circleMarker(
+                [50.45, 30.52],
+                {"bubblingMouseEvents": true, "color": "#2ec4b6", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ec4b6", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            circle_marker_6eae18f4ad074d19a41aa0362f74e26d.bindTooltip(
+                `<div>
+                     Ukraine: 6,200 olim (2023)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_a289f4b4eb2f72ad687a31bdb01187cd = L.polyline.antPath(
+              [[55.75, 37.62], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#e63946",
+  "weight": 2.596363636363636,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#e63946",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            ant_path_a289f4b4eb2f72ad687a31bdb01187cd.bindTooltip(
+                `<div>
+                     Russia hacia Israel (2023): 5,100 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ca8a7b8c3b5427607fab876422b50f17 = L.circleMarker(
+                [55.75, 37.62],
+                {"bubblingMouseEvents": true, "color": "#e63946", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e63946", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            circle_marker_ca8a7b8c3b5427607fab876422b50f17.bindTooltip(
+                `<div>
+                     Russia: 5,100 olim (2023)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_b613c683c7c801b81ba98bba367d4ec3 = L.polyline.antPath(
+              [[48.85, 2.35], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#457b9d",
+  "weight": 2.341818181818182,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#457b9d",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            ant_path_b613c683c7c801b81ba98bba367d4ec3.bindTooltip(
+                `<div>
+                     France hacia Israel (2023): 4,600 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_76f1ce03d90679a9524445786e193d01 = L.circleMarker(
+                [48.85, 2.35],
+                {"bubblingMouseEvents": true, "color": "#457b9d", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#457b9d", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            circle_marker_76f1ce03d90679a9524445786e193d01.bindTooltip(
+                `<div>
+                     France: 4,600 olim (2023)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_73b8e77b0d211bc26f04e5c3c4b83a69 = L.polyline.antPath(
+              [[38.9, -77.04], [31.77, 35.21]],
+              {
+  "stroke": true,
+  "color": "#4361ee",
+  "weight": 1.7818181818181817,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#4361ee",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            ant_path_73b8e77b0d211bc26f04e5c3c4b83a69.bindTooltip(
+                `<div>
+                     USA hacia Israel (2023): 3,500 olim | Destino proxy: Jerusalem
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8da160a4ed8f0f9212267d51396f100a = L.circleMarker(
+                [38.9, -77.04],
+                {"bubblingMouseEvents": true, "color": "#4361ee", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4361ee", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            circle_marker_8da160a4ed8f0f9212267d51396f100a.bindTooltip(
+                `<div>
+                     USA: 3,500 olim (2023)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_89c397eb4abe284c4121b925dfd3a2a1 = L.polyline.antPath(
+              [[-34.6, -58.38], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#2a9d8f",
+  "weight": 1.6290909090909091,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#2a9d8f",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            ant_path_89c397eb4abe284c4121b925dfd3a2a1.bindTooltip(
+                `<div>
+                     Argentina hacia Israel (2023): 3,200 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3f99c0d30d1a8e6c457a0f02acc3eb6e = L.circleMarker(
+                [-34.6, -58.38],
+                {"bubblingMouseEvents": true, "color": "#2a9d8f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2a9d8f", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            circle_marker_3f99c0d30d1a8e6c457a0f02acc3eb6e.bindTooltip(
+                `<div>
+                     Argentina: 3,200 olim (2023)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_bb1a011515ccc4cccc0bc63b430c9830 = L.polyline.antPath(
+              [[9.03, 38.74], [31.25, 34.79]],
+              {
+  "stroke": true,
+  "color": "#e9c46a",
+  "weight": 1.5,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#e9c46a",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            ant_path_bb1a011515ccc4cccc0bc63b430c9830.bindTooltip(
+                `<div>
+                     Ethiopia hacia Israel (2023): 2,900 olim | Destino proxy: Beer Sheva
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0cc5e1a2d0eaa86ae59783693b5a375b = L.circleMarker(
+                [9.03, 38.74],
+                {"bubblingMouseEvents": true, "color": "#e9c46a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e9c46a", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            circle_marker_0cc5e1a2d0eaa86ae59783693b5a375b.bindTooltip(
+                `<div>
+                     Ethiopia: 2,900 olim (2023)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_6be91c41b3d2a21111a5a278d2bb5eec = L.polyline.antPath(
+              [[-15.78, -47.93], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#f4a261",
+  "weight": 1.5,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#f4a261",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            ant_path_6be91c41b3d2a21111a5a278d2bb5eec.bindTooltip(
+                `<div>
+                     Brazil hacia Israel (2023): 1,800 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d8e5711c84c175619e1d42dea1ac67b6 = L.circleMarker(
+                [-15.78, -47.93],
+                {"bubblingMouseEvents": true, "color": "#f4a261", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f4a261", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_b8492660e2f86c0728c04a4359f70576);
+        
+    
+            circle_marker_d8e5711c84c175619e1d42dea1ac67b6.bindTooltip(
+                `<div>
+                     Brazil: 1,800 olim (2023)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var feature_group_79a8eaa53971ce6a07da1b5bd124ed59 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            ant_path_4ee5e64bcfe5f82caeec659479ed4c8e = L.polyline.antPath(
+              [[55.75, 37.62], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#e63946",
+  "weight": 2.138181818181818,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#e63946",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            ant_path_4ee5e64bcfe5f82caeec659479ed4c8e.bindTooltip(
+                `<div>
+                     Russia hacia Israel (2024): 4,200 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_04bf0abf5bda8c7e2d1c4a2210accd37 = L.circleMarker(
+                [55.75, 37.62],
+                {"bubblingMouseEvents": true, "color": "#e63946", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e63946", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            circle_marker_04bf0abf5bda8c7e2d1c4a2210accd37.bindTooltip(
+                `<div>
+                     Russia: 4,200 olim (2024)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_04f867e3e6f0602bad3a0cadb3398119 = L.polyline.antPath(
+              [[48.85, 2.35], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#457b9d",
+  "weight": 1.9345454545454546,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#457b9d",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            ant_path_04f867e3e6f0602bad3a0cadb3398119.bindTooltip(
+                `<div>
+                     France hacia Israel (2024): 3,800 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_25fc7b637690eff1edfae444f28828cd = L.circleMarker(
+                [48.85, 2.35],
+                {"bubblingMouseEvents": true, "color": "#457b9d", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#457b9d", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            circle_marker_25fc7b637690eff1edfae444f28828cd.bindTooltip(
+                `<div>
+                     France: 3,800 olim (2024)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_df541ec0c1f2638b481f3c268a02a4cb = L.polyline.antPath(
+              [[38.9, -77.04], [31.77, 35.21]],
+              {
+  "stroke": true,
+  "color": "#4361ee",
+  "weight": 1.5,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#4361ee",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            ant_path_df541ec0c1f2638b481f3c268a02a4cb.bindTooltip(
+                `<div>
+                     USA hacia Israel (2024): 2,800 olim | Destino proxy: Jerusalem
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2a2f0a0e98f419cb6652e998852afdee = L.circleMarker(
+                [38.9, -77.04],
+                {"bubblingMouseEvents": true, "color": "#4361ee", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#4361ee", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            circle_marker_2a2f0a0e98f419cb6652e998852afdee.bindTooltip(
+                `<div>
+                     USA: 2,800 olim (2024)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_2f4a9b4bf74784c6b1740ab5708f5ed5 = L.polyline.antPath(
+              [[-34.6, -58.38], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#2a9d8f",
+  "weight": 1.5,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#2a9d8f",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            ant_path_2f4a9b4bf74784c6b1740ab5708f5ed5.bindTooltip(
+                `<div>
+                     Argentina hacia Israel (2024): 2,600 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_46ce987f570d5d5c2616b49105492890 = L.circleMarker(
+                [-34.6, -58.38],
+                {"bubblingMouseEvents": true, "color": "#2a9d8f", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2a9d8f", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            circle_marker_46ce987f570d5d5c2616b49105492890.bindTooltip(
+                `<div>
+                     Argentina: 2,600 olim (2024)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_93fdcc99926cc3168e0805b675bb151f = L.polyline.antPath(
+              [[9.03, 38.74], [31.25, 34.79]],
+              {
+  "stroke": true,
+  "color": "#e9c46a",
+  "weight": 1.5,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#e9c46a",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            ant_path_93fdcc99926cc3168e0805b675bb151f.bindTooltip(
+                `<div>
+                     Ethiopia hacia Israel (2024): 2,500 olim | Destino proxy: Beer Sheva
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a08d783b59d147d5a453b1426d90dfa2 = L.circleMarker(
+                [9.03, 38.74],
+                {"bubblingMouseEvents": true, "color": "#e9c46a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e9c46a", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            circle_marker_a08d783b59d147d5a453b1426d90dfa2.bindTooltip(
+                `<div>
+                     Ethiopia: 2,500 olim (2024)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_70ae516e4d6f84dfceddaacf48688b51 = L.polyline.antPath(
+              [[50.45, 30.52], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#2ec4b6",
+  "weight": 1.5,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#2ec4b6",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            ant_path_70ae516e4d6f84dfceddaacf48688b51.bindTooltip(
+                `<div>
+                     Ukraine hacia Israel (2024): 1,800 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9f19139b179c26da6c06361bce1bb8d6 = L.circleMarker(
+                [50.45, 30.52],
+                {"bubblingMouseEvents": true, "color": "#2ec4b6", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ec4b6", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            circle_marker_9f19139b179c26da6c06361bce1bb8d6.bindTooltip(
+                `<div>
+                     Ukraine: 1,800 olim (2024)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            ant_path_aa05ed7f632e451291f5e1e158e27551 = L.polyline.antPath(
+              [[-15.78, -47.93], [32.08, 34.78]],
+              {
+  "stroke": true,
+  "color": "#f4a261",
+  "weight": 1.5,
+  "opacity": 0.8,
+  "lineCap": "round",
+  "lineJoin": "round",
+  "dashArray": [
+10,
+30,
+],
+  "dashOffset": null,
+  "fill": false,
+  "fillColor": "#f4a261",
+  "fillOpacity": 0.2,
+  "fillRule": "evenodd",
+  "bubblingMouseEvents": true,
+  "smoothFactor": 1.0,
+  "noClip": false,
+  "paused": false,
+  "reverse": false,
+  "hardwareAcceleration": false,
+  "delay": 800,
+  "pulseColor": "#FFFFFF",
+}
+        ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            ant_path_aa05ed7f632e451291f5e1e158e27551.bindTooltip(
+                `<div>
+                     Brazil hacia Israel (2024): 1,400 olim | Destino proxy: Tel Aviv
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_18b2fb166ee548bf1c7f7203adff94ff = L.circleMarker(
+                [-15.78, -47.93],
+                {"bubblingMouseEvents": true, "color": "#f4a261", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f4a261", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 1.5}
+            ).addTo(feature_group_79a8eaa53971ce6a07da1b5bd124ed59);
+        
+    
+            circle_marker_18b2fb166ee548bf1c7f7203adff94ff.bindTooltip(
+                `<div>
+                     Brazil: 1,400 olim (2024)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_79a8eaa53971ce6a07da1b5bd124ed59.addTo(map_12011e767516ad444f0b8268f43be62e);
+        
+    
+            var layer_control_58191a38ddb9c415946688d16a46d772_layers = {
+                base_layers : {
+                    "cartodbdarkmatter" : tile_layer_be0ec7727487cb776361155d797c6040,
+                },
+                overlays :  {
+                    "Aliyah 2022" : feature_group_9233e8b6d6e138de8627b02eb1e64f12,
+                    "Aliyah 2023" : feature_group_b8492660e2f86c0728c04a4359f70576,
+                    "Aliyah 2024" : feature_group_79a8eaa53971ce6a07da1b5bd124ed59,
+                },
+            };
+            let layer_control_58191a38ddb9c415946688d16a46d772 = L.control.layers(
+                layer_control_58191a38ddb9c415946688d16a46d772_layers.base_layers,
+                layer_control_58191a38ddb9c415946688d16a46d772_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_12011e767516ad444f0b8268f43be62e);
+
+        
+</script>
+</html>

@@ -1,0 +1,2445 @@
+/* ══════════════════════════════════════════════════════════════════
+   RECO-LAB · v3 override layer
+   Loads AFTER system-2.9.css. This file NEVER redefines the visual
+   system -- it only (a) repairs defects that were already in the 2.9
+   cascade, (b) adds the components 2.9 had no equivalent for, and
+   (c) removes the commercial surfaces.
+   Every token used here comes from the 2.9 :root.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Header · sticky, straight, never covering content ──────────
+   2.9 already ships position:sticky. What it lacks is anchor offset,
+   so a deep-linked section landed underneath the 68px bar. ───────── */
+/* One anchor mechanism, not two. 2.9 shipped html{scroll-padding-top:84px}
+   AND [id]{scroll-margin-top:76px}; the two stacked to 160px against a 69px
+   bar, which is the empty band under the header on every deep link.
+   --rl-hdr-h is re-measured from the live header by site.js. */
+:root{--rl-hdr-h:69px;}
+html{scroll-padding-top:0;}
+.hero,.project-block,.surface,[id]{scroll-margin-top:calc(var(--rl-hdr-h) + 12px);}
+/* The home sections carry 60px of their own top padding, so the offset
+   absorbs it and the eyebrow lands just under the bar rather than 150px
+   below it. Landing target: ~24px of air between header and eyebrow. */
+#topics,#systems,#projects,#methods,#profile{
+  scroll-margin-top:calc(var(--rl-hdr-h) - 36px);
+}
+header.site{border-radius:0;}
+header.site .wrap.nav-inner{border-radius:0;}
+/* the 2.9 dropdown is anchored to a single-page app; on a multipage
+   build the projects entry is a plain link, so kill the caret slot */
+.nav-links a.nav-direct{display:inline-flex;align-items:center;}
+
+/* Active page marker, replaces the single-page scrollspy */
+.nav-links a[aria-current="page"]{
+  color:var(--text-primary);
+  border-bottom-color:var(--brand-amber);
+}
+
+/* ── 1b · Language toggle · 2.9 aesthetics restored ────────────────
+   The 2.9 toggle is a single hairline capsule with a filled active
+   segment. It had hard square corners; softening the capsule is the
+   only change, and the radius stays inside the 1-4px house rule. */
+.lang-toggle{
+  border:1px solid rgba(245,244,240,0.18);
+  border-radius:4px;
+  overflow:hidden;
+  background:rgba(0,0,0,0.14);
+}
+.lang-toggle button{
+  border-radius:0;
+  padding:6px 11px;
+  transition:background .15s ease,color .15s ease;
+}
+.lang-toggle button.active{
+  background:rgba(245,244,240,0.95);
+  color:var(--ink-deep);
+  font-weight:600;
+}
+.lang-toggle button:not(.active):hover{
+  color:#F5F4F0;
+  background:rgba(245,244,240,0.08);
+}
+
+/* Button radii are NOT redeclared here: the 2.9 canonical-radii layer
+   already sets them (6px) and it loads later in the cascade. Overriding
+   would fight the system rather than recover it. */
+
+/* ── 2 · Hero · defect repairs ─────────────────────────────────────
+   2.9 pinned the panel at a fixed height:620px. Any language whose
+   caption ran longer than the reserved space got clipped -- this is
+   the "hero cortado / footer cortado" failure. Height becomes a floor,
+   not a ceiling. ────────────────────────────────────────────────── */
+.hero-slogan.v3.mideast-panel{
+  height:auto;
+  min-height:620px;
+}
+@media (max-width:1024px){
+  .hero-slogan.v3.mideast-panel{min-height:480px;}
+}
+@media (max-width:760px){
+  .hero-slogan.v3.mideast-panel{min-height:360px;}
+}
+
+/* The wordmark must never be clipped by a descender or a tight column */
+.hero h1.hero-h1{
+  overflow:visible;
+  padding-bottom:0.06em;
+  hyphens:none;
+  overflow-wrap:normal;
+  word-break:keep-all;
+}
+.hero h1.hero-h1 .hero-mark{
+  white-space:nowrap;
+  overflow:visible;
+}
+/* 1366 / 1280 / 1024: the serif at 8vw overran the 1.15fr column.
+   Step the clamp down per breakpoint instead of letting it clip. */
+@media (max-width:1400px){
+  .hero h1.hero-h1{font-size:clamp(52px,6.4vw,88px);}
+}
+@media (max-width:1200px){
+  .hero h1.hero-h1{font-size:clamp(48px,6vw,76px);}
+}
+@media (max-width:1024px){
+  .hero h1.hero-h1{font-size:clamp(46px,8vw,72px);}
+}
+@media (max-width:560px){
+  .hero h1.hero-h1{font-size:clamp(38px,11vw,54px);}
+}
+/* 2.9 reserved a fixed 7em/4em for the lede to stop language reflow.
+   Keep the stability, drop the clipping. */
+.hero-lede{min-height:0;}
+.hero-lede-obj{min-height:0;}
+.hero-copy{min-height:0;}
+@media (min-width:1025px){
+  .hero-lede{min-height:6.5em;}
+  .hero-lede-obj{min-height:3.5em;}
+}
+
+/* Territorial scope rows -- the panel now carries four systems.
+   The four countries read as one continuous scope, so the value never
+   breaks across lines: the type shrinks instead of the line wrapping. */
+.hero-slogan.v3.mideast-panel .mp-meta{gap:8px;}
+.hero-slogan.v3.mideast-panel .mp-meta-row{
+  flex-wrap:nowrap;justify-content:space-between;gap:10px;
+}
+.hero-slogan.v3.mideast-panel .mp-meta-row .mp-k{flex:0 0 auto;}
+.hero-slogan.v3.mideast-panel .mp-meta-row .mp-v{
+  flex:0 1 auto;min-width:0;
+  white-space:nowrap;text-align:right;
+  font-size:8.2px;letter-spacing:0.07em;
+}
+/* Below 420px the key moves above the value, so the country list keeps
+   the whole panel width and still holds a single line. */
+@media (max-width:420px){
+  .hero-slogan.v3.mideast-panel .mp-meta-row{
+    flex-wrap:wrap;gap:4px;
+  }
+  .hero-slogan.v3.mideast-panel .mp-meta-row .mp-k{flex:1 0 100%;}
+  .hero-slogan.v3.mideast-panel .mp-meta-row .mp-v{
+    flex:1 0 100%;text-align:left;white-space:nowrap;
+    font-size:8px;letter-spacing:0.06em;
+  }
+}
+
+/* ── 3 · Embedded outputs · clean frames ───────────────────────────
+   Outputs are served in embed mode (chrome suppressed at the source).
+   The host frame supplies the institutional border, so the output
+   never reads as "a second website inside the website". ─────────── */
+.rl-embed{
+  margin:0 0 10px;
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-radius:4px;
+  overflow:hidden;
+  box-shadow:0 30px 60px -46px rgba(14,20,24,0.30);
+}
+.rl-embed-head{
+  display:flex;justify-content:space-between;align-items:baseline;gap:18px;
+  padding:13px 18px;
+  border-bottom:1px solid var(--rule);
+  background:var(--surface-2);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--muted-2);
+}
+.rl-embed-head .t{color:var(--ink);font-weight:600;}
+.rl-embed-head a{
+  color:var(--teal);text-decoration:none;white-space:nowrap;
+  border-bottom:1px solid transparent;
+}
+/* No decorative rule under an action. The hover state is carried by ink,
+   not by a line: a teal border-bottom under a link label is exactly the
+   underline this build does not use anywhere on a project page. */
+.rl-embed-head a{border-bottom:0;}
+.rl-embed-head a:hover{color:var(--teal-deep);}
+.rl-embed-body{position:relative;width:100%;background:var(--surface);}
+.rl-embed-body iframe{
+  display:block;width:100%;height:100%;border:0;
+}
+/* Height is declared per output, never guessed. No inner scrollbar:
+   the frame is tall enough for the whole output. */
+.rl-embed-body.h-560{height:560px;}
+.rl-embed-body.h-680{height:680px;}
+.rl-embed-body.h-760{height:760px;}
+.rl-embed-body.h-880{height:880px;}
+/* the macro dashboard fills 904px; 980 left an empty band under the figure */
+.rl-embed-body.h-900{height:904px;}
+.rl-embed-body.h-980{height:980px;}
+@media (max-width:900px){
+  .rl-embed-body.h-560{height:460px;}
+  .rl-embed-body.h-680{height:520px;}
+  .rl-embed-body.h-760{height:560px;}
+  .rl-embed-body.h-880{height:620px;}
+  .rl-embed-body.h-900{height:640px;}
+  .rl-embed-body.h-980{height:680px;}
+}
+
+/* ── 4 · Editorial figure · premium frame for static outputs ───────
+   Replaces the grey boxes: hairline rule, white ground, institutional
+   caption. Never upscales a raster beyond its native resolution. ── */
+.rl-fig{
+  margin:0 0 8px;
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-radius:4px;
+  overflow:hidden;
+}
+.rl-fig-media{
+  padding:26px 26px 20px;
+  background:var(--surface);
+  display:flex;justify-content:center;
+}
+.rl-fig-media img{
+  width:auto;max-width:100%;height:auto;
+  image-rendering:auto;
+}
+.rl-fig-cap{
+  border-top:1px solid var(--rule);
+  padding:14px 26px 16px;
+  background:var(--surface);
+}
+.rl-fig-cap .n{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+  display:block;margin-bottom:5px;
+}
+.rl-fig-cap p{
+  font-family:var(--sans);font-size:13px;line-height:1.62;
+  color:var(--muted);margin:0;max-width:78ch;
+}
+
+/* ── 5 · Top territories · editorial block, not a flat table ─────── */
+.rl-top{
+  border-top:1px solid var(--ink-band);
+  margin:0 0 8px;
+}
+.rl-top-row{
+  display:grid;
+  grid-template-columns:56px 1fr auto;
+  align-items:center;gap:22px;
+  padding:17px 4px;
+  border-bottom:1px solid var(--rule);
+  transition:background .15s ease;
+}
+.rl-top-row:hover{background:var(--surface-2);}
+.rl-top-row .rk{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.14em;
+  color:var(--muted-2);font-weight:500;
+}
+.rl-top-row .nm{
+  font-family:var(--serif);font-size:20px;font-weight:400;
+  color:var(--ink);line-height:1.2;
+}
+.rl-top-row .nm .cy{
+  display:block;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:500;
+  margin-top:5px;
+}
+.rl-top-row .sc{
+  font-family:var(--mono);font-size:15px;font-weight:600;
+  color:var(--ink-deep);letter-spacing:0.02em;white-space:nowrap;
+}
+.rl-top-row .sc span{
+  font-size:9.5px;color:var(--muted-2);letter-spacing:0.2em;
+  text-transform:uppercase;font-weight:500;margin-right:8px;
+}
+/* Band 1 rows carry the alert spine, matching the 2.9 cv-col accent */
+.rl-top-row.b1{box-shadow:inset 3px 0 0 var(--alert);}
+.rl-top-row.b2{box-shadow:inset 3px 0 0 var(--amber);}
+@media (max-width:640px){
+  .rl-top-row{grid-template-columns:40px 1fr;gap:14px;}
+  .rl-top-row .sc{grid-column:2;margin-top:6px;}
+  .rl-top-row .nm{font-size:17px;}
+}
+
+/* ── 5b · Single right-docked action · integrated dashboard ────────
+   One action only, navy, aligned to the right edge of the measure. */
+.rl-action-right{
+  display:flex;justify-content:flex-end;
+  margin:26px 0 0;
+}
+/* The action belongs to the figure it opens, so it docks directly under
+   the embed rather than after the following paragraph. */
+.rl-embed + .rl-action-right{margin-top:18px;}
+.rl-dash-cta{
+  display:inline-flex;align-items:center;gap:26px;
+  background:var(--institutional);
+  border:1px solid var(--institutional);
+  border-radius:4px;
+  padding:17px 22px;
+  text-decoration:none;
+  max-width:520px;
+  transition:border-color .15s ease,transform .15s ease,box-shadow .15s ease;
+}
+.rl-dash-cta:hover{
+  border-color:var(--brand-amber);
+  transform:translateY(-1px);
+  box-shadow:0 22px 40px -30px rgba(14,20,24,0.5);
+}
+.rl-dash-cta .lbl{display:block;}
+.rl-dash-cta .t{
+  display:block;
+  font-family:var(--sans);font-size:14.5px;font-weight:600;
+  color:#F5F4F0;letter-spacing:0.01em;margin-bottom:4px;
+}
+.rl-dash-cta .d{
+  display:block;
+  font-family:var(--sans);font-size:12.5px;line-height:1.5;
+  color:rgba(199,208,216,0.9);
+}
+.rl-dash-cta .arr{
+  font-family:var(--mono);font-size:15px;color:var(--brand-amber);
+}
+@media (max-width:640px){
+  .rl-action-right{justify-content:stretch;}
+  /* max-width must go too, otherwise the stretched CTA stops at 520px and
+     reads as a card stranded on the left instead of a full-width action. */
+  .rl-dash-cta{width:100%;max-width:none;justify-content:space-between;gap:16px;}
+}
+
+/* ── 5c-bis · Project pager · return left, advance right ───────────
+   The two actions carry opposite arrows and opposite weights so their
+   direction is unmistakable: white + leftward for the index, navy +
+   rightward for the next project. */
+/* Two equal halves read as two competing offers. The advance action is the
+   primary and takes the larger share; the return is a quiet secondary. */
+.rl-pager{
+  display:grid;grid-template-columns:minmax(0,0.72fr) minmax(0,1.28fr);gap:18px;
+  margin-top:44px;align-items:stretch;
+}
+.rl-pager-btn{
+  display:flex;align-items:center;gap:18px;
+  padding:20px 24px;
+  border-radius:4px;
+  text-decoration:none;
+  border:1px solid var(--rule-strong);
+  transition:border-color .16s ease,transform .16s ease,box-shadow .16s ease,gap .16s ease;
+}
+.rl-pager-btn .lbl{display:block;flex:1;min-width:0;}
+.rl-pager-btn .t{
+  display:block;
+  font-family:var(--sans);font-size:14.5px;font-weight:600;
+  letter-spacing:0.01em;margin-bottom:4px;
+}
+.rl-pager-btn .d{
+  display:block;
+  font-family:var(--sans);font-size:12.5px;line-height:1.5;
+}
+.rl-pager-btn .arr{
+  font-family:var(--mono);font-size:19px;line-height:1;flex-shrink:0;
+}
+
+/* Return · quiet secondary, left aligned, arrow on the left. Lighter border
+   and smaller type so it never reads as a second primary action. */
+.rl-pager-prev{
+  background:transparent;
+  border-color:var(--rule);
+  justify-content:flex-start;
+  padding:18px 20px;
+}
+.rl-pager-prev .t{color:var(--muted);font-size:13px;font-weight:500;}
+.rl-pager-prev .d{color:var(--muted-2);font-size:11.5px;}
+.rl-pager-prev .arr{color:var(--muted-2);font-size:16px;}
+.rl-pager-prev:hover .t{color:var(--ink);}
+.rl-pager-prev:hover .arr{color:var(--teal);}
+.rl-pager-prev:hover{
+  border-color:var(--teal);
+  transform:translateX(-2px);
+  box-shadow:0 20px 38px -30px rgba(14,20,24,0.42);
+}
+
+/* Advance · navy, right aligned, arrow on the right */
+.rl-pager-next{
+  background:var(--institutional);
+  border-color:var(--institutional);
+  text-align:right;
+  justify-content:flex-end;
+}
+.rl-pager-next .t{color:#F5F4F0;}
+.rl-pager-next .d{color:rgba(199,208,216,0.9);}
+.rl-pager-next .arr{color:var(--brand-amber);}
+.rl-pager-next:hover{
+  border-color:var(--brand-amber);
+  transform:translateX(2px);
+  box-shadow:0 22px 40px -30px rgba(14,20,24,0.5);
+}
+
+@media (max-width:720px){
+  /* Advance first on small screens: continuing reading is the likelier
+     intent, and the return stays available directly beneath it. */
+  .rl-pager{grid-template-columns:1fr;gap:12px;}
+  .rl-pager-next{order:1;}
+  .rl-pager-prev{order:2;}
+  .rl-pager-next{text-align:left;justify-content:space-between;}
+}
+
+/* ── 5c · Bottom navigation · right aligned, reversed reading order ─
+   Same button component as 2.9 (.explore-btn), only the alignment and
+   the visual order change. */
+.explore-more.rl-nav-right{
+  display:flex;flex-wrap:wrap;
+  flex-direction:row-reverse;
+  /* row-reverse flips the main axis, so flex-start is what packs the
+     row against the right edge. flex-end would push it left. */
+  justify-content:flex-start;
+  gap:14px;
+  grid-template-columns:none;
+}
+.explore-more.rl-nav-right .explore-btn{
+  flex:0 0 340px;
+  min-width:260px;
+}
+@media (max-width:760px){
+  .explore-more.rl-nav-right{flex-direction:column-reverse;}
+  .explore-more.rl-nav-right .explore-btn{flex:1 1 auto;}
+}
+
+/* ── 5a-bis · Section header system · one shape for every section ──
+   Number, technical label, visible title and a short description, so a
+   map or a dashboard carries the same weight as the ranking. */
+.rl-sec{margin:64px 0 22px;}
+.rl-sec:first-of-type{margin-top:52px;}
+.rl-sec-eyebrow{
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:10px;letter-spacing:0.24em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:600;
+  padding-bottom:12px;margin-bottom:16px;
+  border-bottom:1px solid var(--rule-strong);
+}
+.rl-sec-eyebrow .num{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:26px;height:22px;padding:0 6px;
+  background:var(--institutional);color:#F5F4F0;
+  border-radius:2px;font-size:10px;letter-spacing:0.12em;
+}
+.rl-sec-title{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(23px,2.5vw,32px);line-height:1.2;letter-spacing:-0.016em;
+  color:var(--ink);margin:0 0 12px;
+}
+.rl-sec-desc{
+  font-family:var(--sans);font-size:14.5px;line-height:1.66;
+  color:var(--muted);margin:0;max-width:82ch;
+}
+
+/* ── 5d · Editorial copy that follows a visual, not precedes it ──── */
+.proj-narrative.rl-after-viz{margin-top:26px;}
+.rl-section-lede{max-width:900px;margin:0 0 18px;}
+
+/* ── 6 · Section method note · ONE per section, never per figure ─── */
+.rl-note{
+  margin:26px 0 0;
+  padding:22px 26px;
+  background:var(--surface-2);
+  border:1px solid var(--rule);
+  border-left:2px solid var(--teal);
+  border-radius:0 4px 4px 0;
+}
+.rl-note .h{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+  display:block;margin-bottom:9px;
+}
+.rl-note p{
+  font-family:var(--sans);font-size:13.5px;line-height:1.68;
+  color:var(--muted);margin:0 0 10px;max-width:80ch;
+}
+.rl-note p:last-child{margin-bottom:0;}
+.rl-note p strong{color:var(--ink);font-weight:600;}
+
+/* The single closing note of a project takes the editorial measure it has:
+   80ch at 13.5px left it as a narrow column inside a much wider page. */
+.rl-note-final{padding:26px 30px;}
+.rl-note-final p{max-width:none;font-size:14px;line-height:1.72;}
+
+/* ── 7 · Institutional reading · pulled quote-weight statement ─────
+   The top rule marks a change of subject. A reading that belongs to the
+   visual directly above it is NOT a change of subject, so that variant
+   drops the rule entirely -- see .rl-read-tight in §12.11. */
+.rl-read{
+  margin:28px 0 0;
+  padding:26px 0 0;
+  border-top:1px solid var(--rule-strong);
+}
+.rl-read .h{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:600;
+  display:block;margin-bottom:12px;
+}
+.rl-read p{
+  font-family:var(--serif);font-weight:300;
+  font-size:19px;line-height:1.62;color:var(--ink);
+  margin:0;max-width:72ch;text-wrap:pretty;
+}
+/* Unlabelled reading: the figure above is the subject, so the paragraph
+   opens directly. Slightly more air on top replaces the missing eyebrow. */
+.rl-read-bare{padding-top:24px;}
+
+/* ── 8 · Bullets · round marks, never dashes ─────────────────────── */
+.rl-bullets{list-style:none;margin:0;padding:0;}
+.rl-bullets li{
+  position:relative;padding-left:22px;margin-bottom:12px;
+  font-family:var(--sans);font-size:14.5px;line-height:1.66;color:var(--ink);
+  max-width:78ch;
+}
+.rl-bullets li::before{
+  content:"";position:absolute;left:2px;top:0.62em;
+  width:5px;height:5px;border-radius:50%;background:var(--teal);
+}
+.rl-bullets li:last-child{margin-bottom:0;}
+
+/* ── 9 · Contact · designed surface, no bare mailto text ─────────── */
+.rl-contact-grid{
+  display:grid;grid-template-columns:1.35fr 1fr;gap:56px;align-items:start;
+}
+@media (max-width:900px){.rl-contact-grid{grid-template-columns:1fr;gap:36px;}}
+.rl-actions{display:flex;flex-direction:column;gap:12px;}
+.rl-action{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:18px 22px;
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-radius:4px;
+  text-decoration:none;
+  transition:border-color .15s ease,transform .15s ease,box-shadow .15s ease;
+}
+.rl-action:hover{
+  border-color:var(--teal);
+  transform:translateY(-1px);
+  box-shadow:0 18px 34px -28px rgba(14,20,24,0.42);
+}
+.rl-action .k{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:600;
+  display:block;margin-bottom:5px;
+}
+.rl-action .v{
+  font-family:var(--sans);font-size:15px;font-weight:600;color:var(--ink);
+}
+.rl-action .arr{font-family:var(--mono);font-size:15px;color:var(--teal);}
+.rl-action.primary{background:var(--institutional);border-color:var(--institutional);}
+.rl-action.primary .k{color:rgba(245,244,240,0.5);}
+.rl-action.primary .v{color:#F5F4F0;}
+.rl-action.primary .arr{color:var(--brand-amber);}
+.rl-action.primary:hover{border-color:var(--brand-amber);}
+
+/* ══════════════════════════════════════════════════════════════════
+   HOME ARCHITECTURE · four separate levels
+   Research topics · Analytical systems · Selected projects · Methods
+   Each level has its own card language so the reader never confuses a
+   thematic area with a module, or a module with a case study.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Shared card media ──────────────────────────────────────────── */
+.rl-card-media{
+  position:relative;
+  aspect-ratio:16/10;
+  background:var(--surface-2);
+  overflow:hidden;
+}
+.rl-card-media img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .5s cubic-bezier(.2,.7,.3,1);
+}
+/* Legibility floor under the badge, without washing the image out */
+.rl-card-media::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(200deg,rgba(8,17,27,0.30) 0%,rgba(8,17,27,0) 42%);
+}
+.rl-card-media--editorial{
+  background:
+    linear-gradient(135deg,var(--institutional) 0%,var(--analytical) 100%);
+}
+
+/* Live preview · a real project output standing in for a still image.
+   The frame is laid out at desktop width and scaled into the card so the
+   whole composition reads, and it is inert so the card stays one link. */
+.rl-card-media--live{background:var(--analytical);}
+/* --rl-live-w is the width the output is laid out at before being scaled
+   into the card. Lower it for outputs whose legend has to stay readable at
+   card size: a 1280px layout scaled to a 576px card renders 11px type at
+   5px. home.js reads the same value to compute the scale. */
+.rl-card-media--live{--rl-live-w:1280px;--rl-live-h:720px;}
+.rl-card-media--live .rl-live-frame{
+  position:absolute;top:0;left:0;
+  width:var(--rl-live-w);height:var(--rl-live-h);
+  border:0;
+  transform-origin:top left;
+  pointer-events:none;
+}
+.rl-card-media--live .rl-live-veil{
+  position:absolute;inset:0;z-index:2;
+  background:linear-gradient(200deg,rgba(8,17,27,0.34) 0%,rgba(8,17,27,0) 46%);
+  pointer-events:none;
+}
+/* The scale is computed in JS from the card width; hover must not reset it. */
+
+/* Translucent white marker, top right, per the reference */
+.rl-badge{
+  position:absolute;top:14px;right:14px;z-index:2;
+  display:inline-flex;align-items:center;
+  padding:6px 11px;
+  background:rgba(255,255,255,0.90);
+  backdrop-filter:saturate(1.4) blur(2px);
+  border:1px solid rgba(255,255,255,0.55);
+  border-radius:3px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:0.20em;
+  text-transform:uppercase;color:var(--ink-deep);font-weight:600;
+  white-space:nowrap;
+}
+
+/* ── Chips ──────────────────────────────────────────────────────── */
+.rl-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.rl-chip{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.16em;
+  text-transform:uppercase;font-weight:500;
+  color:var(--teal-deep);
+  background:rgba(0,95,115,0.07);
+  border:1px solid rgba(0,95,115,0.16);
+  border-radius:2px;
+  padding:4px 8px;
+}
+
+/* ── 1 · Research topics ────────────────────────────────────────── */
+.rl-topics-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:26px;
+}
+@media (max-width:1000px){.rl-topics-grid{grid-template-columns:repeat(2,1fr);gap:22px;}}
+@media (max-width:640px){.rl-topics-grid{grid-template-columns:1fr;gap:20px;}}
+
+.rl-topic{
+  position:relative;
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-radius:4px;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+.rl-topic:hover{
+  border-color:rgba(0,95,115,0.34);
+  box-shadow:0 26px 48px -38px rgba(14,20,24,0.45);
+  transform:translateY(-2px);
+}
+.rl-topic:hover .rl-card-media img{transform:scale(1.035);}
+/* Editorial variant · accent rule instead of imagery.
+   The supplied topic artwork was generated illustration carrying invented
+   text, so the level is carried typographically rather than pictorially. */
+.rl-topic--editorial{padding-top:3px;background:var(--surface);}
+.rl-topic--editorial::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--teal);
+}
+.rl-topic--editorial[data-accent="teal"]::before{background:var(--teal);}
+.rl-topic--editorial[data-accent="teal-deep"]::before{background:var(--teal-deep);}
+.rl-topic--editorial[data-accent="resilience"]::before{background:var(--resilience);}
+.rl-topic--editorial[data-accent="amber"]::before{background:var(--amber);}
+.rl-topic--editorial[data-accent="terra"]::before{background:var(--terra);}
+.rl-topic--editorial[data-accent="alert"]::before{background:var(--alert);}
+
+.rl-topic-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:14px;
+}
+.rl-topic-num{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.22em;
+  font-weight:600;color:var(--muted-2);
+}
+.rl-topic--editorial[data-accent="teal"] .rl-topic-num{color:var(--teal);}
+.rl-topic--editorial[data-accent="teal-deep"] .rl-topic-num{color:var(--teal-deep);}
+.rl-topic--editorial[data-accent="resilience"] .rl-topic-num{color:#3C8B86;}
+.rl-topic--editorial[data-accent="amber"] .rl-topic-num{color:#9A6233;}
+.rl-topic--editorial[data-accent="terra"] .rl-topic-num{color:var(--terra);}
+.rl-topic--editorial[data-accent="alert"] .rl-topic-num{color:var(--alert);}
+
+.rl-topic-status{
+  font-family:var(--mono);font-size:8.5px;letter-spacing:0.18em;
+  text-transform:uppercase;font-weight:600;color:var(--muted-2);
+  border:1px solid var(--rule-strong);border-radius:2px;padding:3px 7px;
+}
+.rl-topic--editorial .rl-topic-body{padding:24px 24px 26px;}
+.rl-topic--editorial h3{font-size:20px;}
+
+.rl-topic-body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1;}
+.rl-topic-body h3{
+  font-family:var(--serif);font-weight:500;font-size:21px;line-height:1.24;
+  color:var(--ink);margin:0 0 10px;letter-spacing:-0.01em;
+}
+.rl-topic-body p{
+  font-family:var(--sans);font-size:13.5px;line-height:1.64;
+  color:var(--muted);margin:0;
+}
+.rl-topic-body .rl-chips{margin-top:auto;padding-top:16px;}
+
+/* ── 3 · Selected projects ──────────────────────────────────────── */
+.rl-projects-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:28px;
+}
+@media (max-width:840px){.rl-projects-grid{grid-template-columns:1fr;gap:22px;}}
+
+.rl-project{
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-radius:4px;
+  overflow:hidden;
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+.rl-project:hover{
+  border-color:rgba(0,95,115,0.34);
+  box-shadow:0 30px 56px -40px rgba(14,20,24,0.5);
+  transform:translateY(-2px);
+}
+.rl-project:hover .rl-card-media img{transform:scale(1.035);}
+.rl-project-link{
+  position:relative;display:block;text-decoration:none;color:inherit;height:100%;
+}
+.rl-project .rl-card-media{aspect-ratio:16/9;}
+.rl-project-body{padding:24px 24px 26px;}
+.rl-project-meta{
+  display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:0.20em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:500;
+  margin-bottom:11px;
+}
+.rl-project-meta .sep{color:var(--rule-strong);}
+.rl-project-body h3{
+  font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.22;
+  color:var(--ink);margin:0 0 11px;letter-spacing:-0.014em;
+}
+.rl-project-body p{
+  font-family:var(--sans);font-size:14px;line-height:1.66;
+  color:var(--muted);margin:0;
+}
+.rl-project-cta{
+  display:inline-flex;align-items:center;gap:9px;margin-top:18px;
+  font-family:var(--sans);font-size:12.5px;font-weight:600;
+  letter-spacing:0.05em;text-transform:uppercase;color:var(--teal);
+  border-bottom:1px solid transparent;padding-bottom:2px;
+  transition:border-color .15s ease,gap .15s ease;
+}
+.rl-project:hover .rl-project-cta{border-bottom-color:var(--teal);gap:13px;}
+.rl-project-cta .arr{font-family:var(--mono);}
+
+/* ── 2b · Analytical systems · methodology row is NOT a card ────── */
+.rl-systems-method{
+  display:flex;align-items:center;gap:28px;flex-wrap:wrap;
+  margin-top:34px;padding-top:26px;
+  border-top:1px solid rgba(255,255,255,0.14);
+}
+.rl-systems-method p{
+  font-family:var(--sans);font-size:13.5px;line-height:1.62;
+  color:rgba(199,208,216,0.86);margin:0;max-width:62ch;flex:1;min-width:260px;
+}
+.surface:not(.dark) .rl-systems-method{border-top-color:var(--rule-strong);}
+.surface:not(.dark) .rl-systems-method p{color:var(--muted);}
+
+/* ── 4 · Methods band · editorial strip, never a card grid ──────── */
+.rl-methods{
+  display:flex;align-items:center;justify-content:space-between;gap:44px;
+  padding:44px 46px;
+  background:var(--institutional);
+  border-radius:4px;
+  flex-wrap:wrap;
+}
+.rl-methods-eyebrow{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:0.24em;
+  text-transform:uppercase;color:var(--brand-green);font-weight:600;
+  margin-bottom:12px;
+}
+.rl-methods-copy{flex:1;min-width:280px;}
+.rl-methods-copy h2{
+  font-family:var(--serif);font-weight:400;font-size:clamp(24px,2.6vw,32px);
+  line-height:1.2;color:#F5F4F0;margin:0 0 12px;letter-spacing:-0.015em;
+}
+.rl-methods-copy p{
+  font-family:var(--sans);font-size:14.5px;line-height:1.66;
+  color:rgba(199,208,216,0.9);margin:0;max-width:66ch;
+}
+.rl-methods-cta{flex-shrink:0;}
+@media (max-width:760px){
+  .rl-methods{padding:32px 26px;gap:26px;}
+  .rl-methods-cta{width:100%;justify-content:center;}
+}
+
+/* ── Profile preview · the lab, not a duplicate of the footer credit ── */
+.rl-profile{
+  display:grid;grid-template-columns:1.5fr 1fr;gap:52px;align-items:center;
+}
+@media (max-width:840px){.rl-profile{grid-template-columns:1fr;gap:30px;}}
+.rl-profile-actions{display:flex;flex-direction:column;gap:12px;}
+.rl-profile-brand{
+  font-family:var(--serif);font-weight:600;font-size:20px;
+  letter-spacing:0.03em;color:var(--ink);margin-bottom:14px;
+}
+.rl-profile-text{
+  font-family:var(--sans);font-size:15px;line-height:1.7;
+  color:var(--muted);margin:0;max-width:72ch;
+}
+#profile .section-head h2{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(24px,2.6vw,34px);line-height:1.22;
+  color:var(--ink);letter-spacing:-0.015em;margin:0;
+}
+.rl-action > span{display:block;}
+
+/* Footer icon buttons keep the 2.9 outline treatment */
+.ftx-btn svg{fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;}
+.ftx-btn:first-child svg,
+.ftx-btn:nth-child(2) svg{fill:currentColor;stroke:none;}
+
+/* ── 10 · Removals · commercial surfaces are out of scope ────────── */
+.services,
+.svc-right,
+#services,
+.pricing,
+.engagement-tiers{display:none !important;}
+
+/* ── 11 · Global hardening ─────────────────────────────────────────
+   Deliberately NOT `body{overflow-x:hidden}` -- that promotes body to
+   the scroll container, which leaves the document unscrollable through
+   window and strands the footer below the fold. Sideways overflow is
+   contained at the component that causes it instead. */
+.wrap{width:100%;}
+.rl-embed,.rl-fig,.cluster-viz,.explore-more{max-width:100%;}
+img{height:auto;}
+/* No em-dash / hyphen bullets anywhere in body copy */
+.proj-narrative ul{list-style:none;padding-left:0;}
+
+/* ══════════════════════════════════════════════════════════════════
+   12 · Project 02 · Housing pressure and urban dynamics in Israel
+   Every rule here replaces an inline style carried over from the 2.9
+   source. The module blocks, the two-up map pair, the editorial panel
+   and the regime matrix each declared their own background in the
+   markup, which made them impossible to retheme and produced the dark
+   slab that broke the light institutional surface.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 12.1 · Module concept block · TMD / HAR / FAI / UPI ─────────── */
+.rl-mod{
+  border:1px solid var(--rule);
+  border-left:3px solid var(--teal-deep);
+  background:var(--offwhite);
+  padding:26px 30px;
+  margin:0 0 30px;
+}
+.rl-mod-eyebrow{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+}
+.rl-mod-title{
+  font-family:var(--serif);font-size:26px;line-height:1.22;
+  color:var(--ink);font-weight:400;margin:0 0 12px;
+}
+.rl-mod-title em{font-style:italic;color:var(--teal-deep);}
+.rl-mod p{
+  font-size:15px;line-height:1.72;color:var(--muted);
+  max-width:78ch;margin:0 0 12px;
+}
+.rl-mod p:last-child{margin-bottom:0;}
+.rl-mod p strong{color:var(--ink);font-weight:600;}
+.rl-mod.is-har{border-left-color:var(--terra-deep);}
+.rl-mod.is-har .rl-mod-title em{color:var(--terra-deep);}
+.rl-mod.is-fai{border-left-color:#9A6A12;}
+.rl-mod.is-fai .rl-mod-title em{color:#9A6A12;}
+.rl-mod.is-upi{border-left-color:var(--brand-navy);}
+.rl-mod.is-upi .rl-mod-title em{color:var(--brand-navy);}
+
+/* ── 12.2 · Two-up map pair ──────────────────────────────────────── */
+.rl-pair{
+  display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:0 0 8px;
+}
+.rl-pair-col{
+  border:1px solid var(--rule);background:var(--surface);
+  display:flex;flex-direction:column;min-width:0;
+}
+.rl-pair-tag{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.18em;
+  text-transform:uppercase;padding:12px 18px;
+  border-bottom:1px solid var(--rule);color:var(--muted);
+}
+.rl-pair-col.is-a .rl-pair-tag{color:var(--teal);}
+.rl-pair-col.is-b .rl-pair-tag{color:var(--terra-deep);}
+.rl-pair-col p{
+  font-size:13.5px;line-height:1.7;color:var(--muted);
+  padding:16px 18px 4px;margin:0;
+}
+.rl-pair-col p strong{color:var(--ink);font-weight:600;}
+.rl-pair-col p em{font-style:italic;}
+.rl-pair-frame{
+  position:relative;height:380px;margin:14px 0 0;
+  border-top:1px solid var(--rule);background:var(--offwhite);
+}
+.rl-pair-frame iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:0;display:block;
+}
+.rl-pair-cta{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:13px 18px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--teal);text-decoration:none;
+}
+.rl-pair-cta:hover{background:var(--offwhite);color:var(--institutional);}
+@media (max-width:900px){
+  .rl-pair{grid-template-columns:1fr;}
+  .rl-pair-frame{height:320px;}
+}
+
+/* ── 12.3 · Editorial panel · light, replaces the 2.9 dark box ────
+   The 2.9 source painted this panel #0E2032 inline. A near-black slab
+   in the middle of a light institutional page reads as a different
+   site, so emphasis is carried by the rule and the serif instead. */
+.rl-editorial{
+  border:1px solid var(--rule);border-top:2px solid var(--teal-deep);
+  background:var(--offwhite);padding:28px 32px;margin:26px 0 0;
+}
+.rl-editorial-eyebrow{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--teal-deep);margin-bottom:14px;
+}
+.rl-editorial p{
+  font-size:15px;line-height:1.75;color:var(--muted);
+  max-width:80ch;margin:0 0 13px;
+}
+.rl-editorial p:first-of-type{
+  font-family:var(--serif);font-size:18px;line-height:1.6;color:var(--ink);
+}
+.rl-editorial p:last-child{margin-bottom:0;}
+.rl-editorial p strong{color:var(--ink);font-weight:600;}
+
+/* ── 12.4 · Figure shell for the in-page SVG charts ──────────────── */
+.rl-fig-block{
+  border:1px solid var(--rule);background:var(--surface);margin:0;
+}
+.rl-fig-head{
+  padding:20px 26px 16px;border-bottom:1px solid var(--rule);
+}
+.rl-fig-eyebrow{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--muted-2);margin-bottom:8px;
+}
+.rl-fig-title{
+  font-family:var(--serif);font-size:19px;line-height:1.35;
+  color:var(--ink);margin:0 0 8px;font-weight:400;
+}
+.rl-fig-sub{font-size:13.5px;line-height:1.65;color:var(--muted);margin:0;max-width:88ch;}
+.rl-fig-plot{padding:22px 26px;overflow-x:auto;}
+.rl-fig-plot svg{width:100%;height:auto;display:block;min-width:560px;}
+.rl-fig-foot{
+  padding:14px 26px 18px;border-top:1px solid var(--rule);
+  background:var(--offwhite);
+  display:flex;flex-wrap:wrap;gap:12px 26px;align-items:baseline;
+  justify-content:space-between;
+}
+.rl-fig-note{font-size:12.5px;line-height:1.65;color:var(--muted);margin:0;max-width:74ch;}
+.rl-fig-src{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--muted-2);
+}
+.rl-legend{
+  display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;
+  padding:0 26px 20px;
+}
+.rl-legend .li{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12.5px;color:var(--muted);
+}
+.rl-legend .li i{width:14px;height:10px;display:inline-block;border-radius:2px;}
+.rl-legend .li b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:12px;}
+
+/* ── 12.5 · Absorption table ─────────────────────────────────────── */
+.rl-table-wrap{border:1px solid var(--rule);background:var(--surface);}
+.rl-table-head{padding:20px 26px 16px;border-bottom:1px solid var(--rule);}
+.rl-table-scroll{overflow-x:auto;}
+.rl-table-wrap table{
+  width:100%;border-collapse:collapse;font-size:13px;min-width:820px;
+}
+.rl-table-wrap thead th{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--muted);font-weight:500;
+  text-align:left;padding:12px 14px;border-bottom:1px solid var(--rule-strong);
+  background:var(--offwhite);white-space:nowrap;
+}
+.rl-table-wrap thead th.n{text-align:right;}
+.rl-table-wrap tbody td{
+  padding:12px 14px;border-bottom:1px solid var(--rule);
+  color:var(--muted);vertical-align:middle;
+}
+.rl-table-wrap tbody tr:last-child td{border-bottom:0;}
+.rl-table-wrap tbody tr:hover td{background:var(--offwhite);}
+.rl-table-wrap td.name{color:var(--ink);font-weight:600;}
+.rl-table-wrap td.n{text-align:right;font-family:var(--mono);font-size:12.5px;color:var(--ink);}
+.rl-pill{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:0.12em;text-transform:uppercase;padding:4px 9px;
+  border-radius:var(--r-pill);border:1px solid;white-space:nowrap;
+}
+.rl-pill.p-critical{color:#8C2D1F;border-color:rgba(140,45,31,0.35);background:rgba(140,45,31,0.06);}
+.rl-pill.p-deficit{color:var(--terra-deep);border-color:rgba(176,91,59,0.35);background:rgba(176,91,59,0.06);}
+.rl-pill.p-balance{color:var(--teal-deep);border-color:rgba(47,93,98,0.32);background:rgba(47,93,98,0.06);}
+.rl-pill.p-surplus{color:#4F6B4E;border-color:rgba(79,107,78,0.32);background:rgba(79,107,78,0.06);}
+.rl-pill.p-surplus-hi{color:#2F6D69;border-color:rgba(47,109,105,0.32);background:rgba(47,109,105,0.08);}
+
+/* ── 12.6 · FAI dimensions and source ledger ─────────────────────── */
+.rl-dims{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--rule);border:1px solid var(--rule);margin:0 0 26px;
+}
+.rl-dim{background:var(--surface);padding:20px 20px 22px;}
+.rl-dim .dn{
+  display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.16em;
+  text-transform:uppercase;color:#9A6A12;margin-bottom:9px;
+}
+.rl-dim .dt{display:block;font-size:13.5px;line-height:1.62;color:var(--muted);}
+@media (max-width:900px){.rl-dims{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:560px){.rl-dims{grid-template-columns:1fr;}}
+
+.rl-src-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+  background:var(--rule);border:1px solid var(--rule);
+}
+.rl-src{background:var(--surface);padding:16px 20px;display:flex;gap:14px;align-items:flex-start;}
+.rl-src .s-body{min-width:0;}
+.rl-src .s-name{display:block;font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:3px;}
+.rl-src .s-what{display:block;font-size:12.5px;line-height:1.6;color:var(--muted);}
+.rl-status{
+  flex:0 0 auto;font-family:var(--mono);font-size:9px;letter-spacing:0.12em;
+  text-transform:uppercase;padding:4px 8px;border-radius:3px;border:1px solid;margin-top:2px;
+}
+.rl-status.st-available{color:#2F6D69;border-color:rgba(47,109,105,0.35);background:rgba(47,109,105,0.07);}
+.rl-status.st-partial{color:#9A6A12;border-color:rgba(154,106,18,0.35);background:rgba(154,106,18,0.07);}
+.rl-status.st-limited{color:var(--terra-deep);border-color:rgba(176,91,59,0.35);background:rgba(176,91,59,0.07);}
+.rl-status.st-derived{color:var(--teal-deep);border-color:rgba(47,93,98,0.35);background:rgba(47,93,98,0.07);}
+.rl-status.st-proxy{color:#8C2D1F;border-color:rgba(140,45,31,0.32);background:rgba(140,45,31,0.06);}
+@media (max-width:760px){.rl-src-grid{grid-template-columns:1fr;}}
+
+/* ── 12.7 · UPI regime matrix ────────────────────────────────────── */
+.rl-matrix{border:1px solid var(--rule);background:var(--surface);}
+.rl-matrix-plot{padding:24px 26px 8px;overflow-x:auto;}
+.rl-matrix-plot svg{width:100%;height:auto;display:block;min-width:640px;}
+.rl-axhelp{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--rule);border-top:1px solid var(--rule);
+}
+.rl-ax{background:var(--surface);padding:18px 26px;}
+.rl-ax b{
+  display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--ink);margin-bottom:7px;font-weight:600;
+}
+.rl-ax p{font-size:13px;line-height:1.65;color:var(--muted);margin:0;}
+.rl-regimes{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--rule);border-top:1px solid var(--rule);
+}
+.rl-regime{background:var(--surface);padding:20px 22px 22px;}
+.rl-regime .sw{display:inline-block;width:26px;height:4px;border-radius:2px;margin-bottom:12px;}
+.rl-regime .rn{
+  display:block;font-family:var(--serif);font-size:16.5px;line-height:1.3;
+  color:var(--ink);margin-bottom:9px;
+}
+.rl-regime .rn em{font-style:italic;}
+.rl-regime .rd{display:block;font-size:12.8px;line-height:1.62;color:var(--muted);margin-bottom:12px;}
+.rl-regime .rt{
+  display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:0.1em;
+  color:var(--muted-2);padding-top:10px;border-top:1px solid var(--rule);
+}
+@media (max-width:960px){.rl-regimes{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:620px){
+  .rl-regimes{grid-template-columns:1fr;}
+  .rl-axhelp{grid-template-columns:1fr;}
+}
+
+/* ── 12.8 · KPI strip ────────────────────────────────────────────── */
+.rl-kpis{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--rule);border:1px solid var(--rule);margin:0 0 8px;
+}
+.rl-kpi{background:var(--surface);padding:20px 22px;}
+.rl-kpi .k{
+  display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--muted-2);margin-bottom:10px;
+}
+.rl-kpi .v{
+  display:block;font-family:var(--serif);font-size:27px;line-height:1;
+  color:var(--ink);margin-bottom:8px;
+}
+.rl-kpi .d{display:block;font-size:12.3px;line-height:1.55;color:var(--muted);}
+@media (max-width:900px){.rl-kpis{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:520px){.rl-kpis{grid-template-columns:1fr;}}
+
+/* ── 12.9 · Anchor offset for the four module sections ────────────
+   Without this the module links from the home page land with the
+   heading tucked under the fixed bar. Matching Project 01 exactly,
+   so neither page leaves a band of dead air under the header. */
+#section-tmd,#section-har,#section-fai,#section-upi{
+  scroll-margin-top:calc(var(--rl-hdr-h,69px) + 14px);
+}
+
+/* ── 12.10 · Bilingual text inside SVG ────────────────────────────
+   display:none on a tspan collapses it in every engine that matters,
+   so the two language variants can live in one text node. */
+html[lang="en"] svg tspan.lang-es,
+html[lang="es"] svg tspan.lang-en{display:none;}
+
+/* Taller step for outputs whose own layout exceeds 980px; measured from
+   the rendered output, not guessed, so nothing is clipped. */
+.rl-embed-body.h-1080{height:1080px;}
+@media (max-width:900px){.rl-embed-body.h-1080{height:760px;}}
+
+/* ══════════════════════════════════════════════════════════════════
+   13 · Project 02 · editorial correction pass
+   Three defects are repaired here, all of them structural rather than
+   cosmetic:
+   (a) every interpretive paragraph was a .rl-read, i.e. a full-width
+       rule plus a floating serif line. Stacked five times down a page
+       that rule reads as a wireframe divider, and it cut a caption
+       away from the figure it belongs to.
+   (b) spacing carried no grammar: a caption attached to a chart and a
+       paragraph opening a new idea used the same 28px.
+   (c) the absorption-regime pills sized themselves to their own text,
+       so the column looked ragged and changed shape between languages.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 13.1 · Spacing grammar ───────────────────────────────────────
+   Three distances, and only three. Anything that belongs to the visual
+   above it is TIGHT; a new block inside the same idea is BLOCK; a new
+   idea is a .rl-sec, which already owns 64px. */
+.rl-tight{margin-top:14px !important;}
+.rl-blk{margin-top:26px !important;}
+.rl-blk-lg{margin-top:38px !important;}
+
+/* A reading that interprets the visual directly above it is not a new
+   section, so it carries no divider -- only air and a slightly smaller
+   measure than the free-standing .rl-read. */
+/* 16px above ties it to the visual it interprets; 26px below detaches it from
+   whatever comes next, so it never reads as the caption of the block below.
+   Against a following .rl-sec the two margins collapse to the section's 64px. */
+.rl-read-tight{
+  margin:16px 0 26px;padding:0;border-top:0;
+}
+.rl-read-tight p{
+  font-family:var(--serif);font-weight:300;
+  font-size:17.5px;line-height:1.6;color:var(--ink);
+  margin:0;max-width:76ch;text-wrap:pretty;
+}
+
+/* ── 13.2 · Analytical block · the one interpretive surface ────────
+   Replaces the bare rule-and-serif slab. Same architecture as the
+   topic cards: hairline institutional border, one accent edge, mono
+   eyebrow, serif lede, sans body. No flat grey, no black panel, no
+   wireframe rule. */
+.rl-analysis{
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-left:3px solid var(--teal-deep);
+  border-radius:0 4px 4px 0;
+  padding:26px 30px 28px;
+  margin:16px 0 0;
+}
+.rl-analysis-eyebrow{
+  display:block;
+  font-family:var(--mono);font-size:10px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--teal-deep);font-weight:600;
+  margin-bottom:12px;
+}
+.rl-analysis h4{
+  font-family:var(--serif);font-weight:400;
+  font-size:20px;line-height:1.28;color:var(--ink);
+  margin:0 0 14px;letter-spacing:-0.008em;
+}
+.rl-analysis p{
+  font-family:var(--sans);font-size:14.8px;line-height:1.74;
+  color:var(--muted);margin:0 0 13px;max-width:84ch;
+}
+.rl-analysis p:first-of-type{
+  font-family:var(--serif);font-weight:300;
+  font-size:18px;line-height:1.6;color:var(--ink);
+}
+.rl-analysis p:last-child{margin-bottom:0;}
+.rl-analysis p strong{color:var(--ink);font-weight:600;}
+/* Module accents, so the block always says which layer it belongs to */
+.rl-analysis.is-tmd{border-left-color:var(--teal-deep);}
+.rl-analysis.is-tmd .rl-analysis-eyebrow{color:var(--teal-deep);}
+.rl-analysis.is-har{border-left-color:var(--terra-deep);}
+.rl-analysis.is-har .rl-analysis-eyebrow{color:var(--terra-deep);}
+.rl-analysis.is-fai{border-left-color:#9A6A12;}
+.rl-analysis.is-fai .rl-analysis-eyebrow{color:#9A6A12;}
+.rl-analysis.is-upi{border-left-color:var(--brand-navy);}
+.rl-analysis.is-upi .rl-analysis-eyebrow{color:var(--brand-navy);}
+/* Attached to the figure above: the two read as one unit */
+.rl-analysis.is-attached{margin-top:10px;}
+@media (max-width:620px){.rl-analysis{padding:22px 20px 24px;}}
+
+/* ── 13.3 · Technical note · a note, not a grey box ────────────────
+   Carries the granularity caveats that belong to one figure. Reads as
+   an annotation of the figure above, never as a second paragraph of
+   the argument. */
+.rl-technote{
+  display:grid;grid-template-columns:auto 1fr;gap:0 18px;align-items:start;
+  background:var(--surface);
+  border:1px solid var(--rule);border-top:2px solid var(--muted-2);
+  padding:16px 22px 18px;margin:10px 0 0;
+}
+.rl-technote .tn-tag{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--muted);font-weight:600;
+  border:1px solid var(--rule-strong);border-radius:var(--r-pill);
+  padding:4px 10px;white-space:nowrap;
+}
+.rl-technote p{
+  font-family:var(--sans);font-size:13px;line-height:1.7;
+  color:var(--muted);margin:0;max-width:84ch;
+}
+@media (max-width:620px){
+  .rl-technote{grid-template-columns:1fr;gap:10px;}
+  .rl-technote .tn-tag{justify-self:start;}
+}
+
+/* ── 13.4 · Two-panel figure · reference layout for the returns chart
+   The reference output put the annual composition and the cumulative
+   ranking side by side. Two panels rather than one wide SVG, so the
+   pair stacks on a narrow viewport instead of forcing a sideways
+   scroll inside the figure. */
+.rl-fig-duo{
+  display:grid;grid-template-columns:1.12fr 0.88fr;gap:1px;
+  background:var(--rule);border-bottom:1px solid var(--rule);
+}
+.rl-fig-panel{background:var(--surface);padding:20px 24px 18px;min-width:0;}
+.rl-fig-panel .pt{
+  display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:600;
+  padding-bottom:10px;margin-bottom:14px;border-bottom:1px solid var(--rule);
+}
+.rl-fig-panel svg{width:100%;height:auto;display:block;}
+@media (max-width:900px){
+  .rl-fig-duo{grid-template-columns:1fr;}
+}
+
+/* ── 13.5 · Absorption regime pills · one width, centred ───────────
+   The pill is a category marker, so its size must not encode the
+   length of its own label -- otherwise the column reads as ragged and
+   changes shape between ES and EN. */
+.rl-table-wrap td .rl-pill{
+  display:block;width:152px;text-align:center;
+  padding-left:0;padding-right:0;
+}
+.rl-table-wrap th.regime,.rl-table-wrap td.regime{width:172px;}
+
+/* ── 13.6 · UPI · legibility of the regime ledger ──────────────────
+   12.8px under a 1240-wide matrix was below the page's reading size. */
+.rl-regime .rd{font-size:13.6px;line-height:1.66;}
+.rl-regime .rn{font-size:17.5px;}
+.rl-regime .rt{font-size:11px;}
+.rl-ax p{font-size:13.8px;line-height:1.68;}
+.rl-ax b{font-size:10.5px;}
+/* The matrix ledger sat under a very wide plot; four across keeps the
+   block compact instead of leaving a deep empty band beside it. */
+@media (min-width:1100px){
+  .rl-regimes{grid-template-columns:repeat(3,1fr);}
+}
+/* Sources strip for the matrix, same shape as .rl-fig-foot */
+.rl-matrix-foot{
+  padding:14px 26px 18px;border-top:1px solid var(--rule);
+  background:var(--offwhite);
+  display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;
+  justify-content:space-between;
+}
+.rl-matrix-foot p{font-size:12.5px;line-height:1.68;color:var(--muted);margin:0;max-width:88ch;}
+.rl-matrix-foot .src{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--muted-2);
+}
+
+/* ── 13.7 · Embedded output heights used by Project 02 ─────────────
+   Declared, never guessed. The FAI explorer changes height with the
+   active tab and with the language, so it is trimmed at runtime by
+   site.js rather than pinned to a single number. */
+.rl-embed-body.h-620{height:620px;}
+.rl-embed-body.h-720{height:720px;}
+.rl-embed-body.h-820{height:820px;}
+@media (max-width:900px){
+  .rl-embed-body.h-620{height:520px;}
+  .rl-embed-body.h-720{height:560px;}
+  .rl-embed-body.h-820{height:620px;}
+}
+
+/* A map has to be readable as one unit: its title bar, the map itself and
+   its legend must land on screen together, at any browser zoom. A fixed
+   820px frame satisfied that at 75% zoom and missed it by 33px at 100% on
+   a 900px-tall window, which is exactly the "map needs browser zoom to be
+   understood" failure. The frame is therefore bounded by the viewport
+   rather than by a constant -- 820px is the ceiling, never the value. */
+.rl-embed-body.h-map{
+  height:clamp(520px, calc(100vh - var(--rl-hdr-h,69px) - 110px), 820px);
+}
+@media (max-width:900px){
+  .rl-embed-body.h-map{height:clamp(420px, calc(100vh - var(--rl-hdr-h,69px) - 96px), 620px);}
+}
+
+/* ── 13.8 · Figure block spacing ──────────────────────────────────
+   .rl-fig-block shipped margin:0, so every instance needed an inline
+   style. The grammar of §13.1 supplies it instead. */
+.rl-fig-block + .rl-fig-foot{border-top:0;}
+.rl-legend{padding-top:4px;}
+/* A foot that carries only its sources: justify-content:space-between would
+   drop the lone source line at the left, out of line with every other figure
+   on the page, where the sources sit at the right edge. */
+.rl-fig-foot.is-src-only{justify-content:flex-end;padding:12px 26px 14px;}
+
+/* ══════════════════════════════════════════════════════════════════
+   14 · Publication pass · typographic floor and editorial hierarchy
+   The 2.9 cascade set its technical labels between 8.5px and 10.5px.
+   That reads as a specimen sheet rather than as a document, and half
+   of it fell under the legibility floor this build commits to:
+     · technical labels, legends, sources   11 - 12px
+     · captions and figure notes            13.5px
+     · body copy                            14.5 - 16px, line-height >= 1.5
+     · section headings                     20 - 24px
+     · project H1                           32 - 40px
+   Nothing below 11px survives anywhere on the page.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 14.1 · Mono technical labels · 11 - 12px, never smaller ─────── */
+.rl-embed-head,
+.rl-fig-cap .n,
+.rl-top-row .nm .cy,
+.rl-top-row .sc span,
+.rl-action .k,
+.rl-badge,
+.rl-project-meta,
+.rl-methods-eyebrow,
+.rl-note .h,
+.rl-read .h,
+.rl-fig-src,
+.rl-fig-eyebrow,
+.rl-kpi .k,
+.rl-matrix-foot .src,
+.rl-dim .dn,
+.rl-table-wrap thead th,
+.rl-pill,
+.rl-status,
+.rl-technote .tn-tag,
+.rl-chip,
+.rl-topic-status{font-size:11px;}
+
+.rl-sec-eyebrow,
+.rl-analysis-eyebrow,
+.rl-mod-eyebrow,
+.rl-editorial-eyebrow,
+.rl-pair-tag,
+.rl-fig-panel .pt,
+.rl-ax b{font-size:11.5px;}
+
+/* Letter-spacing that was tuned for 9px becomes a gap at 11px. */
+.rl-embed-head{letter-spacing:0.16em;}
+.rl-chip{letter-spacing:0.12em;}
+.rl-topic-status{letter-spacing:0.14em;}
+.rl-table-wrap thead th{letter-spacing:0.11em;}
+.rl-pill{letter-spacing:0.09em;}
+.rl-status{letter-spacing:0.09em;}
+.rl-technote .tn-tag{letter-spacing:0.12em;}
+
+/* The project header: H1 lands in the 32-40px band, its mono furniture
+   clears the floor. 2.9 ran the title up to 60px, which fought the
+   section headings for rank on a page that has eight of them. */
+.proj-title{font-size:clamp(30px,3.4vw,40px);line-height:1.12;}
+.proj-num{font-size:11.5px;}
+.proj-meta{font-size:11px;line-height:1.9;}
+.module-label{font-size:11px;letter-spacing:0.14em;}
+
+/* ── 14.2 · Reading sizes · body copy never under 14px ──────────── */
+.rl-fig-cap p,
+.rl-note p,
+.rl-topic-body p,
+.rl-systems-method p,
+.rl-fig-sub{font-size:14px;line-height:1.66;}
+.rl-sec-desc{font-size:15px;line-height:1.7;}
+.rl-fig-note,
+.rl-matrix-foot p,
+.rl-src .s-what,
+.rl-technote p{font-size:13.5px;line-height:1.68;}
+.rl-dim .dt,
+.rl-ax p,
+.rl-regime .rd{font-size:14px;line-height:1.62;}
+.finding p{font-size:14px;line-height:1.62;}
+.finding h4{font-size:19px;}
+
+/* Section headings sit in the 20-24px band so they read as dividers of
+   the argument, not as competing titles. */
+.rl-sec-title{font-size:clamp(20px,2vw,24px);line-height:1.28;}
+
+/* ── 14.3 · Compound-phrase emphasis · weight and colour only ─────
+   Emphasis is carried by weight and institutional teal. No underline,
+   no bottom rule, no tinted band: an inset box-shadow under a phrase
+   reads as a decorative blue underline, which this system does not use
+   anywhere. */
+.rl-em{
+  color:var(--teal-deep);font-weight:600;
+  text-decoration:none;border-bottom:0;box-shadow:none;background:none;
+}
+/* Nothing inside the project body may draw a decorative underline. Real
+   links keep their own affordance; these are emphasis spans only. */
+.project-block .rl-em,
+.project-block strong,
+.project-block b,
+.project-block em{text-decoration:none;box-shadow:none;}
+.project-block b:not(.rl-em){border-bottom:0;}
+
+/* ── 14.4 · Module concept block · the 2.9 feature treatment ──────
+   The concept blocks had flattened into a pale slab with a hairline,
+   which is the "pencil stroke" reading. 2.9 carried them as a titled
+   panel with a solid institutional spine, a tinted ground and a rule
+   under the heading. Restored here, per module accent. */
+.rl-mod--feature{
+  position:relative;
+  background:linear-gradient(180deg,#F4F6F7 0%,var(--surface) 62%);
+  border:1px solid var(--rule-strong);
+  border-left:0;
+  border-radius:0 4px 4px 0;
+  padding:30px 34px 32px 38px;
+  box-shadow:0 26px 48px -42px rgba(14,20,24,0.40);
+}
+/* Solid institutional spine, not a wireframe hairline */
+.rl-mod--feature::before{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:5px;
+  background:var(--teal-deep);
+}
+.rl-mod--feature .rl-mod-eyebrow{
+  color:var(--teal-deep);font-weight:600;
+  padding-bottom:12px;margin-bottom:14px;
+  border-bottom:1px solid var(--rule-strong);
+}
+.rl-mod--feature .rl-mod-title{
+  font-size:clamp(21px,2.1vw,25px);line-height:1.22;margin-bottom:14px;
+}
+.rl-mod--feature p{font-size:15px;line-height:1.74;}
+.rl-mod--feature.is-tmd::before{background:var(--teal-deep);}
+.rl-mod--feature.is-har::before{background:var(--terra-deep);}
+.rl-mod--feature.is-har .rl-mod-eyebrow{color:var(--terra-deep);}
+.rl-mod--feature.is-upi::before{background:var(--institutional);}
+.rl-mod--feature.is-upi .rl-mod-eyebrow{color:var(--institutional);}
+@media (max-width:620px){.rl-mod--feature{padding:24px 20px 26px 24px;}}
+
+/* ── 14.4b · Framing figures · topic-card architecture ────────────
+   The KPI strip was a 1px-gap grid over a rule colour, which renders as
+   a hairline table: four grey cells butted together. It now uses the
+   same card language as the topic cards — separate cards, accent rule
+   on top, white ground, air, a large serif figure. */
+.rl-kpis{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:18px;background:none;border:0;margin:0 0 8px;
+}
+/* The card carried border-radius:0 0 4px 4px, so the two top corners were
+   hard points against a 3px accent rule -- the only square-cornered card on
+   the page. The radius is the system's card radius, on all four corners. */
+.rl-kpi{
+  position:relative;
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-top:3px solid var(--teal);
+  border-radius:var(--r-card);
+  padding:22px 22px 24px;
+  display:flex;flex-direction:column;
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+.rl-kpi:hover{
+  box-shadow:0 26px 48px -38px rgba(14,20,24,0.45);
+  transform:translateY(-2px);
+}
+.rl-kpi:nth-child(2){border-top-color:var(--terra-deep);}
+.rl-kpi:nth-child(3){border-top-color:var(--brand-amber);}
+.rl-kpi:nth-child(4){border-top-color:var(--institutional);}
+.rl-kpi .k{
+  display:block;font-family:var(--mono);font-size:11px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:600;
+  padding-bottom:12px;margin-bottom:14px;
+  border-bottom:1px solid var(--rule);
+}
+.rl-kpi .v{
+  display:block;font-family:var(--serif);font-weight:400;
+  font-size:clamp(26px,2.6vw,34px);line-height:1.04;
+  color:var(--ink);margin-bottom:12px;letter-spacing:-0.018em;
+}
+/* A split figure (two labelled halves) needs to stay readable, so it
+   steps down rather than forcing the card wider. */
+.rl-kpi .v.is-split{font-size:clamp(17px,1.6vw,20px);line-height:1.34;}
+.rl-kpi .v .u{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:600;
+  display:block;margin-top:2px;
+}
+/* The description was pinned to the bottom with margin-top:auto, so a short
+   card opened a band of dead space between the figure and its qualification
+   while the four cards still shared one height. Auto margins on both ends of
+   the figure/description pair centre it in the space under the label instead,
+   and the row still reads as one aligned strip. */
+.rl-kpi .v{margin-top:auto;}
+.rl-kpi .d{
+  display:block;font-size:13.5px;line-height:1.6;color:var(--muted);
+  margin-top:0;margin-bottom:auto;
+}
+@media (max-width:900px){.rl-kpis{grid-template-columns:repeat(2,1fr);gap:14px;}}
+@media (max-width:520px){.rl-kpis{grid-template-columns:1fr;gap:12px;}}
+
+/* ── 14.5 · Absorption table · balanced measure, even margins ─────
+   The regime column had been pinned to 172px while the numeric columns
+   were left to auto-size, so the gap between district and completed
+   units opened to roughly a fifth of the table. Explicit proportions
+   close it, and the shell carries a real side margin instead of the
+   14px cell padding doubling as one. */
+.rl-table-wrap table{table-layout:fixed;min-width:940px;}
+.rl-table-wrap thead th,
+.rl-table-wrap tbody td{padding:13px 12px;}
+.rl-table-wrap thead th:first-child,
+.rl-table-wrap tbody td:first-child{padding-left:38px;}
+.rl-table-wrap thead th:last-child,
+.rl-table-wrap tbody td:last-child{padding-right:38px;}
+/* The two long headers, "Unidades finalizadas" and "Demanda efectiva",
+   were held on one line by the 2.9 `white-space:nowrap` inside 12 %
+   columns. At 11px with tracking the first needs ~146px against ~118px
+   of usable width, so the two ran into each other. The columns are
+   widened and the headers are allowed to wrap onto a second line. */
+/* With the Spanish supply header abbreviated to UF the two numeric columns
+   no longer need 14 % each, so the width goes where the content is: the
+   subdistrict name, the regime pill and the two market deltas. No column is
+   left compressed and none carries a band of empty measure. */
+.rl-table-wrap col.c-name{width:14%;}
+.rl-table-wrap col.c-dist{width:11%;}
+.rl-table-wrap col.c-num{width:12%;}
+.rl-table-wrap col.c-har{width:9%;}
+.rl-table-wrap col.c-reg{width:20%;}
+.rl-table-wrap col.c-delta{width:11%;}
+.rl-table-wrap thead th{
+  white-space:normal;overflow-wrap:break-word;
+  vertical-align:bottom;line-height:1.35;
+}
+/* From HAR rightwards the heading sits centred over its own results, so
+   header and value share one axis instead of drifting apart. */
+.rl-table-wrap thead th:nth-child(n+5),
+.rl-table-wrap tbody td:nth-child(n+5){text-align:center;}
+.rl-table-wrap tbody td:nth-child(n+5).n{text-align:center;}
+/* One pill width for every regime, centred, so the column is a column
+   and not a ragged edge that changes shape between languages. */
+.rl-table-wrap td .rl-pill{
+  display:block;width:100%;max-width:186px;margin:0 auto;
+  text-align:center;padding:5px 0;
+}
+.rl-table-wrap th.regime,.rl-table-wrap td.regime{width:auto;text-align:center;}
+.rl-table-wrap td.n{font-size:13.5px;}
+/* Expansion of the abbreviated header, under the caption it belongs to */
+.rl-table-key{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.08em;
+  color:var(--muted-2);margin:10px 0 0;
+}
+.rl-table-key b{color:var(--muted);font-weight:600;}
+@media (max-width:900px){
+  .rl-table-wrap thead th:first-child,
+  .rl-table-wrap tbody td:first-child{padding-left:20px;}
+  .rl-table-wrap thead th:last-child,
+  .rl-table-wrap tbody td:last-child{padding-right:20px;}
+}
+
+/* ── 14.5b · Absorption table on a narrow viewport ────────────────
+   Eight columns cannot hold a readable measure at 375px, and the 940px
+   min-width turned .rl-table-scroll into a grey horizontal slider inside
+   the page. Below 760px each row becomes its own card and each cell
+   carries its heading, so the table is read vertically and nothing pans
+   sideways. Labels come from the header row through nth-child, per
+   language, so the markup stays a table. */
+@media (max-width:760px){
+  .rl-table-scroll{overflow-x:visible;}
+  .rl-table-wrap table{min-width:0;width:100%;table-layout:auto;display:block;}
+  .rl-table-wrap thead{display:none;}
+  .rl-table-wrap tbody{display:block;}
+  .rl-table-wrap tbody tr{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:0 14px;
+    border:1px solid var(--rule-strong);border-radius:var(--r-card);
+    padding:14px 16px 12px;margin:0 16px 12px;
+    background:var(--surface);
+  }
+  .rl-table-wrap tbody tr:hover td{background:none;}
+  .rl-table-wrap tbody td{
+    display:block;border-bottom:0;padding:5px 0;
+    text-align:left !important;font-size:13.5px;
+  }
+  .rl-table-wrap tbody td::before{
+    display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:0.11em;
+    text-transform:uppercase;color:var(--muted-2);margin-bottom:2px;
+  }
+  /* the subdistrict and its district head the card, full width */
+  .rl-table-wrap tbody td:nth-child(1){
+    grid-column:1 / -1;font-size:16px;font-family:var(--serif);
+    padding-left:0 !important;padding-bottom:0;
+  }
+  .rl-table-wrap tbody td:nth-child(1)::before{content:none;}
+  .rl-table-wrap tbody td:nth-child(2){
+    grid-column:1 / -1;padding-top:0;padding-bottom:10px;
+    font-family:var(--mono);font-size:11px;letter-spacing:0.12em;
+    text-transform:uppercase;color:var(--muted-2);
+  }
+  .rl-table-wrap tbody td:nth-child(2)::before{content:none;}
+  /* the regime pill spans the card and keeps its single width */
+  .rl-table-wrap tbody td.regime{
+    grid-column:1 / -1;padding-top:10px;margin-top:6px;
+    border-top:1px solid var(--rule);
+    padding-right:0 !important;
+  }
+  .rl-table-wrap tbody td.regime::before{content:none;}
+  .rl-table-wrap tbody td .rl-pill{max-width:none;}
+  .rl-table-wrap tbody td:last-child{padding-right:0 !important;}
+  html[lang="es"] .rl-table-wrap tbody td:nth-child(3)::before{content:"UF";}
+  html[lang="es"] .rl-table-wrap tbody td:nth-child(4)::before{content:"Demanda efectiva";}
+  html[lang="es"] .rl-table-wrap tbody td:nth-child(5)::before{content:"HAR";}
+  html[lang="es"] .rl-table-wrap tbody td:nth-child(7)::before{content:"Δ Alquiler";}
+  html[lang="es"] .rl-table-wrap tbody td:nth-child(8)::before{content:"Δ Venta";}
+  html[lang="en"] .rl-table-wrap tbody td:nth-child(3)::before{content:"Completed units";}
+  html[lang="en"] .rl-table-wrap tbody td:nth-child(4)::before{content:"Effective demand";}
+  html[lang="en"] .rl-table-wrap tbody td:nth-child(5)::before{content:"HAR";}
+  html[lang="en"] .rl-table-wrap tbody td:nth-child(7)::before{content:"Δ Rent";}
+  html[lang="en"] .rl-table-wrap tbody td:nth-child(8)::before{content:"Δ Sale";}
+}
+
+/* ── 14.6 · FAI · the two-column block of the 2.9 reference ───────
+   Argument on a white ground at the left, combined dimensions on a
+   navy panel at the right. The previous pass rendered the right column
+   as a warm sand gradient, which is the beige/vintage surface this
+   system does not use. Ground, accents and rules are institutional. */
+.rl-fai-intro{
+  display:grid;grid-template-columns:1.34fr 1fr;gap:0;
+  border:1px solid var(--rule-strong);
+  border-top:3px solid var(--teal);
+  background:var(--surface);
+  margin:0 0 26px;
+  overflow:hidden;
+  box-shadow:0 28px 52px -44px rgba(14,20,24,0.42);
+}
+.rl-fai-left{padding:32px 36px 34px;min-width:0;background:var(--surface);}
+/* Navy panel · the analytical surface, same ink as the systems band */
+.rl-fai-right{
+  padding:32px 30px 34px;min-width:0;
+  background:var(--institutional);
+}
+.rl-fai-eyebrow{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+  padding-bottom:12px;margin-bottom:16px;
+  border-bottom:1px solid var(--rule-strong);
+}
+.rl-fai-eyebrow.is-muted{
+  color:var(--brand-green);
+  border-bottom-color:rgba(255,255,255,0.18);
+}
+.rl-fai-title{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(21px,2.1vw,26px);line-height:1.2;
+  color:var(--ink);margin:0 0 16px;letter-spacing:-0.014em;
+}
+.rl-fai-title em{font-style:italic;color:var(--teal);}
+.rl-fai-lede{
+  font-family:var(--sans);font-size:15px;line-height:1.74;
+  color:var(--muted);margin:0 0 14px;
+}
+.rl-fai-lede strong{color:var(--ink);font-weight:600;}
+.rl-fai-body{
+  font-family:var(--sans);font-size:15px;line-height:1.74;
+  color:var(--muted);margin:0;
+}
+/* Dimension cards on the navy panel · one sober accent each */
+.rl-fai-dims{display:flex;flex-direction:column;gap:10px;}
+.rl-fai-dim{
+  background:rgba(255,255,255,0.045);
+  border:1px solid rgba(255,255,255,0.10);
+  border-left:3px solid var(--brand-green);
+  border-radius:0 3px 3px 0;
+  padding:13px 15px 14px;
+}
+.rl-fai-dim:nth-child(1){border-left-color:#4FA3A0;}
+.rl-fai-dim:nth-child(2){border-left-color:var(--brand-amber);}
+.rl-fai-dim:nth-child(3){border-left-color:var(--terra-deep);}
+.rl-fai-dim:nth-child(4){border-left-color:#5B8DB8;}
+.rl-fai-dim .dn{
+  display:block;font-family:var(--mono);font-size:11px;letter-spacing:0.16em;
+  text-transform:uppercase;color:#F5F4F0;font-weight:600;margin-bottom:6px;
+}
+.rl-fai-dim:nth-child(1) .dn{color:#7FC4C1;}
+.rl-fai-dim:nth-child(2) .dn{color:#E9B45A;}
+.rl-fai-dim:nth-child(3) .dn{color:#D89377;}
+.rl-fai-dim:nth-child(4) .dn{color:#93B9D8;}
+.rl-fai-dim .dt{
+  display:block;font-size:13.5px;line-height:1.6;
+  color:rgba(212,221,229,0.92);
+}
+/* Closing statement under the two columns, full width of the block */
+.rl-fai-close{
+  grid-column:1 / -1;
+  padding:22px 36px 26px;
+  border-top:1px solid var(--rule-strong);
+  background:var(--surface-2);
+}
+.rl-fai-close p{
+  font-family:var(--sans);font-size:14.5px;line-height:1.72;
+  color:var(--muted);margin:0;max-width:104ch;
+}
+.rl-fai-close p strong{color:var(--ink);font-weight:600;}
+@media (max-width:860px){
+  .rl-fai-intro{grid-template-columns:1fr;}
+  .rl-fai-left{padding:26px 22px 24px;}
+  .rl-fai-right{padding:24px 22px 26px;}
+  .rl-fai-close{padding:20px 22px 24px;}
+}
+
+/* Weighting scenarios · an annotation on the explorer below it, carried
+   by a navy spine on the plain page ground. No tinted panel. */
+.rl-scenarios{
+  border:1px solid var(--rule-strong);
+  border-left:3px solid var(--teal);
+  background:var(--surface);
+  padding:22px 28px 24px;margin:0 0 12px;
+}
+.rl-scenarios-h{
+  display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--teal);font-weight:600;
+  padding-bottom:11px;margin-bottom:12px;
+  border-bottom:1px solid var(--rule);
+}
+.rl-scenarios p{
+  font-family:var(--sans);font-size:14.5px;line-height:1.72;
+  color:var(--muted);margin:0;max-width:96ch;
+}
+
+/* ── 14.7 · UPI · regime marker is a dot, never a dash ────────────
+   A 26x4 bar reads as a rule and gives the colour almost no area to
+   register. A disc of the same ink is legible at a glance. */
+.rl-regime .sw{
+  width:14px;height:14px;border-radius:50%;
+  margin-bottom:13px;
+  box-shadow:0 0 0 3px rgba(255,255,255,0.9),0 0 0 4px rgba(0,18,25,0.10);
+}
+.rl-regime{padding:22px 24px 24px;}
+.rl-regime .rn{font-size:18px;}
+.rl-matrix-plot{padding:26px 30px 10px;}
+
+/* ── 14.8 · Territorial diagnostics · three across, no dead cell ── */
+.rl-findings-3{grid-template-columns:repeat(3,1fr);gap:20px;}
+.rl-findings-3 .finding{border-top-width:3px;padding:26px 26px 24px;}
+@media (max-width:980px){.rl-findings-3{grid-template-columns:1fr;}}
+
+/* ── 14.9 · Project pager · a solid pair, both fully clickable ────
+   The return button was a white card outlined in the same hairline the
+   page uses for table rules, so it read as an unfilled field rather
+   than an action. It now carries the institutional edge and a tinted
+   ground, and both halves stretch to the full row height. */
+.rl-pager{grid-template-columns:1fr 1fr;gap:20px;}
+.rl-pager-btn{min-height:84px;}
+.rl-pager-prev{
+  background:var(--surface);
+  border:1px solid var(--institutional);
+  box-shadow:inset 3px 0 0 var(--teal);
+}
+.rl-pager-prev .t{color:var(--ink);font-size:14.5px;font-weight:600;}
+.rl-pager-prev .d{color:var(--muted);font-size:12.5px;}
+.rl-pager-prev .arr{color:var(--teal);font-size:19px;}
+.rl-pager-prev:hover{
+  background:var(--surface-2);
+  border-color:var(--teal);
+  box-shadow:inset 3px 0 0 var(--teal),0 20px 38px -30px rgba(14,20,24,0.42);
+}
+@media (max-width:720px){.rl-pager{grid-template-columns:1fr;}}
+
+/* ── 14.10 · The last sub-11px survivors ─────────────────────────
+   These carry more specific 2.9 selectors than the group rule above,
+   so they are named individually rather than fought with !important.
+   All of them are global chrome, so Project 01 and the home page pick
+   up the same floor. */
+header.site .brand .tag{font-size:11px;letter-spacing:0.14em;}
+.lang-toggle button{font-size:11px;}
+.nav-links a,.cta-primary .cta-label{font-size:14px;}
+.mobile-nav a{font-size:14px;}
+.ivub-callout .module-label,.module-label{font-size:11px;letter-spacing:0.14em;}
+.rl-sec-eyebrow .num{font-size:11.5px;min-width:28px;height:23px;}
+footer.site .ftx-sub,footer.site .ftx-bot{font-size:11px;}
+footer.site .ftx-h{font-size:11px;}
+
+/* The nav gap was tuned for 12.5px links; at 14px the row needs to give
+   a little back or the CTA collides with the burger at 1280. */
+@media (min-width:1025px){
+  .nav-links{gap:20px;}
+}
+
+/* Project 01's cluster component carries the same floor. These are the
+   only three selectors on that page that were still under 11px, and the
+   band tiles have room for them at 11 without reflowing the columns. */
+.cluster-viz .cv-tag,
+.cluster-viz .cv-tile .tmeta,
+.cluster-viz .cv-action .ca-eye{font-size:11px;letter-spacing:0.13em;}
+
+/* The home ran its technical furniture between 8px and 10.5px. Same floor,
+   with the tracking pulled in so 11px does not turn the labels into gaps. */
+.hero-eyebrow,.mp-eyebrow,.section-num,
+.fw-eyebrow,.fw-found-tag,.fw-cta,.fw-branch,
+.fw-mod .m-code,.fw-mod .m-eyebrow,.fw-mod .m-cta,
+.upi-matrix .um-eyebrow{font-size:11px;}
+.fw-eyebrow,.fw-found-tag,.section-num,
+.fw-mod .m-eyebrow,.fw-mod .m-cta{letter-spacing:0.13em;}
+.hero-eyebrow,.mp-eyebrow{letter-spacing:0.16em;}
+
+/* The territorial-scope row is the one place where 11px does not fit on a
+   single line inside the hero panel, so the row is allowed to wrap and the
+   value drops to its own full-width line instead of being shrunk to 8px. */
+.hero-slogan.v3.mideast-panel .mp-meta-row{flex-wrap:wrap;gap:4px 10px;}
+.hero-slogan.v3.mideast-panel .mp-eyebrow{font-size:11px;letter-spacing:0.16em;}
+.hero-slogan.v3.mideast-panel .mp-meta-row .mp-k{font-size:11px;letter-spacing:0.14em;}
+.hero-slogan.v3.mideast-panel .mp-meta-row .mp-v{
+  flex:1 0 100%;text-align:left;white-space:normal;
+  font-size:11px;letter-spacing:0.05em;
+}
+
+/* ── 14.10b · The two wide analytical figures on a phone ──────────
+   The rent-divergence chart (940 units wide, fifteen labelled rows) and
+   the UPI matrix (1240 units) cannot be scaled to a 318px column without
+   dropping their type to roughly 4px, which is far under the 11px floor
+   this build commits to. They therefore keep a contained pan below
+   760px -- the only horizontal movement left anywhere on the page -- and
+   it is dressed as an institutional hairline rather than the platform's
+   default grey slider. Every other block reflows instead. */
+@media (max-width:760px){
+  .rl-fig-plot,.rl-matrix-plot{
+    scrollbar-width:thin;
+    scrollbar-color:var(--teal) transparent;
+    overscroll-behavior-x:contain;
+  }
+  .rl-fig-plot::-webkit-scrollbar,
+  .rl-matrix-plot::-webkit-scrollbar{height:6px;}
+  .rl-fig-plot::-webkit-scrollbar-track,
+  .rl-matrix-plot::-webkit-scrollbar-track{background:transparent;}
+  .rl-fig-plot::-webkit-scrollbar-thumb,
+  .rl-matrix-plot::-webkit-scrollbar-thumb{
+    background:var(--teal);border-radius:3px;
+  }
+}
+
+/* ── 14.11 · Legend and axis type on the in-page SVG figures ────── */
+.rl-legend .li{font-size:13px;}
+.rl-legend .li i{width:14px;height:14px;border-radius:50%;}
+.rl-legend .li i[style*="height:3px"]{height:3px !important;border-radius:2px;}
+
+/* ══════════════════════════════════════════════════════════════════
+   15 · Closing pass · readings out of their boxes
+   The four interpretive blocks were bordered panels with an accent
+   edge. Stacked down the page that reads as four generic cards
+   interrupting the argument, and the first paragraph of each ran at a
+   different size from the rest, so the block also read as a pull quote
+   followed by small print. They are running text now: no ground, no
+   border, one size, emphasis by weight and institutional teal only.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 15.1 · Editorial reading ─────────────────────────────────────── */
+.rl-reading{
+  background:none;border:0;box-shadow:none;border-radius:0;
+  padding:0;margin:30px 0 0;max-width:92ch;
+}
+/* Attached to the figure it interprets: close enough to read as its
+   conclusion, far enough not to look like a caption. */
+.rl-reading.is-attached{margin-top:24px;}
+.rl-reading-eyebrow{
+  display:block;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:0.2em;
+  text-transform:uppercase;font-weight:600;color:var(--teal-deep);
+  margin-bottom:11px;
+}
+.rl-reading h4{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(19px,1.9vw,22px);line-height:1.3;
+  color:var(--ink);margin:0 0 16px;letter-spacing:-0.008em;
+}
+/* One size for every paragraph in the block. No serif lede, no step down. */
+.rl-reading p{
+  font-family:var(--sans);font-size:15.5px;line-height:1.75;
+  color:var(--muted);margin:0 0 14px;max-width:92ch;
+}
+.rl-reading p:last-child{margin-bottom:0;}
+.rl-reading strong,
+.rl-reading b:not(.rl-em){
+  color:var(--ink);font-weight:600;
+  text-decoration:none;border-bottom:0;box-shadow:none;
+}
+.rl-reading .rl-em{
+  color:var(--teal-deep);font-weight:600;
+  text-decoration:none;border-bottom:0;box-shadow:none;
+}
+/* Module accent lives on the eyebrow, which is the only coloured mark */
+.rl-reading.is-tmd .rl-reading-eyebrow{color:var(--teal-deep);}
+.rl-reading.is-har .rl-reading-eyebrow{color:var(--terra-deep);}
+.rl-reading.is-fai .rl-reading-eyebrow{color:#9A6A12;}
+.rl-reading.is-upi .rl-reading-eyebrow{color:var(--institutional);}
+/* The FAI reading introduces the action under it, so the two stay paired */
+.rl-reading.is-fai + .rl-action-right{margin-top:18px;}
+@media (max-width:620px){
+  .rl-reading p{font-size:15px;}
+}
+
+/* ── 15.2 · A reading that closes a unit ──────────────────────────
+   The paragraph under the balance figure closes that reading; the two
+   flow maps under it open a new one. At the standard 26px the three
+   blocks ran together, so this one carries double the gap. */
+.rl-read-tight.is-closing{margin-bottom:56px;}
+@media (max-width:760px){
+  .rl-read-tight.is-closing{margin-bottom:40px;}
+}
+
+/* ── 15.3 · Closing methodological note · three modules ───────────
+   Seven paragraphs of equal weight in one flat panel read as a wall.
+   The same text is now three named modules on an off-white ground,
+   each with its own colour edge, opening on click. Module 01 ships
+   open, so nothing is hidden behind an interaction. */
+.rl-method{
+  border:1px solid var(--rule-strong);
+  border-radius:var(--r-card);
+  background:var(--offwhite);
+  overflow:hidden;
+  margin:0;
+}
+/* The block header is the institutional navy the IVUB band uses, not a flat
+   grey strip, and it is the control that opens and closes all three modules
+   at once. */
+.rl-method-head{
+  padding:0;border-bottom:1px solid var(--rule-strong);
+  background:var(--institutional);
+}
+.rl-method-head > button{
+  width:100%;display:flex;align-items:center;gap:16px;
+  padding:18px 28px;
+  background:none;border:0;cursor:pointer;text-align:left;
+  color:#F5F4F0;
+}
+.rl-method-head .h{
+  flex:1 1 auto;
+  display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:0.18em;
+  text-transform:uppercase;color:#F5F4F0;font-weight:600;
+}
+.rl-method-head .hint{
+  flex:0 0 auto;
+  font-family:var(--mono);font-size:11px;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--brand-green);
+}
+.rl-method-head .arr{
+  flex:0 0 auto;width:10px;height:10px;
+  border-right:1.6px solid var(--brand-green);
+  border-bottom:1.6px solid var(--brand-green);
+  transform:rotate(45deg);
+  transition:transform .18s ease;
+}
+.rl-method.is-open .rl-method-head .arr{transform:rotate(-135deg);}
+.rl-method-head > button:hover .h{color:#fff;}
+.rl-method-mod{border-bottom:1px solid var(--rule);}
+.rl-method-mod:last-child{border-bottom:0;}
+.rl-method-mod > summary{
+  display:flex;align-items:center;gap:16px;
+  padding:17px 28px 17px 25px;
+  cursor:pointer;list-style:none;
+  border-left:3px solid var(--teal-deep);
+  background:var(--offwhite);
+  transition:background .16s ease;
+}
+.rl-method-mod > summary::-webkit-details-marker{display:none;}
+.rl-method-mod > summary:hover{background:var(--surface-2);}
+.rl-method-mod > summary .n{
+  flex:0 0 auto;
+  font-family:var(--mono);font-size:11px;letter-spacing:0.16em;
+  font-weight:600;color:var(--teal-deep);
+}
+.rl-method-mod > summary .t{
+  flex:1 1 auto;min-width:0;
+  font-family:var(--serif);font-size:17px;line-height:1.3;color:var(--ink);
+}
+/* The marker is drawn, not typed, so it never inherits a text decoration */
+.rl-method-mod > summary .arr{
+  flex:0 0 auto;width:10px;height:10px;
+  border-right:1.6px solid var(--muted-2);
+  border-bottom:1.6px solid var(--muted-2);
+  transform:rotate(45deg);margin-right:2px;
+  transition:transform .18s ease,border-color .18s ease;
+}
+.rl-method-mod[open] > summary .arr{transform:rotate(-135deg);}
+.rl-method-mod > summary:hover .arr{border-color:var(--teal-deep);}
+.rl-method-mod[open] > summary{background:var(--surface);}
+.rl-method-body{
+  padding:6px 28px 24px 25px;
+  border-left:3px solid transparent;
+  background:var(--surface);
+}
+.rl-method-body p{
+  font-family:var(--sans);font-size:14.5px;line-height:1.75;
+  color:var(--muted);margin:0 0 14px;max-width:96ch;
+}
+.rl-method-body p:last-child{margin-bottom:0;}
+.rl-method-body p strong{color:var(--ink);font-weight:600;}
+/* One institutional edge per module, never a flat grey band */
+.rl-method-mod.is-sources > summary{border-left-color:var(--teal-deep);}
+.rl-method-mod.is-sources > summary .n{color:var(--teal-deep);}
+.rl-method-mod.is-sources .rl-method-body{border-left-color:var(--teal-deep);}
+.rl-method-mod.is-integration > summary{border-left-color:var(--brand-amber);}
+.rl-method-mod.is-integration > summary .n{color:#9A6A12;}
+.rl-method-mod.is-integration .rl-method-body{border-left-color:var(--brand-amber);}
+.rl-method-mod.is-limits > summary{border-left-color:var(--terra-deep);}
+.rl-method-mod.is-limits > summary .n{color:var(--terra-deep);}
+.rl-method-mod.is-limits .rl-method-body{border-left-color:var(--terra-deep);}
+@media (max-width:620px){
+  .rl-method-head{padding:16px 18px 14px;}
+  .rl-method-mod > summary{padding:15px 18px 15px 15px;gap:12px;}
+  .rl-method-mod > summary .t{font-size:15.5px;}
+  .rl-method-body{padding:4px 18px 20px 15px;}
+}
+
+/* ── 15.4 · UPI · axes read as two axes ───────────────────────────
+   Both help cells were the same white block, so nothing said which
+   reading belonged to which direction. Pressure takes terra, absorption
+   takes teal, each on its own tinted ground. */
+.rl-ax{position:relative;padding-left:30px;}
+.rl-ax::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+}
+.rl-ax.is-x{background:linear-gradient(90deg,rgba(176,91,59,0.055),rgba(176,91,59,0) 62%);}
+.rl-ax.is-x::before{background:var(--terra-deep);}
+.rl-ax.is-x b{color:var(--terra-deep);}
+.rl-ax.is-y{background:linear-gradient(90deg,rgba(47,93,98,0.06),rgba(47,93,98,0) 62%);}
+.rl-ax.is-y::before{background:var(--teal-deep);}
+.rl-ax.is-y b{color:var(--teal-deep);}
+
+/* ── 15.5 · UPI · regime ledger compacted, territories as capsules ─
+   The territory list was a middot-separated string that read as loose
+   text under each regime and took a third of the block's height. Each
+   territory is now a capsule carrying its own regime ink, and the
+   ledger tightens around them. */
+.rl-regimes{grid-template-columns:repeat(3,1fr);}
+.rl-regime{padding:18px 20px 18px;}
+.rl-regime .sw{width:12px;height:12px;margin-bottom:10px;}
+.rl-regime .rn{font-size:16.5px;margin-bottom:7px;}
+.rl-regime .rd{font-size:13.4px;line-height:1.58;margin-bottom:11px;}
+.rl-regime .rt{
+  display:flex;flex-wrap:wrap;gap:6px;
+  padding-top:10px;border-top:1px solid var(--rule);
+}
+/* One capsule width per regime block: a category marker must not encode the
+   length of its own label, or the row reads as ragged and changes shape
+   between languages. They wrap in place rather than clipping. */
+.rl-regime .rt .cap{
+  display:inline-flex;align-items:center;justify-content:center;
+  flex:0 0 auto;box-sizing:border-box;
+  min-width:112px;max-width:100%;height:26px;padding:0 10px;
+  font-family:var(--mono);font-size:11px;letter-spacing:0.06em;
+  font-weight:600;font-style:normal;
+  border-radius:var(--r-pill);border:1px solid;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+@media (max-width:1180px){
+  .rl-regime .rt .cap{min-width:100%;}
+}
+@media (max-width:960px){
+  .rl-regime .rt .cap{min-width:112px;}
+}
+@media (max-width:620px){
+  .rl-regime .rt .cap{min-width:100%;}
+}
+/* Capsule ink is one consistent accent across every regime — the dot
+   already carries the category colour, so the pill just needs to read
+   clearly in all three moods without competing hues. */
+.rl-regime .rt .cap{color:var(--teal);border-color:var(--teal);background:transparent;}
+@media (max-width:960px){.rl-regimes{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:620px){.rl-regimes{grid-template-columns:1fr;}}
+
+/* ── 15.5b · Skip link · an affordance, still not an underline ────
+   The keyboard skip link is the last underlined element in the build. It
+   stays a real, focusable link; it just carries a border and a ground when
+   focused rather than a rule under its label. */
+a.skip{text-decoration:none;}
+a.skip:focus,a.skip:focus-visible{
+  text-decoration:none;
+  outline:2px solid var(--teal);outline-offset:2px;
+}
+
+/* ── 15.6 · Pager · the previous-project button, softened ─────────
+   A 1px institutional-navy outline plus a 3px teal inset spine read as
+   a hard bracket beside the primary action. The outline drops to the
+   page hairline and the spine to 2px at half strength, so the button
+   still reads as a route without competing with "All projects". */
+/* Secondary route, white ground, one hairline. No inset spine at all: at any
+   weight it read as a bracket competing with the filled primary action. */
+.rl-pager-prev{
+  background:var(--surface);
+  border:1px solid var(--rule);
+  box-shadow:none;
+}
+.rl-pager-prev .arr{color:var(--muted-2);}
+.rl-pager-prev:hover{
+  background:var(--surface);
+  border-color:rgba(47,93,98,0.38);
+  box-shadow:0 18px 34px -30px rgba(14,20,24,0.30);
+}
+.rl-pager-prev:hover .arr{color:var(--teal-deep);}
+.rl-pager-prev:hover .t{color:var(--teal-deep);}
+
+/* ══════════════════════════════════════════════════════════════════
+   16 · Home · correction pass
+   Three defects, all of them inherited rather than authored:
+     16.1 the methodology row was written for a dark section that this
+          build renders light, so its note sat at 1.3:1 and its rule was
+          a white hairline on a pale ground;
+     16.2 the project cards were plain blocks, so the CTA closed each
+          card wherever the copy happened to end, at the left margin;
+     16.3 a 7:6 model chart was cropped to the card's 16:9, which cut
+          the axes off the plot it was standing in for.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 16.1 · Methodology row · a note that can actually be read ─────
+   #systems carries 2.9's .dark class, but .surface.dark resolves to
+   --surface-2 (#EEF1F4). Every rule here that assumed a navy ground was
+   therefore painting light-on-light. The row is restated for the ground
+   it really has: institutional muted text at the reading floor, and the
+   page hairline instead of a white one. */
+.surface.dark .rl-systems-method,
+.rl-systems-method{
+  border-top:1px solid var(--rule-strong);
+  align-items:flex-start;
+  gap:26px;
+  margin-top:34px;padding-top:26px;
+}
+.surface.dark .rl-systems-method p,
+.rl-systems-method p{
+  font-family:var(--sans);
+  font-size:14.5px;line-height:1.5;
+  color:var(--muted);
+  margin:0;max-width:64ch;flex:1;min-width:260px;
+  /* The note reads as one block with the button it belongs to: its first
+     line sits on the button's optical centre rather than floating above
+     or below it. */
+  padding-top:11px;
+}
+@media (max-width:640px){
+  .rl-systems-method{gap:16px;}
+  .rl-systems-method p{padding-top:0;}
+}
+
+/* ── 16.2 · Project cards · one closing line per card ──────────────
+   The card is a column: media, then copy that takes the slack, then the
+   CTA on the last line, at the right edge. Every card in a row closes on
+   the same baseline, and the two rows share one height so the grid reads
+   as a single block rather than four independent boxes. */
+.rl-projects-grid{grid-auto-rows:1fr;}
+.rl-project{display:flex;flex-direction:column;}
+.rl-project-link{
+  display:flex;flex-direction:column;flex:1 1 auto;height:auto;
+}
+.rl-project .rl-card-media{flex:0 0 auto;}
+.rl-project-body{
+  display:flex;flex-direction:column;flex:1 1 auto;
+}
+/* The chips stay with the copy; only the CTA is pushed to the floor. */
+.rl-project-body .rl-chips{margin-top:14px;}
+.rl-project-cta{
+  margin-top:auto;margin-left:auto;
+  align-self:flex-end;
+  padding-top:20px;
+}
+
+/* ── 16.3 · Chart media · the whole plot, inside the frame ─────────
+   object-fit:cover on a 1050x900 chart in a 16:9 card crops 30% of the
+   vertical, which is where the axis labels live. Manifest entries marked
+   fit:contain are shown whole on the plot's own white ground, so the
+   letterbox is continuous with the chart rather than a grey band. The
+   hover zoom is a photographic gesture and is dropped here: a scatter
+   plot does not gain from being pushed 3.5% out of frame. */
+.rl-card-media--contain{background:#FFFFFF;}
+.rl-card-media--contain img{
+  object-fit:contain;
+  object-position:center !important;
+  padding:10px 12px;
+  box-sizing:border-box;
+}
+.rl-project:hover .rl-card-media--contain img,
+.rl-topic:hover .rl-card-media--contain img{transform:none;}
+/* The badge legibility wash is tuned for photographs; over a white plot
+   it reads as a smudge across the top-left corner. */
+.rl-card-media--contain::after{
+  background:linear-gradient(200deg,rgba(8,17,27,0.10) 0%,rgba(8,17,27,0) 26%);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   17 · Closing methodological note · one block, closed on load
+   The note is reference at the foot of a project page, not part of the
+   argument, so it opens on request. Project 01 and Project 02 now carry
+   the same block: navy header, three named modules, one control.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Air above it. The note must not read as the last diagnostic in the
+   findings block that precedes it. */
+.rl-method{margin-top:48px;}
+@media (max-width:760px){.rl-method{margin-top:36px;}}
+.rl-method + .rl-pager{margin-top:44px;}
+
+/* The collapse itself. is-collapsible is set by site.js, so without JS
+   the modules stay in the flow and every summary is still operable. */
+.rl-method.is-collapsible .rl-method-modules{display:none;}
+.rl-method.is-collapsible.is-open .rl-method-modules{display:block;}
+.rl-method.is-collapsible .rl-method-head{border-bottom:0;}
+.rl-method.is-collapsible.is-open .rl-method-head{
+  border-bottom:1px solid var(--rule-strong);
+}
+/* Closed, the block is a single navy bar and its corners must follow the
+   card radius on both edges rather than only the top. */
+.rl-method.is-collapsible:not(.is-open){background:var(--institutional);}
+
+/* The hint names the action available, not the state the block is in.
+   Both labels ship in the markup so each stays a real translated string
+   rather than generated content the language switch cannot reach. */
+.rl-method-head .hint .k-close{display:none;}
+.rl-method.is-open .rl-method-head .hint .k-open{display:none;}
+.rl-method.is-open .rl-method-head .hint .k-close{display:inline;}
+
+/* A note that is open still breathes: the modules sit on the off-white
+   ground the block was designed with, not flush against the header. */
+.rl-method.is-open .rl-method-modules{padding:2px 0 0;}
+
+/* ══════════════════════════════════════════════════════════════════
+   18 · Section 05 correction pass · Project 02, header and cards
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 18.1 · Header · navigation is a list, language is a control ───
+   Home belongs at the head of the primary nav, where a reader looks for
+   it, not parked against the EN/ES switch: beside the toggle it read as a
+   third language option. The toggle keeps its own side of a hairline
+   divider so the two never scan as one row.
+
+   Nav type moves 12.5 -> 14.5px. The 68px bar is unchanged: 14.5px on a
+   6px padding still measures 31px against 68px of available height. */
+.nav-links a{font-size:14.5px;letter-spacing:0.01em;}
+.nav-links{gap:20px;}
+.nav-sep{
+  display:inline-block;width:1px;height:22px;
+  background:rgba(245,244,240,0.20);
+  margin:0 2px;flex:0 0 auto;
+}
+@media (max-width:980px){.nav-sep{display:none;}}
+/* The toggle is furniture, not body copy, but it still clears the floor. */
+.lang-toggle button{font-size:11.5px;padding:6px 11px;}
+.brand .tag,
+.author-line .inner{font-size:11px;}
+
+/* ── 18.2 · Methods band · a methodological block, not a dark strip ─
+   It is the same object as the methodological note at the foot of every
+   project page, so it carries the same language: off-white ground, one
+   hairline border, one coloured edge naming the level. The band holds no
+   call to action -- Methods is already named in the header and in the
+   footer, and a third button here only competed with the project cards
+   directly above it. Text is fully opaque: nothing in this block relies
+   on transparency to sit back. */
+.rl-methods{
+  display:block;
+  background:var(--offwhite);
+  border:1px solid var(--rule);
+  border-left:3px solid var(--teal);
+  border-radius:4px;
+  padding:34px 38px;
+}
+.rl-methods-copy{min-width:0;}
+.rl-methods-eyebrow{color:var(--teal);}
+.rl-methods-copy h2{
+  color:var(--ink);
+  font-size:clamp(23px,2.4vw,30px);
+  margin:0 0 12px;
+}
+.rl-methods-copy p{color:var(--muted);max-width:72ch;}
+@media (max-width:760px){.rl-methods{padding:26px 22px;}}
+
+/* ── 18.3 · Project cards · the preview fills the frame ────────────
+   A 1050x900 model output shown whole inside a 16:9 band left about a
+   third of the card width empty on either side, so the chart floated.
+   The media band is retuned to 1.38 for every card in the grid rather
+   than for the chart card alone: a taller band on one card only would
+   have opened an equally large gap above its neighbour's CTA, which is
+   the defect this pass is meant to close. Photographs crop; the chart
+   is still shown whole, axes and labels included. */
+.rl-project .rl-card-media{aspect-ratio:1.38;}
+.rl-card-media--contain img{padding:6px 8px;}
+
+/* ── 18.4 · Section 05 · bridging copy and note placement ──────────
+   A bridge is a sentence that hands the reader from one figure to the
+   next. It is not a section lede and not a caption, so it takes the
+   reading size of the section copy and none of its furniture. */
+.rl-bridge{
+  font-family:var(--sans);font-size:15px;line-height:1.7;
+  color:var(--muted);margin:0;max-width:86ch;
+}
+/* Successive section paragraphs need a gap; .rl-sec-desc ships margin:0
+   because it was written as a single closing line. */
+.rl-sec-desc + .rl-sec-desc{margin-top:12px;}
+
+/* The reading that closes the balance figure carries the same double gap
+   the previous .rl-read-tight variant had, so the two flow maps below it
+   still open as a new unit. */
+.rl-reading.is-closing{margin-bottom:56px;}
+@media (max-width:760px){.rl-reading.is-closing{margin-bottom:40px;}}
+
+/* A technical note that belongs inside a figure block sits in the foot
+   with the sources, sharing the block's ground and gutters instead of
+   floating under it as a second card. */
+.rl-technote.is-in-fig{
+  margin:0;border:0;border-top:1px solid var(--rule);
+  background:var(--offwhite);
+  padding:16px 26px 18px;
+}
+.rl-technote.is-in-fig + .rl-fig-foot{border-top:1px solid var(--rule);}
+@media (max-width:620px){.rl-technote.is-in-fig{padding:16px 20px 18px;}}
+
+/* ── 18.5 · A key that exists in one language only ─────────────────
+   "UF" is an abbreviation the Spanish table header needs and the English
+   one does not, so its expansion is an ES-only line. Left in the flow it
+   reserved an empty paragraph's margin under the English caption. */
+html[lang="en"] .rl-table-key{display:none;}
+
+/* ── 18.6 · Paired navigation buttons · navy, and the dark one closes ─
+   The feature button shipped on #08111B, the analytical near-black used
+   for map grounds. As a control it reads as a black block, which this
+   system does not use: it takes institutional navy, the same value the
+   header and the footer carry. The pair is packed right-to-left and the
+   darkest block anchors the right edge. Its sub-label also sat at 10px,
+   under the 11px floor for technical type. */
+.explore-btn.feature{background:var(--institutional);border-color:var(--institutional);}
+.explore-btn.feature:hover{background:#2A3F55;border-color:#2A3F55;}
+.explore-btn.feature .lbl span{font-size:11px;color:rgba(245,244,240,0.72);}
+.explore-btn .lbl span{font-size:11px;}
+
+/* ══════════════════════════════════════════════════════════════════
+   19 · Navigation, typography and home correction pass
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 19.1 · Deep links · one offset mechanism, still one ───────────
+   The offset stays where §1 of this file put it: scroll-margin-top on the
+   targets, with html{scroll-padding-top:0}. Adding scroll-padding here
+   would stack on top of it and drop the section ~166px down the viewport,
+   which is the two-mechanism bug §1 was written to remove.
+
+   What was actually broken was timing, not offset: the browser resolves
+   the hash while seven frames are still lazy and unmeasured, so it scrolls
+   to a position that no longer exists once they settle. That is fixed in
+   site.js, which re-lands the target while the layout is still moving. */
+
+/* ── 19.2 · Topics · a reading frame, not a set of destinations ────
+   The cards carry no link, so nothing about them may promise one. The
+   lift on hover is what read as "this opens something"; what stays is a
+   quiet ground and rule change, enough to show the card is a unit and
+   not enough to imply a click. */
+.rl-topic{cursor:default;}
+.rl-topic:hover{
+  transform:none;
+  box-shadow:none;
+  border-color:var(--rule-strong);
+  background:var(--offwhite);
+}
+.rl-topic--editorial:hover{background:var(--offwhite);}
+.rl-topic:hover .rl-card-media img{transform:none;}
+
+/* ── 19.3 · Methods band · institutional, not a grey strip ─────────
+   Same object as the methodological blocks that close Project 01 and
+   Project 02, so it reads the same: white ground, one coloured edge on
+   top naming the level, ink headline, body at reading size. No CTA. The
+   way in is a sentence, not a button. */
+.rl-methods{
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-left:0;
+  border-top:3px solid var(--teal);
+  border-radius:0;
+  padding:38px 42px 34px;
+}
+.rl-methods-eyebrow{color:var(--teal);font-weight:600;}
+.rl-methods-copy h2{
+  color:var(--ink);
+  font-size:clamp(24px,2.5vw,30px);
+  line-height:1.24;margin:0 0 14px;
+}
+.rl-methods-copy p{
+  color:var(--ink);
+  font-size:15.5px;line-height:1.7;
+  max-width:76ch;margin:0;
+}
+.rl-methods-link{
+  display:inline-block;margin-top:18px;
+  font-family:var(--sans);font-size:14px;font-weight:600;
+  color:var(--teal);text-decoration:none;
+  border-bottom:1px solid rgba(0,95,115,0.32);padding-bottom:2px;
+}
+.rl-methods-link:hover,.rl-methods-link:focus-visible{
+  color:var(--teal-deep);border-bottom-color:var(--teal-deep);
+}
+@media (max-width:760px){.rl-methods{padding:28px 22px 26px;}}
+
+/* ── 19.4 · Typographic floor · nothing analytical below its size ──
+   The sweep that matters happened inside the embedded outputs, where
+   Plotly and Folium had shipped 8-10px labels. These are the host-side
+   roles that were still under the declared bands. */
+
+/* Project H1 lands in the 32-40px band; the floor was 30. */
+.proj-title{font-size:clamp(32px,3.4vw,40px);}
+
+/* Section and analytical copy: 14px floor, 1.5 line-height floor. */
+.rl-sec-desc,
+.rl-bridge{font-size:15px;line-height:1.7;}
+.rl-reading p{font-size:15.5px;line-height:1.75;}
+.proj-narrative p{font-size:15px;line-height:1.7;}
+.finding p{font-size:14.5px;line-height:1.65;}
+.rl-fig-sub,
+.rl-systems-method p,
+.rl-scenarios p{font-size:14px;line-height:1.66;}
+
+/* Captions, notes, sources and metadata: 12px floor, not 11. */
+.rl-technote p,
+.rl-fig-note,
+.rl-matrix-foot p,
+.rl-src .s-what{font-size:13.5px;line-height:1.68;}
+.rl-fig-src,
+.rl-fig-eyebrow,
+.rl-embed-head,
+.rl-badge,
+.rl-project-meta,
+.rl-methods-eyebrow,
+.rl-kpi .k,
+.rl-chip,
+.rl-pill,
+.rl-status,
+.rl-topic-status,
+.rl-table-wrap thead th,
+.rl-technote .tn-tag,
+.rl-matrix-foot .src{font-size:12px;}
+
+/* Table body and legends stay readable next to the figures they explain. */
+.rl-table-wrap tbody td{font-size:13.5px;}
+.rl-legend .li{font-size:13px;}
+
+/* Nothing on the site may render analytical text below the floor. */
+.rl-sec-desc,.rl-bridge,.rl-reading p,.proj-narrative p,
+.finding p,.rl-fig-sub{min-height:0;}
