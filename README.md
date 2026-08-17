@@ -9,7 +9,6 @@ territorial recovery.
 - `metodos.html` — methods and publication criteria
 - `project-01-ivub.html` — Project 01, Urban Vulnerability Index under Conflict (IVUB)
 - `project-02-housing.html` — Project 02, housing pressure and urban dynamics in Israel
-- `RECO_LAB_GLOBAL_CURRENT.html` — reference export, identical to `index.html`
 
 ## Functional Accessibility Explorer (FAI)
 
