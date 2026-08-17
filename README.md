@@ -1,51 +1,40 @@
 # RECO-LAB
 
-Applied urban research portfolio — urban economics, housing, displacement, resilience and
-territorial recovery.
+Applied urban research portfolio focused on urban economics, housing, displacement, resilience and territorial recovery.
+
+Spanish version: [`README.es.md`](README.es.md)
 
 ## Pages
 
-- `index.html` — home
-- `metodos.html` — methods and publication criteria
+- `index.html` — Home
+- `metodos.html` — Methods and publication criteria
 - `project-01-ivub.html` — Project 01, Urban Vulnerability Index under Conflict (IVUB)
 - `project-02-housing.html` — Project 02, housing pressure and urban dynamics in Israel
 
 ## Functional Accessibility Explorer (FAI)
 
-`outputs/p2_israel/{en,es}/functional_accessibility_explorer.html` (and the embedded variant
-under `.../embed/`) is the interactive FAI explorer linked from Project 02. It supports the
-Functional Accessibility Index (FAI) section of that page, letting readers explore the gap
-between nominal infrastructure capacity and functional, effective access under territorial
-pressure.
+`outputs/p2_israel/{en,es}/functional_accessibility_explorer.html` and its embedded variant under `.../embed/` are the interactive FAI explorers linked from Project 02.
 
-## About the published data
+They support the Functional Accessibility Index section by allowing readers to explore the gap between nominal infrastructure capacity and effective functional access under territorial pressure.
 
-The data and figures shown under `outputs/` are aggregated or already-processed
-visualizations intended for public reading. **Analysis notebooks, source datasets and the
-internal calculation methodology are not part of this repository and are not published.**
-The UPI and FAI modules referenced on the site are methodological / proxy-informed
-instruments with declared sources and limits — not certified measurements and not a
-mathematically integrated index. Scope and limits are detailed in `metodos.html`.
+## Published data
+
+The files shown under `outputs/` are aggregated or already-processed public visualizations used by the site.
+
+Analysis notebooks, source datasets, internal traceability files and calculation workflows are private and are not part of this public repository.
+
+The UPI and FAI modules referenced on the site are methodological and proxy-informed analytical instruments. They should be interpreted within the scope, assumptions and limitations declared in `metodos.html`; they are not presented as official certified measurements.
 
 ## Run locally
 
-This is a static site; any simple HTTP server from the repo root works, for example:
+This is a static site. Any simple HTTP server from the repository root works, for example:
 
 ```bash
 python -m http.server 8000
 ```
 
-then open `http://localhost:8000`.
+Then open:
 
----
-
-## Nota en español
-
-Este repositorio publica únicamente el portfolio público de RECO-LAB: las páginas del sitio,
-sus estilos, scripts, imágenes y las visualizaciones ya procesadas bajo `outputs/` que esas
-páginas enlazan. **Los notebooks de análisis, los datasets fuente y la trazabilidad interna
-del cálculo son privados y no forman parte de este repositorio.** Los módulos UPI y FAI son
-instrumentos metodológicos / proxy-informados, no mediciones certificadas ni un índice
-matemáticamente integrado; el detalle de alcance y límites está en `metodos.html`. El
-explorador `functional_accessibility_explorer.html` es el FAI explorer interactivo del
-Proyecto 02.
+```
+http://localhost:8000
+```
