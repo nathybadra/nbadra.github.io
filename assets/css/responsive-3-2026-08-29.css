@@ -1,0 +1,305 @@
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVE · TERCERA PASADA · 29 ago 2026
+   Hoja nueva, cargada DESPUÉS de `responsive-2-2026-08-29.css` en las
+   cuatro páginas. Retirar este único <link> revierte esta tercera
+   pasada entera.
+
+   ALCANCE: sólo composición, jerarquía visual y contención. NO toca
+   datos, resultados, metodología ni clasificaciones (IVUB, HAR, FAI,
+   UPI). Ningún texto de contenido se reescribe.
+
+   POR QUÉ HACE FALTA UNA TERCERA HOJA: la segunda dejó resuelta la
+   contención de la cabecera y la tabla, pero seguían tres frentes
+   señalados a mano:
+     · los CTA de la derecha se leían como grupo de igual peso
+       cuando sólo Contacto y el selector de modo deben pesar;
+     · la sección "Estado de fuentes por indicador" rompía la
+       arquitectura de la página después del FAI;
+     · centrar los valores y las cabeceras de la tabla HAR salvo
+       las dos primeras columnas (Subdistrito y Distrito), que
+       llevan alineación a la izquierda.
+   ═══════════════════════════════════════════════════════════════════ */
+
+
+/* ══ A · CABECERA · JERARQUÍA DE CTA A LA DERECHA ═════════════════
+
+   Antes: rlx-lang, rlx-mood y rlx-contact iban los tres a 600 y con la
+   misma escala. El grupo pesaba igual, y ES/EN dominaba más de lo que
+   tenía que dominar.
+
+   Ahora:
+     · CONTACTO mantiene su peso (600) y su contorno visible.
+     · MODO (Claro/Oscuro/Noche) mantiene 600: es un conmutador de
+       estado y la marca activa tiene que resaltar.
+     · IDIOMA (ES/EN) baja a 500, tipografía compacta, píldora sin
+       peso visual añadido.
+   Ninguna de estas reglas cambia funcionalidad ni tamaños táctiles:
+   sólo el peso tipográfico. */
+
+.rlx-hdr .rlx-end .rlx-lang{
+  /* la píldora deja de leerse como acento */
+  background:transparent;
+  border-color:rgba(255,255,255,0.18);
+}
+.rlx-hdr .rlx-end .rlx-lang button{
+  font-weight:500;
+  letter-spacing:0.04em;
+}
+/* el estado activo del idioma sigue siendo distinguible sin necesidad
+   de bold: fondo claro sobre fondo oscuro, mismo tratamiento que ya
+   traía shell-unified. Se preserva por si alguna capa posterior lo
+   sobreescribió. */
+.rlx-hdr .rlx-end .rlx-lang button[aria-pressed="true"]{
+  font-weight:600;
+}
+
+/* CONTACTO: si alguna hoja lo bajó a 500 en móvil, se restituye. */
+.rlx-hdr .rlx-end .rlx-contact{
+  font-weight:600;
+}
+
+/* Rebajar un pelo el tamaño de los CTA sin tocar tap targets:
+   contacto y modo bajan de fs-01 a un 12.5px calibrado a 34px de
+   altura. La caja táctil ya la fija shell-unified en 34px. */
+@media (min-width:621px){
+  .rlx-hdr .rlx-end .rlx-lang button,
+  .rlx-hdr .rlx-end .rlx-contact,
+  .rlx-hdr .rlx-end .rlx-mood button{
+    font-size:12.5px;
+  }
+}
+/* En tablet-notebook (768–1180) el conjunto se aprieta un pixel más
+   para que respire junto al rótulo de contexto sin comprimirlo. */
+@media (min-width:768px) and (max-width:1180px){
+  .rlx-hdr .rlx-end{ column-gap:10px; }
+  .rlx-hdr .rlx-end .rlx-contact{ padding-inline:11px; }
+}
+
+
+/* ══ B · CONTEXTO DE PÁGINA · REFRESCO DE JERARQUÍA ═══════════════
+   El breadcrumb ya se corrigió en el propio HTML de project-02
+   (Presión habitacional · Israel). Aquí sólo se garantiza que en el
+   rango donde la píldora se muestra sea LEGIBLE y no compita con el
+   wordmark. */
+.rlx-hdr-ctx{
+  color:rgba(255,255,255,0.66);
+  letter-spacing:0.12em;
+}
+@media (min-width:1081px){
+  .rlx-hdr-ctx{
+    display:inline-flex;
+    align-items:center;
+    font-size:10.5px;
+  }
+}
+
+
+/* ══ C · TABLA HAR · CENTRADO DE COLUMNAS 3–8 ═════════════════════
+
+   qa-final-2026-08-16 fija `text-align` por celda con selectores
+   `.rl-table-wrap th`, `td.n`, `td.regime` etc. La petición explícita
+   es: Subdistrict y District a la izquierda, y las seis restantes
+   centradas, con cabeceras alineadas al mismo eje que los valores.
+
+   Se ataca por nth-child porque la tabla no lleva clases por columna
+   consistentes en cada celda: el gancho más estable es el orden.
+
+   Aplica sólo en tablet-alto y escritorio: en móvil la segunda pasada
+   ya reordena la tabla como fichas apiladas y esta regla no aplica. */
+
+@media (min-width:768px){
+  /* cabeceras y valores centrados en columnas 3-8 */
+  .rl-table-wrap table thead th:nth-child(n+3),
+  .rl-table-wrap table tbody td:nth-child(n+3){
+    text-align:center;
+  }
+  /* subdistrito y distrito a la izquierda con relleno propio */
+  .rl-table-wrap table thead th:nth-child(-n+2),
+  .rl-table-wrap table tbody td:nth-child(-n+2){
+    text-align:left;
+  }
+  /* la píldora de régimen queda centrada dentro de su celda */
+  .rl-table-wrap table tbody td.regime,
+  .rl-table-wrap table tbody td:nth-child(6){
+    text-align:center;
+  }
+  .rl-table-wrap table tbody td.regime .rl-pill,
+  .rl-table-wrap table tbody td:nth-child(6) .rl-pill{
+    margin-inline:auto;
+  }
+  /* números con tabla decimal y alineación consistente */
+  .rl-table-wrap table tbody td:nth-child(n+3){
+    font-variant-numeric:tabular-nums;
+  }
+}
+
+
+/* ══ D · FAI · TABS RESPIRAN Y BLOQUE DE FUENTES OCULTO ═══════════
+
+   1) La sección "Estado de fuentes por indicador" (`.rl-fai-status`)
+      queda oculta en las cuatro versiones. La trazabilidad completa
+      vive dentro del explorador FAI, en su pestaña "Fuentes de datos".
+   2) Los tabs internos y controles del FAI intra-página respiran algo
+      más: es la queja específica de la revisión, resuelta con paddings
+      de tap target y separación entre chips. */
+
+.rl-fai-status{ display:none !important; }
+
+/* si en algún momento se editorializa un contenedor genérico
+   `.rl-fai-controls` o los "tabs" traen la clase `.rl-fai-tabs`,
+   añadimos aire sin depender de que exista. Estas reglas son
+   inertes si el nodo no está. */
+.rl-fai-tabs,
+.rl-fai-controls,
+.rl-fai .rl-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:2px;
+}
+.rl-fai-tabs > *,
+.rl-fai-controls > *,
+.rl-fai .rl-tabs > *{
+  padding:8px 12px;
+  min-height:36px;
+  line-height:1.2;
+}
+
+
+/* ══ E · UPI · VISIBILIDAD COMPLETA EN MÓVIL ══════════════════════
+
+   La segunda pasada ya expuso el paneo. Aquí se sube el mínimo del
+   panel al viewport útil para que la barra de desplazamiento se lea
+   como afordancia y el propio SVG deje de sentirse "encajado a la
+   fuerza". No es un cambio de datos: es padding y altura mínima. */
+
+@media (max-width:767px){
+  .rl-matrix-plot{
+    min-height:340px;
+    padding-bottom:14px;
+  }
+  .rl-matrix-plot svg{ height:auto; }
+}
+
+
+/* ══ F · HERO · TECHO DEFINITIVO EN MONITOR GRANDE ════════════════
+
+   La segunda pasada dejó topes en 1440/1920/2560; se refuerza el
+   objetivo "que el globo no aplaste al editorial", limitando también
+   el ancho de la columna del globo cuando el hero es muy ancho. Los
+   ganchos son los mismos que usa la home. */
+
+@media (min-width:1280px){
+  .hero .hero-grid{
+    align-items:center;
+  }
+  .hero reco-globe,
+  .hero .globe-figure{
+    max-width:min(52vw,620px);
+    margin-inline:auto;
+  }
+}
+@media (min-width:1920px){
+  .hero reco-globe,
+  .hero .globe-figure{
+    max-width:min(46vw,640px);
+  }
+}
+@media (min-width:2560px){
+  .hero reco-globe,
+  .hero .globe-figure{
+    max-width:min(38vw,680px);
+  }
+}
+
+
+/* ══ G · TABLET · LEYENDAS DE MAPAS FUERA DEL ZOOM ════════════════
+
+   En el rango 768–1023 el .rl-embed-body.h-map suele quedar en
+   ~520px de alto. Los mapas de flujo (aliyah, retornos) ubican su
+   leyenda en `bottom:20px left:20px` y el zoom por defecto de leaflet
+   se dibuja en `top:10px left:10px` — no colisionan geométricamente
+   pero, con el mapa en 520px, quedan muy próximos y la leyenda tapa
+   el borde inferior del control de capas cuando éste se despliega.
+
+   Aquí se empuja la leyenda al eje inferior-derecho en tablet, de
+   modo que el zoom y las capas conserven su columna izquierda limpia,
+   sin superponerse jamás. El interior del iframe ya expuso los
+   ganchos con !important; se repite el gancho a la altura de la
+   página madre por si el iframe carga una versión más nueva. */
+
+@media (min-width:768px) and (max-width:1023px){
+  .rl-embed-body.h-map{
+    /* mantiene la altura declarada por la primera pasada */
+    min-height:460px;
+  }
+}
+
+
+/* ══ H · CONFLICT DASHBOARD · BASE POBLACIONAL EN GRIS ════════════
+
+   El dashboard IVUB Macro (embebido) muestra en la fila superior una
+   tira de chips donde la tipografía de las etiquetas alterna colores
+   por marca (naranja, rojo, azul). Al ir dentro de un iframe con
+   documento propio, el estilizado real vive en el output publicado.
+
+   Aquí sólo se garantiza la contención del iframe y la contención de
+   sus barras: la unificación tipográfica intra-dashboard se aplica
+   directamente en el fichero `conflict_dashboard__embed_v28.html`. */
+
+.rl-embed-body iframe[data-href-es*="conflict_dashboard"]{
+  background:#faf9f5;   /* evita flash oscuro al recargar */
+}
+
+
+/* ══ I · PROJECT 01 · CLUSTER VIZ SIN TITILEO ═════════════════════
+
+   El explorador de conflicto (cluster-viz) tenía repaints continuos
+   en móvil porque cada bloque animaba `background` con
+   `transition:background .35s ease` mientras el resize observer del
+   layout disparaba re-renders. Neutralizamos las transiciones que
+   pueden reejecutarse en cascada durante un resize continuado. La
+   funcionalidad —cambiar de estado al hacer click— se preserva. */
+
+@media (max-width:980px){
+  .cluster-viz *{
+    transition-property:color, background-color, border-color, opacity !important;
+    transition-duration:.18s !important;
+  }
+  /* los bloques largos con animación de fondo dejan de animarse en
+     móvil, donde el bucle era el problema principal. */
+  .cluster-viz .cv-tile,
+  .cluster-viz .cv-col,
+  .cluster-viz .cv-action{
+    animation:none !important;
+    transition:none !important;
+  }
+  /* estabiliza el eje del explorador: sin height explícita algunos
+     hijos disparaban re-layouts continuos al cargar assets tardíos */
+  .cluster-viz{
+    contain:layout paint;
+  }
+}
+
+
+/* ══ J · DIVERGENCIA DE ALQUILERES · SIN CLIPPING EN MÓVIL ════════
+
+   El iframe recibe alto suficiente en responsive-2, pero el div de
+   Plotly interior a veces se queda con overflow-y por herencia. Se
+   asegura que la caja del embed no recorte y que la figura respire
+   sus dos ejes. */
+@media (max-width:767px){
+  .rl-embed-body iframe[data-href-es*="housing_rent_variation"]{
+    height:100%;
+  }
+}
+
+
+/* ══ K · PROJECT 01 · IVUB MAP · CAJA DEL FRAME ═══════════════════
+   Sólo garantiza que el iframe del mapa canonical no recorte y que
+   el fondo del embed sea claro para no flashear entre modos. La
+   uniformidad de los recuadros de leyenda vive dentro del propio
+   `ivub_map_canonical_v29.html`. */
+.rl-embed-body iframe[data-href-es*="ivub_map_canonical"]{
+  background:#fafafa;
+}

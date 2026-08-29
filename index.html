@@ -9,6 +9,8 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYbSB4Zh.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/barlow/v13/7cHpv4kjgoGqM7E_DMs5ynghnQ.woff2" />
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="assets/css/system-2.9.css" />
@@ -24,8 +26,21 @@
 <!-- QA final acotada · 16 ago 2026. Hoja nueva, cargada en último
      lugar. Retirar este único link revierte toda esta pasada. -->
 <link rel="stylesheet" href="assets/css/qa-final-2026-08-16.css?v=2026-08-16q7" />
+<!-- Responsive universal / orientacion . 29 ago 2026. Hoja nueva,
+     cargada en ultimo lugar. Retirar este unico link revierte toda
+     esta pasada y nada mas. -->
+<link rel="stylesheet" href="assets/css/responsive-2026-08-29.css?v=2026-08-29r2" />
+<!-- SEGUNDA PASADA RESPONSIVE 29-08-2026. Hoja y script autocontenidos:
+     retirar estas dos lineas revierte la segunda pasada y deja la primera intacta. -->
+<link rel="stylesheet" href="assets/css/responsive-2-2026-08-29.css?v=2026-08-29s8" />
+<!-- TERCERA PASADA RESPONSIVE 29-08-2026. Hoja autocontenida:
+     retirar esta linea revierte la tercera pasada y deja la segunda intacta. -->
+<link rel="stylesheet" href="assets/css/responsive-3-2026-08-29.css?v=2026-08-29t1" />
+<!-- CUARTA PASADA RESPONSIVE 29-08-2026. Hoja autocontenida:
+     retirar esta linea revierte la cuarta pasada y deja la tercera intacta. -->
+<link rel="stylesheet" href="assets/css/responsive-4-2026-08-29.css?v=2026-08-29u1" />
 </head>
-<body class="rlx-project">
+<body class="rlx-project" data-page="home">
 
 <a class="skip" href="#main"><span class="lang-es">Ir al contenido</span><span class="lang-en">Skip to content</span></a>
 
@@ -1230,7 +1245,7 @@
    eligió uno, el export abre en noche. Su elección posterior manda. */
 try { if (!localStorage.getItem('recolab.mood')) localStorage.setItem('recolab.mood','night'); } catch (e) {}
 </script>
-<script src="assets/js/site.js?v=2026-08-16-m"></script>
+<script src="assets/js/site.js?v=2026-08-29r2"></script>
 <script>
 /* Comportamientos propios de la home que viven en la hoja global:
    selección de líneas de investigación y apertura de fases desde el
@@ -1263,5 +1278,6 @@ try { if (!localStorage.getItem('recolab.mood')) localStorage.setItem('recolab.m
   });
 })();
 </script>
+<script src="assets/js/responsive-2-2026-08-29.js?v=2026-08-29s8" defer></script>
 </body>
 </html>

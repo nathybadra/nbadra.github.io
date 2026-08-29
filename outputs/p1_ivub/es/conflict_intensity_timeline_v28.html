@@ -413,7 +413,7 @@ function monthLabel(m){if(!m||m.indexOf("-")<0){return state.lang==="es"?"Inicio
 let map,bubbles={};
 function initMap(){
   map=L.map("map",{zoomControl:true,scrollWheelZoom:false,attributionControl:true}).setView([32.6,35.4],7);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap &copy; CARTO"}).addTo(map);
+  L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors"}).addTo(map);
   DATA.territories.forEach(t=>{
     const halo=L.circleMarker([t.lat,t.lon],{radius:7,color:C_PRESS,weight:1,fillColor:C_PRESS,fillOpacity:.10,opacity:.35,interactive:true});
     const core=L.circleMarker([t.lat,t.lon],{radius:7,color:COLORS[t.id],weight:2,fillColor:COLORS[t.id],fillOpacity:.34,interactive:true});
@@ -444,36 +444,75 @@ function showBubbleTip(e,id){
 const VW=520,ML=62,MR=14;
 const CY=14,CH=190,CB=44;
 function xAt(x0,w,i){return x0+(N<=1?0:(i/(N-1))*w);}
-function drawPanel(o){
+
+/* Refactor 29-08-2026 - timeline sin flicker.
+   Antes: renderChart() reescribia svg.innerHTML entero cada 700ms.
+   Ahora: piezas dinamicas llevan data-dyn/data-p/data-l y
+   updateChartFrame() solo mutan atributos - sin recreacion de nodos. */
+var _panels = [];
+function drawPanel(o, pIdx){
   const w=o.w,x0=o.x;let h="";
   for(let g=0;g<=4;g++){const yy=o.y+o.h*(1-g/4);h+=`<line x1="${x0}" y1="${yy.toFixed(1)}" x2="${x0+w}" y2="${yy.toFixed(1)}" stroke="${C_GRID}" stroke-width="1"/><text x="${(x0-7).toFixed(1)}" y="${(yy+3.5).toFixed(1)}" text-anchor="end" font-size="8.5" fill="${C_AXIS}">${o.yFmt(o.yMax*g/4)}</text>`;}
   if(cutoffIdx>=0){const cx=xAt(x0,w,cutoffIdx);h+=`<line x1="${cx.toFixed(1)}" y1="${o.y}" x2="${cx.toFixed(1)}" y2="${o.y+o.h+28}" stroke="${C_CUT}" stroke-width="1.2" stroke-dasharray="2 3" opacity=".45"/>`;}
   if(o.title)h+=`<text x="${x0}" y="${o.y-5}" font-size="9" font-weight="700" fill="${C_INK}" font-family="'Source Serif 4',serif">${o.title}</text>`;
   const fi=o.build?state.frame:N-1;
-  o.lines.forEach(ln=>{
+  const dyn=(k,l)=>` data-dyn="${k}" data-p="${pIdx}"${l!==undefined?` data-l="${l}"`:""}`;
+  o.lines.forEach((ln, lIdx)=>{
     const pts=ln.vals.map((v,i)=>`${xAt(x0,w,i).toFixed(1)},${(o.y+o.h-(v/(o.yMax||1))*o.h).toFixed(1)}`);
     if(o.build){
-      const fut=pts.slice(fi);if(fut.length>1)h+=`<polyline points="${fut.join(" ")}" fill="none" stroke="${ln.color}" stroke-width="1" stroke-dasharray="1 5" opacity=".1"/>`;
+      const fut=pts.slice(fi);
+      const futStr=fut.length>1?fut.join(" "):"";
+      h+=`<polyline${dyn("fut",lIdx)} points="${futStr}" fill="none" stroke="${ln.color}" stroke-width="1" stroke-dasharray="1 5" opacity=".1"/>`;
       const built=pts.slice(0,fi+1);
-      if(built.length>1){const area=`${xAt(x0,w,0).toFixed(1)},${(o.y+o.h).toFixed(1)} ${built.join(" ")} ${xAt(x0,w,fi).toFixed(1)},${(o.y+o.h).toFixed(1)}`;h+=`<polygon points="${area}" fill="${ln.color}" opacity=".06"/><polyline points="${built.join(" ")}" fill="none" stroke="${ln.color}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`;}
+      const areaPts=built.length>1?`${xAt(x0,w,0).toFixed(1)},${(o.y+o.h).toFixed(1)} ${built.join(" ")} ${xAt(x0,w,fi).toFixed(1)},${(o.y+o.h).toFixed(1)}`:"";
+      const builtStr=built.length>1?built.join(" "):"";
+      h+=`<polygon${dyn("area",lIdx)} points="${areaPts}" fill="${ln.color}" opacity=".06"/><polyline${dyn("built",lIdx)} points="${builtStr}" fill="none" stroke="${ln.color}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`;
     }else{h+=`<polyline points="${pts.join(" ")}" fill="none" stroke="${ln.color}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`;}
   });
-  const mx=xAt(x0,w,fi);h+=`<line x1="${mx.toFixed(1)}" y1="${o.y}" x2="${mx.toFixed(1)}" y2="${o.y+o.h}" stroke="${C_INK}" stroke-width="1" opacity=".3"/>`;
-  o.lines.forEach(ln=>{const v=ln.vals[fi];const yy=o.y+o.h-(v/(o.yMax||1))*o.h;h+=`<circle cx="${mx.toFixed(1)}" cy="${yy.toFixed(1)}" r="2.8" fill="${ln.color}" stroke="#fff" stroke-width="1.5"/>`;});
+  const mx=xAt(x0,w,fi);
+  h+=`<line${dyn("marker")} x1="${mx.toFixed(1)}" y1="${o.y}" x2="${mx.toFixed(1)}" y2="${o.y+o.h}" stroke="${C_INK}" stroke-width="1" opacity=".3"/>`;
+  o.lines.forEach((ln, lIdx)=>{const v=ln.vals[fi];const yy=o.y+o.h-(v/(o.yMax||1))*o.h;h+=`<circle${dyn("dot",lIdx)} cx="${mx.toFixed(1)}" cy="${yy.toFixed(1)}" r="2.8" fill="${ln.color}" stroke="#fff" stroke-width="1.5"/>`;});
   if(o.yLabel)h+=`<text transform="translate(${x0-48},${o.y+o.h/2}) rotate(-90)" text-anchor="middle" font-size="8" fill="${C_AXIS}" letter-spacing=".04em">${o.yLabel}</text>`;
   if(o.drawX){h+=`<line x1="${x0}" y1="${o.y+o.h}" x2="${x0+w}" y2="${o.y+o.h}" stroke="${C_GRID}" stroke-width="1"/>`;for(let i=0;i<N;i++){if(typeof DATA.months[i]!=="string"||DATA.months[i].slice(5)!=="01")continue;const xx=xAt(x0,w,i);h+=`<line x1="${xx.toFixed(1)}" y1="${o.y+o.h}" x2="${xx.toFixed(1)}" y2="${o.y+o.h+5}" stroke="${C_AXIS}" stroke-width="1"/><text x="${xx.toFixed(1)}" y="${o.y+o.h+16}" text-anchor="middle" font-size="9" fill="${C_AXIS}">${DATA.months[i].slice(0,4)}</text>`;}if(cutoffIdx>=0){const cx=xAt(x0,w,cutoffIdx);h+=`<text x="${cx.toFixed(1)}" y="${o.y+o.h+30}" text-anchor="middle" font-size="8" font-weight="700" fill="${C_CUT}">${I18N[state.lang].tick_oct}</text>`;}}
+  if(o.build){_panels[pIdx]={x0,w,y:o.y,height:o.h,yMax:o.yMax,lines:o.lines,build:true};}
   return h;
 }
 function norm100(arr,max){return arr.map(v=>v/(max||1)*100);}
 function renderChart(){
   const svg=document.getElementById("chart");const t=I18N[state.lang],s=DATA.series;const w=VW-ML-MR;
   const lines=k=>[{vals:s[k].Israel,color:COLORS.Israel},{vals:s[k]["Líbano"],color:COLORS["Líbano"]}];
+  _panels=[];
   let H,inner;
-  if(state.view==="cum_events"){H=CY+CH+CB;inner=drawPanel({x:ML,y:CY,w,h:CH,lines:lines("cum_events"),yMax:SC.cum_events_max,yFmt:compactInt,yLabel:t.ax_ev,build:true,drawX:true});}
-  else if(state.view==="cum_fatalities"){H=CY+CH+CB;inner=drawPanel({x:ML,y:CY,w,h:CH,lines:lines("cum_fatalities"),yMax:SC.cum_fatalities_max,yFmt:compactInt,yLabel:t.ax_fat,build:true,drawX:true});}
-  else if(state.view==="cum_pressure"){H=CY+CH+CB;inner=drawPanel({x:ML,y:CY,w,h:CH,lines:lines("cum_pressure"),yMax:SC.cum_pressure_max,yFmt:compactInt,yLabel:t.ax_gd,build:true,drawX:true});}
-  else{const ph=72,gap=24,top=14;H=top+3*ph+2*gap+CB;const mk=(k,mx)=>[{vals:norm100(s[k].Israel,mx),color:COLORS.Israel},{vals:norm100(s[k]["Líbano"],mx),color:COLORS["Líbano"]}];const pct=v=>v.toFixed(0);inner=drawPanel({x:ML,y:top,w,h:ph,lines:mk("cum_events",SC.cum_events_max),yMax:100,yFmt:pct,yLabel:t.ax_idx,title:t.comp_ev,build:true,drawX:false});inner+=drawPanel({x:ML,y:top+ph+gap,w,h:ph,lines:mk("cum_fatalities",SC.cum_fatalities_max),yMax:100,yFmt:pct,yLabel:t.ax_idx,title:t.comp_fat,build:true,drawX:false});inner+=drawPanel({x:ML,y:top+2*(ph+gap),w,h:ph,lines:mk("cum_pressure",SC.cum_pressure_max),yMax:100,yFmt:pct,yLabel:t.ax_idx,title:t.comp_gd,build:true,drawX:true});}
+  if(state.view==="cum_events"){H=CY+CH+CB;inner=drawPanel({x:ML,y:CY,w,h:CH,lines:lines("cum_events"),yMax:SC.cum_events_max,yFmt:compactInt,yLabel:t.ax_ev,build:true,drawX:true},0);}
+  else if(state.view==="cum_fatalities"){H=CY+CH+CB;inner=drawPanel({x:ML,y:CY,w,h:CH,lines:lines("cum_fatalities"),yMax:SC.cum_fatalities_max,yFmt:compactInt,yLabel:t.ax_fat,build:true,drawX:true},0);}
+  else if(state.view==="cum_pressure"){H=CY+CH+CB;inner=drawPanel({x:ML,y:CY,w,h:CH,lines:lines("cum_pressure"),yMax:SC.cum_pressure_max,yFmt:compactInt,yLabel:t.ax_gd,build:true,drawX:true},0);}
+  else{const ph=72,gap=24,top=14;H=top+3*ph+2*gap+CB;const mk=(k,mx)=>[{vals:norm100(s[k].Israel,mx),color:COLORS.Israel},{vals:norm100(s[k]["Líbano"],mx),color:COLORS["Líbano"]}];const pct=v=>v.toFixed(0);inner=drawPanel({x:ML,y:top,w,h:ph,lines:mk("cum_events",SC.cum_events_max),yMax:100,yFmt:pct,yLabel:t.ax_idx,title:t.comp_ev,build:true,drawX:false},0);inner+=drawPanel({x:ML,y:top+ph+gap,w,h:ph,lines:mk("cum_fatalities",SC.cum_fatalities_max),yMax:100,yFmt:pct,yLabel:t.ax_idx,title:t.comp_fat,build:true,drawX:false},1);inner+=drawPanel({x:ML,y:top+2*(ph+gap),w,h:ph,lines:mk("cum_pressure",SC.cum_pressure_max),yMax:100,yFmt:pct,yLabel:t.ax_idx,title:t.comp_gd,build:true,drawX:true},2);}
   svg.setAttribute("viewBox",`0 0 ${VW} ${H}`);svg.innerHTML=inner;
+}
+function updateChartFrame(){
+  const svg=document.getElementById("chart"); if(!svg||!_panels.length) return;
+  const fi=state.frame;
+  _panels.forEach((p,pIdx)=>{
+    if(!p||!p.build) return;
+    const {x0,w,y,height,yMax,lines}=p;
+    const mx=xAt(x0,w,fi);
+    const marker=svg.querySelector(`[data-dyn="marker"][data-p="${pIdx}"]`);
+    if(marker){ marker.setAttribute("x1",mx.toFixed(1)); marker.setAttribute("x2",mx.toFixed(1)); }
+    lines.forEach((ln,lIdx)=>{
+      const pts=ln.vals.map((v,i)=>`${xAt(x0,w,i).toFixed(1)},${(y+height-(v/(yMax||1))*height).toFixed(1)}`);
+      const built=pts.slice(0,fi+1), fut=pts.slice(fi);
+      const areaPts=built.length>1?`${xAt(x0,w,0).toFixed(1)},${(y+height).toFixed(1)} ${built.join(" ")} ${xAt(x0,w,fi).toFixed(1)},${(y+height).toFixed(1)}`:"";
+      const bEl=svg.querySelector(`[data-dyn="built"][data-p="${pIdx}"][data-l="${lIdx}"]`);
+      const aEl=svg.querySelector(`[data-dyn="area"][data-p="${pIdx}"][data-l="${lIdx}"]`);
+      const fEl=svg.querySelector(`[data-dyn="fut"][data-p="${pIdx}"][data-l="${lIdx}"]`);
+      if(bEl) bEl.setAttribute("points", built.length>1?built.join(" "):"");
+      if(aEl) aEl.setAttribute("points", areaPts);
+      if(fEl) fEl.setAttribute("points", fut.length>1?fut.join(" "):"");
+      const v=ln.vals[fi]; const yy=y+height-(v/(yMax||1))*height;
+      const dot=svg.querySelector(`[data-dyn="dot"][data-p="${pIdx}"][data-l="${lIdx}"]`);
+      if(dot){ dot.setAttribute("cx",mx.toFixed(1)); dot.setAttribute("cy",yy.toFixed(1)); }
+    });
+  });
 }
 function renderLegend(){const t=I18N[state.lang];document.getElementById("legend").innerHTML=`<div class="row"><span class="swatch" style="border-top-color:${COLORS.Israel}"></span>Israel</div><div class="row"><span class="swatch" style="border-top-color:${COLORS["Líbano"]}"></span>Líbano</div><div class="sep"></div><div class="mini"><span class="ln"></span>${t.tick_oct}</div>`;}
 function panelTitleText(){const t=I18N[state.lang];return{cum_events:t.t_ev,cum_fatalities:t.t_fat,cum_pressure:t.t_gd,comparado:t.t_comp}[state.view];}
@@ -490,7 +529,7 @@ function renderFrame(){
   document.getElementById("kpi-gd-is").textContent=compactInt(f.cum_pressure.Israel);
   document.getElementById("kpi-gd-lb").textContent=compactInt(f.cum_pressure["Líbano"]);
   document.getElementById("slider").value=state.frame;
-  updateSliderFill();renderMapFrame();renderChart();
+  updateSliderFill();renderMapFrame();if(_panels.length)updateChartFrame();else renderChart();
 }
 function updateSliderFill(){const s=document.getElementById("slider");const pct=N<=1?0:(state.frame/(N-1))*100;s.style.background=`linear-gradient(90deg,var(--teal) ${pct}%,#DFE4E8 ${pct}%)`;}
 function play(){if(state.frame>=N-1)state.frame=0;state.playing=true;syncPlayBtn();clearInterval(state.timer);state.timer=setInterval(()=>{if(state.frame>=N-1){pause();return;}state.frame++;renderFrame();},700/state.speed);}
@@ -563,5 +602,234 @@ document.addEventListener("DOMContentLoaded",()=>{
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
   else boot();
 })();</script>
+
+<style id="reco-lab-responsive-2026-08-29">
+/* Responsive . 29 ago 2026 . leyendas y controles en pantalla estrecha.
+   Medido a 352px: la leyenda ocupaba entre el 58% y el 93% del ancho del
+   mapa y dejaba muy poca cartografia visible. Aqui baja de cuerpo y se
+   acota, sin ocultarse y sin tocar la atribucion, que sigue legible. */
+@media (max-width:560px){
+  .tf-map-legend,.tf-legend{
+    font-size:10px !important;
+    line-height:1.5 !important;
+    padding:8px 10px !important;
+    max-width:60% !important;
+    max-height:38% !important;
+    overflow:auto !important;
+  }
+  .tf-map-legend .l-w,.tf-legend .l-w{ font-size:9.5px !important; }
+  .tf-map-legend .l-ends,.tf-legend .l-ends{ font-size:8.5px !important; }
+  .leaflet-control-layers{ max-width:52% !important; font-size:11px !important; }
+  .leaflet-control-layers-list{ max-height:36vh; overflow:auto; }
+  .leaflet-control-zoom a{
+    width:32px !important; height:32px !important; line-height:32px !important;
+  }
+  .leaflet-control-attribution{
+    font-size:9px !important; line-height:1.35 !important;
+  }
+}
+/* Muy estrecho: la leyenda cede ancho antes que tapar el mapa. */
+@media (max-width:400px){
+  .tf-map-legend,.tf-legend{ max-width:68% !important; max-height:34% !important; }
+}
+</style>
+
+<!-- RL-BLOCK:resp2-timeline -->
+<style id="rl-resp2-timeline">
+/* ═══ SEGUNDA PASADA RESPONSIVE · 29 ago 2026 ═══════════════════════
+   Capa final autocontenida. Retirar este bloque revierte la pasada
+   entera y nada más. Sólo composición y legibilidad: no toca series,
+   valores, escalas ni metodología.
+
+   1 · PADDING LATERAL. La hoja original cierra con un bloque de reglas
+   `!important` SIN consulta de medios (`.tf-header{padding:6px 32px
+   !important}` y hermanas). Por eso ganaban también a 390px, donde
+   64px de padding lateral se comen el 16% del ancho útil y dejan al
+   gráfico 297px. Se repite aquí el mismo gancho, ya dentro de la
+   consulta, en lugar de subir la especificidad.
+
+   2 · MAPA INVISIBLE. Causa medida: `#map` es `flex:1` (= `flex:1 1 0%`)
+   dentro de `.card`, contenedor flex en columna. Mientras `main` es un
+   grid con `align-items:stretch` la tarjeta tiene altura definida y el
+   reparto funciona. Al colapsar a una sola columna la altura pasa a
+   depender del contenido: sobre el eje principal la base flexible `0%`
+   gana a `height` y el mapa se resuelve a CERO. Medido a 390px:
+   `#map` = 325×0. Se le devuelve caja no flexible para que `height`
+   vuelva a mandar. ═══════════════════════════════════════════════ */
+
+@media (max-width:760px){
+  .tf-header,.tf-titleband,.tf-kpi-strip,main,.tf-footer{
+    padding-left:14px!important; padding-right:14px!important;
+  }
+  .tf-prov-details summary,.tf-prov-details .body{
+    padding-left:14px; padding-right:14px;
+  }
+}
+@media (max-width:430px){
+  .tf-header,.tf-titleband,.tf-kpi-strip,main,.tf-footer{
+    padding-left:12px!important; padding-right:12px!important;
+  }
+}
+
+@media (max-width:1140px){
+  #map{ flex:0 0 auto!important; height:clamp(250px,34vh,330px)!important; }
+}
+@media (max-width:560px){
+  #map{ height:clamp(215px,30vh,265px)!important; }
+}
+
+/* KPI · seis cifras no caben en dos columnas legibles por debajo de
+   430px sin partir la etiqueta en cuatro líneas. */
+@media (max-width:430px){
+  .tf-kpi-strip{ grid-template-columns:1fr 1fr!important; gap:6px!important; }
+  .kpi{ padding:7px 9px 8px!important; }
+  .kpi .lbl{ font-size:8.5px!important; line-height:1.3!important; }
+  .kpi .val{ font-size:19px!important; }
+  .kpi .src{ font-size:8.5px!important; }
+}
+
+/* Conmutador de vistas · cuatro pestañas a 9.5px no son ni legibles ni
+   pulsables a 390px (objetivo táctil real < 30px). Dos filas de dos. */
+@media (max-width:560px){
+  .view-switch{ grid-template-columns:1fr 1fr!important; }
+  .view-switch button{
+    padding:10px 6px!important; font-size:11.5px!important;
+    border-top:1px solid var(--border);
+  }
+  .view-switch button:nth-child(1),.view-switch button:nth-child(2){ border-top:0; }
+  .view-switch button:nth-child(odd){ border-left:0; }
+
+  .chart-wrap{ min-height:210px!important; }
+  .card-title{ font-size:15px!important; line-height:1.28!important; }
+  .card-subtitle{ font-size:11.5px!important; max-width:100%!important; }
+  .card-eyebrow{ font-size:9.5px!important; }
+  .legend{ gap:10px!important; }
+  .legend .row{ font-size:11.5px!important; }
+  .legend .mini{ font-size:10.5px!important; }
+  .note{ font-size:11px!important; line-height:1.5!important; padding:8px 11px!important; }
+  .tf-titleband .ttl{ font-size:15px!important; line-height:1.25!important; }
+  .tf-titleband{ padding-top:10px!important; padding-bottom:10px!important; }
+
+  .tf-playbar{ height:auto!important; padding:11px 12px!important; }
+  .btn{ padding:9px 13px!important; font-size:12px!important; }
+  .speed button{ padding:8px 11px!important; font-size:11px!important; }
+  .tf-ticks{ font-size:9.5px!important; }
+  .tf-frame-mo{ font-size:18px!important; }
+}
+</style>
+<script id="rl-resp2-timeline-js">
+/* SEGUNDA PASADA RESPONSIVE · legibilidad tipográfica del SVG.
+
+   El panel se dibuja en un lienzo propio de 520 unidades de usuario y
+   se escala al ancho disponible. A 390px de viewport el SVG mide 348px:
+   el factor es 0,67 y un `font-size="8.5"` se ve a 5,7px reales. Eso es
+   lo que hacía el gráfico ilegible en móvil.
+
+   Aquí no se reescala nada ni se mueve un solo punto: se recalculan los
+   cuerpos de letra EN UNIDADES DE USUARIO para que su tamaño ÓPTICO en
+   pantalla no baje de un mínimo. El valor original de cada nodo queda
+   guardado en `data-fs0`, y por encima del ancho donde ya era legible se
+   restituye exactamente (Math.max nunca lo reduce). */
+(function(){
+  var MIN_PX = 10.5;   /* cuerpo mínimo REAL en pantalla, en píxeles css */
+
+  function tune(){
+    var svg = document.getElementById('chart');
+    if(!svg) return;
+    var w = svg.getBoundingClientRect().width;
+    if(!w) return;
+    var vb = (svg.getAttribute('viewBox')||'').split(/[\s,]+/);
+    var vbw = parseFloat(vb[2]);
+    if(!vbw) return;
+    var k = vbw / w;                 /* unidades de usuario por píxel css */
+    var texts = svg.getElementsByTagName('text');
+    for(var i=0;i<texts.length;i++){
+      var t = texts[i], b = t.getAttribute('data-fs0');
+      if(b === null){
+        b = t.getAttribute('font-size') || '8.5';
+        t.setAttribute('data-fs0', b);
+      }
+      t.setAttribute('font-size', Math.max(parseFloat(b), MIN_PX*k).toFixed(2));
+    }
+  }
+
+  /* Se planifica con setTimeout y no con requestAnimationFrame: en un
+     documento oculto -pestania en segundo plano, iframe fuera de
+     pantalla- el navegador no entrega frames, y el ajuste no llegaba
+     a ejecutarse nunca. */
+  var timer = null;
+  function schedule(){
+    clearTimeout(timer);
+    timer = setTimeout(tune, 60);
+  }
+
+  function boot(){
+    var svg = document.getElementById('chart');
+    if(!svg){ setTimeout(boot, 120); return; }
+    tune();
+    /* el build reemplaza el SVG entero en cada frame de la animación y en
+       cada cambio de vista o de idioma; se observa el nodo en lugar de
+       encadenarse a la función de dibujo, que es privada. */
+    try{
+      new MutationObserver(schedule).observe(svg, {
+        childList:true, attributes:true, attributeFilter:['viewBox']
+      });
+    }catch(e){}
+    window.addEventListener('resize', schedule, {passive:true});
+    window.addEventListener('orientationchange', schedule, {passive:true});
+  }
+
+  /* El mapa Leaflet se inicializa mientras `#map` todavía mide 0px de alto
+     (ver la nota 2 de la hoja): Leaflet cachea ese tamaño y, cuando la
+     regla le devuelve altura, sigue dibujando sobre la caja vieja, de modo
+     que se veía un recorte en blanco sin territorios. `invalidateSize`
+     vuelve a medir y recentra. No cambia centro, zoom, capas ni datos. */
+  var userTookMap = false;
+
+  function remeasureMap(){
+    try{
+      if(typeof map === 'undefined' || !map || !map.invalidateSize) return;
+      map.invalidateSize({animate:false});
+
+      /* El mapa se abre con `setView([32.6,35.4], 7)`, un encuadre fijo
+         calculado para la caja ancha del escritorio. En la caja estrecha
+         del móvil -medida: 365x265- ese mismo zoom deja casi todos los
+         territorios fuera y se ve una porción vacía. Por debajo de 900px
+         se encuadra sobre los propios puntos del mapa. Ni un punto, ni
+         una capa, ni un dato cambian: sólo el encuadre, y sólo donde el
+         fijo no sirve. Por encima de 900px se respeta el publicado. */
+      if(userTookMap) return;
+      var box = map.getContainer().getBoundingClientRect();
+      if(box.width >= 900 || !box.width) return;
+
+      var b = L.latLngBounds([]);
+      map.eachLayer(function(l){
+        try{ if(l.getLatLng) b.extend(l.getLatLng()); }catch(e){}
+      });
+      if(!b.isValid()) return;
+      map.fitBounds(b, {padding:[26,26], maxZoom:8, animate:false});
+    }catch(e){}
+  }
+  setTimeout(function(){
+    try{
+      var el = (typeof map !== 'undefined' && map) ? map.getContainer() : null;
+      if(!el) return;
+      ['mousedown','wheel','touchstart','keydown','dblclick'].forEach(function(ev){
+        el.addEventListener(ev, function(){ userTookMap = true; }, {passive:true});
+      });
+    }catch(e){}
+  }, 500);
+
+  ['load','resize','orientationchange'].forEach(function(ev){
+    window.addEventListener(ev, function(){ setTimeout(remeasureMap, 60); }, {passive:true});
+  });
+  [120, 400, 900].forEach(function(ms){ setTimeout(remeasureMap, ms); });
+
+  if(document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+<!-- /RL-BLOCK:resp2-timeline -->
 </body>
 </html>

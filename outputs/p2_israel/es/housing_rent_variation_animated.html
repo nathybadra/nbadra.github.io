@@ -380,5 +380,146 @@
  ack();
 })();
 </script>
+<!-- RL-BLOCK:resp2-rentvar -->
+<style id="rl-resp2-rentvar-css">
+/* ═══ SEGUNDA PASADA RESPONSIVE · 29 ago 2026 ══════════════════════
+   Divergencia de alquileres · aceleración territorial.
+
+   NO TOCA DATOS. Ni una barra, ni un valor, ni un color, ni el rango
+   temporal. Sólo tamaño de letra, leyenda y caja de la figura.
+
+   CAUSA MEDIDA a 390px:
+     #bars  lienzo 820x410 unidades, en pantalla 327x164 -> factor 0,399
+     rótulos de subdistrito escritos a 13 unidades  ->  5,2px reales
+     ejes ("0 %", "10 %"...) a 12 unidades          ->  4,8px reales
+     leyenda: 78px de alto para cinco entradas
+
+   Encoger más el lienzo no arregla nada: el texto encoge con él. Y
+   agrandar la letra hasta 10,5px reales sobre un lienzo de 327px
+   exigiría 26 unidades de cuerpo, cuando cada fila del gráfico mide 27:
+   los rótulos se comerían sus propias barras.
+
+   Por eso aquí el panel de barras —y sólo ése— se dibuja a un ancho
+   mínimo donde la relación entre cuerpo y fila vuelve a funcionar, con
+   paneo horizontal EXPLÍCITO dentro de su propia caja. El mapa, que se
+   dibuja a escala 1:1 desde 350px, no lo necesita y no se toca.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width:820px){
+  /* segundo panel de `.stage` = "Variación acumulada por subdistrito" */
+  .stage > div:nth-child(2){
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    overscroll-behavior-x:contain;
+    padding-bottom:4px;
+  }
+  .stage > div:nth-child(2) > svg#bars{ min-width:560px; }
+
+  .stage > div:nth-child(2)::-webkit-scrollbar{ height:8px; }
+  .stage > div:nth-child(2)::-webkit-scrollbar-track{
+    background:rgba(22,32,40,.07); border-radius:5px;
+  }
+  .stage > div:nth-child(2)::-webkit-scrollbar-thumb{
+    background:#98A2A9; border-radius:5px;
+  }
+  .stage > div:nth-child(2) > .pnl-t::after{
+    content:attr(data-pan-label);
+    display:block;
+    font-weight:400;
+    text-transform:none;
+    letter-spacing:0.02em;
+    opacity:.62;
+    font-size:10.5px;
+    margin-top:2px;
+  }
+}
+
+@media (max-width:767px){
+  /* Leyenda: cinco entradas a 12,5px ocupaban 78px de alto, que en un
+     teléfono es más que el propio pie del gráfico. Se compacta sin
+     perder ninguna clase ni ningún color. */
+  .lg{ gap:6px 12px; margin-top:10px; }
+  .lg .k{ width:100%; font-size:10.5px; margin-bottom:1px; }
+  .lg .li{ font-size:11.5px; gap:6px; }
+  .lg .li i{ width:11px; height:11px; }
+
+  .hd h1{ font-size:19px; line-height:1.25; }
+  .hd p{ font-size:12.5px; line-height:1.5; }
+  .pnl-t{ font-size:11px; }
+
+  /* Controles de reproducción: área táctil real y valor del período
+     siempre visible junto al deslizador. */
+  .ctl{ flex-wrap:wrap; gap:10px 12px; }
+  .ctl .pp{ min-width:40px; min-height:40px; }
+  .ctl .per{ font-size:12px; }
+  .ctl .tl{ flex:1 1 100%; min-width:0; }
+  .ctl .tl input[type=range]{ width:100%; height:26px; }
+}
+</style>
+<script id="rl-resp2-rentvar-js">
+/* Cuerpo de letra del panel de barras, en unidades de usuario, para que
+   su tamaño ÓPTICO no baje de un mínimo. El original queda en `data-fs0`
+   y se restituye exacto por encima del ancho donde ya era legible.
+   No cambia ni una posición ni un valor. */
+(function () {
+  'use strict';
+  var MIN_PX = 10.5, MAX_MULT = 1.45;
+
+  function tune() {
+    var svg = document.getElementById('bars');
+    if (!svg) return;
+    var r = svg.getBoundingClientRect();
+    if (!r.width) return;
+    var vb = (svg.getAttribute('viewBox') || '').split(/[\s,]+/);
+    var vbw = parseFloat(vb[2]);
+    if (!vbw) return;
+    var k = vbw / r.width, want = MIN_PX * k;
+
+    var t = svg.getElementsByTagName('text');
+    for (var i = 0; i < t.length; i++) {
+      var n = t[i], b = n.getAttribute('data-fs0');
+      if (b === null) { b = n.getAttribute('font-size') || '12'; n.setAttribute('data-fs0', b); }
+      var base = parseFloat(b);
+      if (!base) continue;
+      n.setAttribute('font-size', Math.min(base * MAX_MULT, Math.max(base, want)).toFixed(2));
+    }
+
+    /* aviso de paneo, en el idioma del documento */
+    var panel = svg.parentElement;
+    var head = panel && panel.querySelector('.pnl-t');
+    if (head) {
+      var pan = (panel.scrollWidth - panel.clientWidth) > 4;
+      var en = (document.documentElement.lang || 'es').toLowerCase().indexOf('en') === 0;
+      if (pan) head.setAttribute('data-pan-label',
+        en ? 'scroll sideways to see every subdistrict'
+           : 'desplazamiento horizontal para ver todos los subdistritos');
+      else head.removeAttribute('data-pan-label');
+    }
+  }
+
+  /* setTimeout y no requestAnimationFrame: en un documento oculto el
+     navegador no entrega frames y el ajuste no llegaba a ejecutarse. */
+  var timer = null;
+  function schedule() { clearTimeout(timer); timer = setTimeout(tune, 70); }
+
+  function boot() {
+    var svg = document.getElementById('bars');
+    if (!svg) { setTimeout(boot, 120); return; }
+    tune();
+    /* el gráfico se redibuja entero en cada frame de la animación */
+    try {
+      new MutationObserver(schedule).observe(svg, { childList: true });
+    } catch (e) {}
+    window.addEventListener('resize', schedule, { passive: true });
+    window.addEventListener('orientationchange', schedule, { passive: true });
+    [250, 800].forEach(function (ms) { setTimeout(tune, ms); });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+<!-- /RL-BLOCK:resp2-rentvar -->
 </body>
 </html>

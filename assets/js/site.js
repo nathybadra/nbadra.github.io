@@ -12,7 +12,7 @@
 
   /* Embedded outputs are versioned so a browser never serves a stale copy
      after an output is regenerated. Bump on every outputs/ change. */
-  var BUILD = '2026-08-12b';
+  var BUILD = '2026-08-29r2';
 
   /* ── Bilingual href / src / label swap ──────────────────────────── */
   function swapBilingual(lang) {
