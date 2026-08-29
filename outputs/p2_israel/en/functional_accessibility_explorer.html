@@ -595,4 +595,126 @@ a,a:hover,.g-toggle,.g-toggle:hover{text-decoration:none !important;}
   .g-card-full{grid-column:auto;}
 }
 </style>
+<!-- RL-BLOCK:resp2-fai -->
+<style id="rl-resp2-fai">
+/* ═══ SEGUNDA PASADA RESPONSIVE · 29 ago 2026 · Explorador FAI ══════
+
+   NO TOCA METODOLOGÍA. Ni un peso, ni un umbral, ni una fórmula, ni el
+   contenido de la tabla comparativa. Sólo composición.
+
+   CAUSA MEDIDA a 390px, con la primera pasada aplicada:
+     body.scrollWidth ............ 512px  (viewport 390)
+     .weight-card.c2 ............. 288 → 512   ← fuera de pantalla
+     .weight-card.c4 ............. 288 → 512
+     .weight-card.c6 ............. 288 → 512
+     input[type=range] (P2/P4/P6)  310 → 439   ← deslizador cortado
+     .weight-val (P2/P4/P6) ...... 451 → 495   ← valor invisible
+
+   Y sin embargo `documentElement.scrollWidth` seguía dando 390, porque
+   `html[data-embed="1"] body{overflow-x:hidden}` recorta el desbordamiento
+   en silencio. Ésa es exactamente la razón por la que la primera pasada
+   dio la figura por buena: midió el contenedor, no el contenido.
+
+   CAUSA REAL: la hoja del propio output ya trae la regla correcta
+
+       @media (max-width:760px){ .weights-grid,.source-grid,.g-grid{
+         grid-template-columns:1fr; } }        <- línea 217
+
+   pero MÁS ABAJO, sin consulta de medios, vuelve a declarar
+
+       .weights-grid{ grid-template-columns:1fr 1fr; }   <- línea 336
+       .source-grid { grid-template-columns:1fr 1fr; }   <- línea 428
+
+   Misma especificidad (0,1,0) y posición posterior: gana la de dos
+   columnas en todos los anchos. No es un problema de breakpoint, es
+   orden de cascada. Se repite aquí el mismo gancho, al final, sin
+   recurrir a !important salvo donde ya lo hay enfrente.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width:767px){
+  .weights-grid,
+  .source-grid,
+  .g-grid{ grid-template-columns:1fr; }
+
+  /* La tarjeta ocupa el ancho completo y nada dentro de ella se sale. */
+  .weight-card,
+  .source-card,
+  .g-card{ width:auto; min-width:0; max-width:100%; box-sizing:border-box; }
+
+  /* El deslizador y su valor comparten renglón sin estrangularse: el
+     valor es lo que hace legible el peso, no puede quedar fuera. */
+  .weight-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    min-width:0;
+  }
+  .weight-row input[type=range]{
+    flex:1 1 auto;
+    min-width:0;
+    width:auto;
+    height:26px;                /* objetivo táctil real */
+  }
+  .weight-val{
+    flex:0 0 auto;
+    min-width:46px;
+    text-align:right;
+    font-size:14px;
+  }
+
+  /* La barra de pestañas es lo único que puede desplazarse en
+     horizontal, y sólo dentro de sí misma: nunca la página. */
+  .tabs{
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+    flex-wrap:wrap;
+    row-gap:4px;
+  }
+  .tabs button{ flex:0 1 auto; min-height:38px; }
+
+  .panel{ padding:14px 13px; }
+  .weight-title{ font-size:14px; }
+  .weight-source{ font-size:11.5px; }
+}
+
+/* Tablet: dos columnas sólo mientras las dos entren enteras. La medida
+   de la tarjeta con su deslizador y su valor es ~300px; por debajo de
+   660px de área útil una de las dos se corta, así que el corte va ahí y
+   no en un número redondo. */
+@media (min-width:768px) and (max-width:1023px){
+  .weights-grid,
+  .source-grid{ grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); }
+  .weight-card{ min-width:0; }
+  .weight-row input[type=range]{ min-width:0; flex:1 1 auto; }
+  .weight-val{ flex:0 0 auto; min-width:44px; }
+}
+
+/* Ninguna caja de este documento puede sobresalir de su columna: la
+   causa del corte era una pista de rejilla más ancha que el viewport,
+   pero cualquier caja rígida produciría lo mismo. */
+.weights-grid,.source-grid,.g-grid{ min-width:0; }
+.weights-grid > *,.source-grid > *,.g-grid > *{ min-width:0; }
+
+/* La tabla comparativa: en teléfono ya recompone en fichas (regla del
+   propio output). Entre 768 y 880 se deslizaba con `min-width:880px`.
+   Se le baja el mínimo al ancho que realmente necesita y se le pone
+   afordancia visible en lugar de un corte mudo. */
+@media (min-width:768px) and (max-width:1023px){
+  .table-wrap{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+  }
+  #panel-table table{ min-width:760px; }
+  #panel-table th{ font-size:10.5px; padding:9px 4px; line-height:1.25; }
+  #panel-table td{ font-size:11.5px; padding:8px 4px; }
+  .table-wrap::-webkit-scrollbar{ height:8px; }
+  .table-wrap::-webkit-scrollbar-thumb{
+    background:#9CA3AF; border-radius:5px;
+  }
+}
+</style>
+<!-- /RL-BLOCK:resp2-fai -->
 </body></html>

@@ -11,13 +11,13 @@
    that already disagree.
 
    Structure, spacing, display type and the light/dark palettes come from
-   design_handoff_reco_lab_shell (README tokens + Hero RECO-LAB.dc.html).
+   the RECO-LAB shell design system (design tokens + hero).
    Three things are the site's own, and deliberate:
 
-     · corners are round everywhere. The handoff's Industry base is
+     · corners are round everywhere. The design system's Industry base is
        square-cornered; every card, chip, block and panel here carries a
        radius from one scale. Nothing on the page has a square corner.
-     · three moods. The handoff ships light/dark; night is a third,
+     · three moods. The design system ships light/dark; night is a third,
        deeper step derived from the same dark tokens, never a new hue.
      · reading floors. Nothing that carries running text goes below
        14px, no label below 11px, body line-height 1.55 or more.
@@ -291,7 +291,7 @@ html[data-lang="en"] .lang-es{display:none !important;}
 .skip:focus{left:0;color:#fff;}
 
 /* ══ HEADER ══════════════════════════════════════════════════════
-   Grid auto | 1fr | auto on the institutional navy, per the handoff.
+   Grid auto | 1fr | auto on the institutional navy, per the design system.
    Three written controls close the row: mood, language, Contacto. None
    of them is an icon and none of them is a black button. */
 .hdr{
@@ -464,7 +464,7 @@ html[data-theme="night"] .mood button[aria-pressed="true"]{color:#0f1c26;}
   border:1.5px solid var(--accent);
   animation:recoPing 3.6s cubic-bezier(.2,.6,.3,1) infinite;
 }
-/* Flex rule of the handoff: text that can wrap lives in its own
+/* Flex rule of the design system: text that can wrap lives in its own
    min-width:0 child, never as a loose inline sibling. */
 .hero-kicker .txt,.sig-row .txt{min-width:0;}
 

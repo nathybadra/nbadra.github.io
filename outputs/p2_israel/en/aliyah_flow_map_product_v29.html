@@ -200,6 +200,223 @@ if(e)document.documentElement.setAttribute("data-embed","1");})();</script>
   </div>
   <div class="bot">&copy; 2026 RECO-LAB &middot; Urban Intelligence Lab</div>
 </footer>
+
+<style id="reco-lab-responsive-2026-08-29">
+/* Responsive . 29 ago 2026 . leyendas y controles en pantalla estrecha.
+   Medido a 352px: la leyenda ocupaba entre el 58% y el 93% del ancho del
+   mapa y dejaba muy poca cartografia visible. Aqui baja de cuerpo y se
+   acota, sin ocultarse y sin tocar la atribucion, que sigue legible. */
+@media (max-width:560px){
+  .tf-map-legend,.tf-legend{
+    font-size:10px !important;
+    line-height:1.5 !important;
+    padding:8px 10px !important;
+    max-width:60% !important;
+    max-height:38% !important;
+    overflow:auto !important;
+  }
+  .tf-map-legend .l-w,.tf-legend .l-w{ font-size:9.5px !important; }
+  .tf-map-legend .l-ends,.tf-legend .l-ends{ font-size:8.5px !important; }
+  .leaflet-control-layers{ max-width:52% !important; font-size:11px !important; }
+  .leaflet-control-layers-list{ max-height:36vh; overflow:auto; }
+  .leaflet-control-zoom a{
+    width:32px !important; height:32px !important; line-height:32px !important;
+  }
+  .leaflet-control-attribution{
+    font-size:9px !important; line-height:1.35 !important;
+  }
+}
+/* Muy estrecho: la leyenda cede ancho antes que tapar el mapa. */
+@media (max-width:400px){
+  .tf-map-legend,.tf-legend{ max-width:68% !important; max-height:34% !important; }
+}
+</style>
+
+<!-- RL-BLOCK:resp2-maps -->
+<style id="rl-resp2-maps-css">
+/* ═══ SEGUNDA PASADA RESPONSIVE · 29 ago 2026 · mapas de flujo ═════
+
+   NO TOCA DATOS. Ni una coordenada, ni un flujo, ni un radio, ni un
+   color, ni el basemap. Sólo tamaño de la leyenda y encuadre.
+
+   CAUSA MEDIDA a 390x560:
+     .tf-map-legend ......... 228x156  = 58% del ancho y 28% del alto
+     encuadre ............... el mapa se enmarca UNA vez, con paddings
+                              de escritorio (70/60 arriba, 70/190 abajo),
+                              y no se vuelve a enmarcar al cambiar el
+                              tamaño. En un teléfono los 190px de reserva
+                              inferior son el 34% del mapa, de modo que
+                              los flujos quedaban comprimidos en la
+                              esquina superior izquierda.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width:767px){
+  .tf-map-legend{
+    font-size:10.5px;
+    line-height:1.45;
+    padding:9px 11px;
+    max-width:min(62%,240px);
+    max-height:34%;
+    overflow:auto;
+  }
+  .tf-map-legend .t{ font-size:11px; }
+  /* La atribución es obligatoria y tiene que poder leerse. */
+  .leaflet-control-attribution{
+    font-size:9.5px;
+    line-height:1.4;
+    max-width:78vw;
+    background:rgba(255,255,255,.92);
+  }
+  /* La leyenda se levanta por encima de la atribucion: medido a 390x560,
+     la leyenda ocupaba y 371-548 y la atribucion y 533-560, de modo que
+     le tapaba la primera linea. La atribucion no es opcional.
+     El gancho es `.tf-p-stage > .tf-map-legend` con `inset` en shorthand
+     y !important (0,2,0): una regla de clase suelta pierde, asi que se
+     repite el mismo gancho y solo cambia el valor inferior. */
+  .tf-p-stage > .tf-map-legend{ inset:auto 12px 38px 12px !important; }
+  /* En modo embebido gana un gancho MAS especifico -
+     `html[data-embed="1"] .tf-p-stage > .tf-map-legend` (0,1,0 + 0,2,0)-
+     que vuelve a fijar `bottom:12px`. Hay que repetirlo tal cual o la
+     regla de arriba no llega a aplicarse nunca: es el caso que se
+     midio, con la leyenda todavia en y 370-548 sobre la atribucion. */
+  html[data-embed="1"] .tf-p-stage > .tf-map-legend{
+    inset:auto auto 38px 12px !important;
+  }
+  /* Objetivo táctil real en el zoom. */
+  .leaflet-control-zoom a{
+    width:36px; height:36px; line-height:36px; font-size:18px;
+  }
+
+  /* SELECTOR DE CAPAS / ANIOS.
+     CAUSA MEDIDA a 390px en el mapa de aliyah: el control quedaba en
+     67x218px y cada etiqueta ("Aliyah 2022", "Aliyah 2023"...) en 31px,
+     partida letra a letra y con flechas de desplazamiento. El motivo es
+     que la primera pasada le puso `max-width:52%`, y ese porcentaje se
+     resuelve contra `.leaflet-top.leaflet-right`, que es un contenedor
+     posicionado sin ancho propio: 52% de casi nada. Se sustituye por una
+     medida absoluta y se le impide partir las etiquetas. Lleva
+     !important porque enfrente hay otro !important. */
+  .leaflet-control-layers{
+    max-width:min(64vw,240px) !important;
+    width:auto !important;
+    font-size:11.5px !important;
+  }
+  .leaflet-control-layers-list{
+    max-height:min(38vh,190px) !important;
+    overflow:auto;
+  }
+  .leaflet-control-layers label{
+    display:block;
+    white-space:nowrap;
+    min-height:26px;
+    line-height:26px;
+  }
+  .leaflet-control-layers label span{ white-space:nowrap; }
+}
+@media (max-width:430px){
+  .tf-map-legend{ max-width:min(70%,230px); max-height:32%; font-size:10px; }
+}
+</style>
+<script id="rl-resp2-maps-js">
+/* Reencuadre sensible al tamaño. El mapa se enmarcaba una sola vez con
+   reservas de escritorio; aquí se vuelve a enmarcar sobre el MISMO
+   conjunto de capas cada vez que cambia el tamaño, con una reserva
+   inferior calculada a partir de la leyenda REAL y acotada a un tercio
+   del alto. En cuanto la persona toca el mapa, esto no vuelve a moverlo.
+   No se añade, quita ni modifica ninguna capa. */
+(function () {
+  'use strict';
+  var map = null, userTook = false, cached = null;
+
+  function findMap() {
+    if (typeof L === 'undefined' || !L.Map) return null;
+    for (var k in window) {
+      try { if (k.indexOf('map_') === 0 && window[k] instanceof L.Map) return window[k]; }
+      catch (e) {}
+    }
+    return null;
+  }
+
+  /* SOLO los marcadores de punto -los destinos-. Las polilineas de flujo
+     arrancan en origenes extranjeros: incluirlas en el encuadre saca el
+     mapa a escala mundial, que es lo que ocurrio al medirlo. El encuadre
+     publicado usa el mismo criterio; aqui solo se recalcula al cambiar
+     el tamanio, cosa que antes no pasaba. */
+  function contentBounds(m) {
+    if (cached) return cached;
+    var b = L.latLngBounds([]);
+    m.eachLayer(function (l) {
+      try {
+        if (l instanceof L.TileLayer) return;
+        if (l.getLatLng) b.extend(l.getLatLng());
+      } catch (e) {}
+    });
+    if (!b.isValid()) return null;
+    /* Guarda de cordura: si el conjunto de puntos abarca mas de 20 grados
+       no es un encuadre territorial y se deja el publicado tal cual. */
+    var sw = b.getSouthWest(), ne = b.getNorthEast();
+    if ((ne.lat - sw.lat) > 20 || (ne.lng - sw.lng) > 20) return null;
+    cached = b;
+    return b;
+  }
+
+  function refit() {
+    if (!map || userTook) return;
+    try {
+      map.invalidateSize(false);
+      var b = contentBounds(map);
+      if (!b) return;
+
+      var c = map.getContainer().getBoundingClientRect();
+      if (!c.width || !c.height) return;
+      var narrow = c.width < 560;
+
+      /* reserva inferior = alto real de la leyenda, nunca más de un
+         tercio del mapa: por encima de eso deja de ser una reserva y
+         pasa a ser el mapa entero */
+      var lg = document.querySelector('.tf-map-legend, .tf-legend');
+      var bottom = 40;
+      if (lg) {
+        var lr = lg.getBoundingClientRect();
+        bottom = Math.min(lr.height + 16, c.height * 0.34);
+      }
+      var top = narrow ? 44 : 70;
+      var side = narrow ? 24 : 60;
+
+      map.fitBounds(b, {
+        paddingTopLeft: [side, top],
+        paddingBottomRight: [side, Math.round(bottom)],
+        maxZoom: 9,
+        animate: false
+      });
+    } catch (e) {}
+  }
+
+  var timer = null;
+  function schedule() { clearTimeout(timer); timer = setTimeout(refit, 140); }
+
+  function boot(tries) {
+    map = findMap();
+    if (!map) { if (tries < 50) setTimeout(function () { boot(tries + 1); }, 120); return; }
+
+    var el = map.getContainer();
+    ['mousedown', 'wheel', 'touchstart', 'keydown', 'dblclick'].forEach(function (ev) {
+      el.addEventListener(ev, function () { userTook = true; }, { passive: true });
+    });
+
+    /* setTimeout y no requestAnimationFrame: en un documento oculto el
+       navegador no entrega frames y el reencuadre no llegaba a correr. */
+    [400, 1200, 2400].forEach(function (ms) { setTimeout(refit, ms); });
+    window.addEventListener('resize', schedule, { passive: true });
+    window.addEventListener('orientationchange', schedule, { passive: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { boot(0); });
+  } else { boot(0); }
+})();
+</script>
+<!-- /RL-BLOCK:resp2-maps -->
 </body>
 <script>
     
@@ -223,13 +440,13 @@ if(e)document.documentElement.setAttribute("data-embed","1");})();</script>
         
     
             var tile_layer_ec07b6df29ed37fed508f2ac533b4003 = L.tileLayer(
-                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
                 {
   "minZoom": 0,
   "maxZoom": 20,
-  "maxNativeZoom": 20,
+  "maxNativeZoom": 16,
   "noWrap": false,
-  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "attribution": "Tiles \u0026copy; \u003ca href=\"https://www.esri.com/\"\u003eEsri\u003c/a\u003e \u2014 Esri, HERE, Garmin, \u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
   "subdomains": "abcd",
   "detectRetina": false,
   "tms": false,
@@ -1457,7 +1674,7 @@ if(e)document.documentElement.setAttribute("data-embed","1");})();</script>
     
             var layer_control_cb6c06f15e15f80314e9eb0d0c03fc32_layers = {
                 base_layers : {
-                    "cartodbdarkmatter" : tile_layer_ec07b6df29ed37fed508f2ac533b4003,
+                    "Dark base" : tile_layer_ec07b6df29ed37fed508f2ac533b4003,
                 },
                 overlays :  {
                     "Aliyah 2022" : feature_group_eeebb1ff877b3f68fb72fe5e8a87c58e,

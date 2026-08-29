@@ -1,0 +1,480 @@
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVE UNIVERSAL · 29 ago 2026
+   Hoja nueva, cargada en último lugar en las cuatro páginas.
+   Retirar este único <link> revierte toda esta pasada y nada más.
+
+   ALCANCE: sólo composición, adaptación al viewport y orientación de
+   navegación. No toca datos, resultados, metodología, clasificación
+   UPI, HAR, FAI ni IVUB. Ningún texto de contenido se reescribe.
+
+   Bandas de viewport que gobierna esta hoja:
+     ≤ 380    teléfono pequeño
+     ≤ 430    teléfono grande
+     ≤ 767    teléfono apaisado / phablet
+     768–1023 tablet vertical
+     1024–1180 tablet apaisada / portátil pequeño
+     1181–1439 portátil
+     1440–1919 escritorio
+     ≥ 1920   escritorio grande
+     ≥ 2560   pantalla grande / proyección
+
+   NOTA DE ESPECIFICIDAD: varias reglas de `qa-final-2026-08-16` y
+   `shell-unified` fijan cabecera y pie con `.rlx-hdr .rlx-hdr-row`
+   (0,2,0) y sin media query, de modo que ganaban también en móvil.
+   Aquí se repite el mismo gancho en lugar de recurrir a !important.
+   ═══════════════════════════════════════════════════════════════════ */
+
+
+/* ══ 0 · ALTURA REAL DE CABECERA Y ANCLAS ══════════════════════════
+   La cabecera es sticky. El contenido debe empezar siempre por debajo
+   y cualquier salto a un #ancla debe descontar su altura. */
+:root{
+  --rl-hdr-h:64px;
+  --rl-pad-x:clamp(16px,4.6vw,24px);
+}
+@media (max-width:720px){ :root{ --rl-hdr-h:60px; } }
+@media (max-width:430px){ :root{ --rl-hdr-h:56px; } }
+
+html{
+  scroll-padding-top:calc(var(--rl-hdr-h) + 14px);
+  -webkit-text-size-adjust:100%;
+}
+[id]{ scroll-margin-top:calc(var(--rl-hdr-h) + 14px); }
+
+
+/* ══ 1 · CABECERA ══════════════════════════════════════════════════
+
+   CAUSA MEDIDA del logo cortado en móvil:
+   `.rlx-hdr-row` es un grid de tres pistas `auto minmax(0,1fr) auto`.
+   Cuando `.rlx-nav` pasa a display:none (≤1080) deja de ocupar celda,
+   así que `.rlx-end` cae en la pista central `minmax(0,1fr)`. A 390px
+   esa pista mide 208px mientras su contenido (idioma 91 + Contacto 117
+   + menú 37 + huecos) suma 273px. Con `justify-content:flex-end` y los
+   hijos a `flex-shrink:0`, el sobrante desborda hacia la IZQUIERDA y
+   la píldora ES/EN se monta 36px sobre el wordmark.
+
+   Por debajo del punto donde desaparece el nav la fila deja de ser
+   grid y pasa a flex: el wordmark queda fijo a la izquierda, los
+   controles se anclan a la derecha y ya no existe pista central que
+   los estrangule. */
+
+.rlx-hdr .rlx-hdr-row{
+  min-height:var(--rl-hdr-h);
+}
+
+@media (max-width:1080px){
+  .rlx-hdr .rlx-hdr-row{
+    display:flex;
+    align-items:center;
+    column-gap:clamp(8px,2.2vw,16px);
+    height:var(--rl-hdr-h);
+    min-height:var(--rl-hdr-h);
+  }
+  /* El wordmark nunca se corta ni envuelve, y no cede ancho. */
+  .rlx-hdr .rlx-wordmark{
+    flex:0 0 auto;
+    margin-right:auto;
+    white-space:nowrap;
+    max-width:none;
+    overflow:visible;
+  }
+  .rlx-hdr .rlx-end{
+    flex:0 1 auto;
+    min-width:0;
+    justify-content:flex-end;
+    column-gap:clamp(6px,1.8vw,12px);
+    padding-left:0;
+    border-left:0;
+  }
+  /* Los controles pueden encogerse antes que desbordar. */
+  .rlx-hdr .rlx-end > *{ flex-shrink:1; min-width:0; }
+  .rlx-hdr .rlx-burger{ flex:0 0 auto; }
+}
+
+/* Teléfono: idioma y Contacto compactos, área táctil intacta. */
+@media (max-width:520px){
+  .rlx-hdr .rlx-contact{
+    padding-inline:clamp(10px,3vw,14px);
+    font-size:13px;
+    white-space:nowrap;
+  }
+  .rlx-hdr .rlx-lang{ flex:0 0 auto; }
+  .rlx-hdr .rlx-lang button{
+    padding-inline:9px;
+    font-size:12px;
+  }
+}
+
+/* Objetivo táctil mínimo en los tres controles de cabecera. */
+@media (max-width:1080px){
+  .rlx-hdr .rlx-burger{
+    min-width:44px;
+    min-height:44px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+    line-height:1;
+  }
+  .rlx-hdr .rlx-contact{ min-height:40px; align-items:center; }
+  .rlx-hdr .rlx-lang button{ min-height:34px; }
+}
+
+/* Por debajo de 360 el botón Contacto cede su sitio: sigue disponible
+   como primera entrada del panel, de modo que no se pierde acceso. */
+@media (max-width:359px){
+  .rlx-hdr .rlx-contact{ display:none; }
+}
+
+/* La cabecera nunca queda por debajo del contenido ni lo tapa. */
+.rlx-hdr{ z-index:120; }
+.rlx-drawer{ z-index:130; }
+
+
+/* ══ 2 · ORIENTACIÓN · SABER DÓNDE SE ESTÁ ═════════════════════════
+
+   En escritorio la navegación horizontal ya dice en qué sección se
+   está. Al plegarse dentro del panel, esa referencia desaparece y las
+   cuatro páginas pasan a parecer del mismo nivel.
+
+   Se resuelve con lo que ya existe: un rótulo de contexto junto al
+   wordmark —visible sólo cuando el nav está plegado— y el estado
+   activo del panel, que ya viene marcado con aria-current. */
+
+.rlx-hdr-ctx{
+  display:none;
+  font-family:var(--mono,ui-monospace,monospace);
+  font-size:10px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  text-decoration:none;
+  color:rgba(255,255,255,0.62);
+  border-left:1px solid rgba(255,255,255,0.22);
+  padding-left:clamp(8px,2.4vw,13px);
+  margin-left:clamp(8px,2.4vw,13px);
+  white-space:nowrap;
+  line-height:1;
+  align-self:center;
+}
+.rlx-hdr-ctx:hover,
+.rlx-hdr-ctx:focus-visible{ color:#fff; }
+
+/* Sólo aparece cuando la navegación horizontal ya no está. */
+@media (max-width:1080px){
+  .rlx-hdr-ctx{ display:inline-block; }
+  /* el rótulo viaja con el wordmark, no con los controles */
+  .rlx-hdr .rlx-wordmark{ margin-right:0; }
+  .rlx-hdr .rlx-hdr-ctx{ margin-right:auto; }
+}
+@media (max-width:430px){
+  .rlx-hdr-ctx{ font-size:9px; letter-spacing:0.12em; }
+}
+/* En pantallas muy estrechas el rótulo cede antes que los controles. */
+@media (max-width:389px){
+  .rlx-hdr-ctx{ display:none; }
+  .rlx-hdr .rlx-wordmark{ margin-right:auto; }
+}
+
+/* Estado activo del panel: la rama en la que se está, marcada. */
+.rlx-drawer nav a[aria-current]{
+  color:#fff;
+  font-weight:600;
+  position:relative;
+}
+.rlx-drawer nav a[aria-current]::before{
+  content:"";
+  position:absolute;
+  left:-14px; top:50%;
+  width:5px; height:5px;
+  margin-top:-2.5px;
+  border-radius:50%;
+  background:var(--sh-panel,#7FA9CE);
+}
+/* Dentro del panel, el proyecto en curso se nombra bajo su rama. */
+.rlx-drawer .rlx-drawer-here{
+  display:block;
+  font-family:var(--mono,ui-monospace,monospace);
+  font-size:10px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.52);
+  margin:2px 0 8px 0;
+  padding-left:2px;
+}
+
+
+/* ══ 3 · PIE ═══════════════════════════════════════════════════════
+
+   CAUSA MEDIDA del desbordamiento horizontal global (408px de body
+   sobre 390px de viewport, en las cuatro páginas):
+   `qa-final-2026-08-16` fija
+     .rlx-ftr .rlx-ftr-grid{grid-template-columns:minmax(0,1.35fr)
+                            minmax(150px,0.72fr) minmax(190px,0.93fr)}
+   SIN media query. Con (0,2,0) gana sobre el colapso a una columna que
+   `shell-unified` pedía en `@media (max-width:900px)` con (0,1,0), de
+   modo que a 390px el grid seguía siendo 0 / 150 / 190 y la columna de
+   proyectos salía 18px fuera del viewport.
+
+   Aquí se repite el mismo gancho por banda. */
+
+/* Tablet vertical: tres columnas no caben con holgura; van a dos. */
+@media (max-width:1023px){
+  .rlx-ftr .rlx-ftr-grid{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    column-gap:clamp(24px,4vw,40px);
+    row-gap:30px;
+  }
+  /* El bloque de marca ocupa la fila completa: es el más ancho. */
+  .rlx-ftr .rlx-ftr-grid > *:first-child{ grid-column:1 / -1; }
+}
+
+/* Teléfono y phablet: una sola columna, vertical y ordenada. */
+@media (max-width:767px){
+  .rlx-ftr .rlx-ftr-grid{
+    grid-template-columns:minmax(0,1fr);
+    column-gap:0;
+    row-gap:clamp(26px,5vh,34px);
+    padding-top:30px;
+    padding-bottom:26px;
+  }
+  .rlx-ftr .rlx-ftr-grid > *{
+    grid-column:1 / -1;
+    min-width:0;
+    max-width:100%;
+    padding-left:0;
+  }
+  /* `editorial-2026-08-16` sangra las columnas 2 y 3; en vertical esa
+     sangría deja los bloques flotando fuera del eje del pie. */
+  .rlx-ftr .rlx-ftr-grid > *:nth-child(2),
+  .rlx-ftr .rlx-ftr-grid > *:nth-child(3){ padding-left:0; }
+
+  .rlx-ftr .rlx-fields .txt{ white-space:normal; }
+  .rlx-ftr .rlx-list,
+  .rlx-ftr .rlx-list > li{ min-width:0; max-width:100%; }
+  .rlx-ftr .rlx-list > li{ margin-bottom:9px; }
+  /* Ningún bloque de texto con ancho de dos o tres palabras. */
+  .rlx-ftr .rlx-ftr-h,
+  .rlx-ftr .rlx-blurb,
+  .rlx-ftr .rlx-role,
+  .rlx-ftr .rlx-name{ min-width:0; max-width:100%; }
+  .rlx-ftr .rlx-btns{ flex-wrap:wrap; }
+  .rlx-ftr .rlx-ftr-bot{ text-align:left; }
+}
+
+/* La franja inferior también apila. */
+@media (max-width:600px){
+  .rlx-ftr .rlx-ftr-bot{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+  }
+}
+
+
+/* ══ 4 · CONTENEDORES Y DESBORDAMIENTO ═════════════════════════════ */
+
+@media (max-width:767px){
+  .rlx-row,.row,.wrap,.rl-shell-row{
+    padding-left:var(--rl-pad-x);
+    padding-right:var(--rl-pad-x);
+    max-width:100%;
+  }
+  /* Nada de anchos mínimos de escritorio en bloques de texto. */
+  .proj-narrative,.rl-ev,.rl-note,.rl-fig-block,.rl-embed{
+    min-width:0;
+    max-width:100%;
+  }
+  /* Tablas siempre dentro de su propio contenedor con scroll. */
+  .rl-table-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+}
+
+/* Medios y multimedia jamás exceden su caja. */
+img,svg,video,canvas,iframe{ max-width:100%; }
+/* Los SVG con min-width viven dentro de contenedores con overflow-x
+   propio — .rl-fig-plot y .rl-matrix-plot — y ahí el desplazamiento es
+   deliberado: reducirlos dejaría su tipografía por debajo de 11px.
+
+   CAUSA MEDIDA de la figura cortada: `unify-final-2026-08` agrupa
+   `.rl-fig-plot` en la regla de `border-radius` que añade
+   `overflow:hidden` para recortar las esquinas, y `corrections-2026-08`
+   repite ese `overflow:hidden` por modo oscuro y noche. Ambas ganan
+   sobre el `overflow-x:auto` de `v3-reco-lab`, así que a 390px la
+   figura medía 612px de contenido en una caja de 350px y los 262px
+   restantes quedaban recortados y fuera de alcance: no había manera de
+   desplazarse hasta ellos. `.rl-matrix-plot` (la matriz UPI) no está en
+   esas listas y por eso conservaba su desplazamiento.
+
+   Se restituye el eje horizontal y se mantiene el recorte vertical, que
+   es lo que la esquina redondeada necesitaba. */
+.rl-fig-plot,
+html[data-theme="light"] .rl-fig-plot,
+html[data-theme="dark"] .rl-fig-plot,
+html[data-theme="night"] .rl-fig-plot{
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+}
+.rl-fig-plot,.rl-matrix-plot{ max-width:100%; }
+
+
+/* ══ 5 · PROYECTO 01 · RANKING DE VULNERABILIDAD ═══════════════════
+
+   CAUSA MEDIDA de los huecos enormes entre territorios:
+   `.cluster-viz .cv-col` es `display:grid` con
+   `grid-template-rows:subgrid; grid-row:span 5`, pensado para que los
+   nombres de las tres columnas queden alineados en escritorio.
+   A ≤980 el contenedor pasa a una sola columna y `grid-template-rows`
+   del padre se anula, con lo que las cinco filas del subgrid se
+   igualan a la más alta: la rejilla de teselas. Medido a 390px, el
+   nombre del territorio y su descripción ocupaban 670px de alto cada
+   uno y una columna entera 3404px.
+
+   Por debajo del punto de colapso la columna deja de ser subgrid y
+   pasa a flujo vertical: cada bloque toma su altura natural. */
+
+@media (max-width:980px){
+  .cluster-viz .cv-col{
+    display:flex;
+    flex-direction:column;
+    grid-row:auto;
+    grid-template-rows:none;
+    gap:12px;
+    height:auto;
+    min-height:0;
+  }
+  .cluster-viz .cv-col > *{
+    min-height:0;
+    height:auto;
+  }
+  .cluster-viz .cv-grid{
+    grid-template-rows:none;
+    grid-auto-rows:auto;
+  }
+  /* La ficha de intervención vuelve a pegarse al final de la columna. */
+  .cluster-viz .cv-action{ margin-top:auto; }
+}
+
+/* Las teselas conservan dos por fila mientras quepan: a una sola
+   columna la lista se alarga sin ganar legibilidad. */
+@media (max-width:980px){
+  .cluster-viz .cv-tiles{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-auto-rows:minmax(72px,auto);
+  }
+}
+@media (max-width:400px){
+  .cluster-viz .cv-tiles{ grid-template-columns:minmax(0,1fr); }
+}
+
+@media (max-width:767px){
+  .cluster-viz .cv-col{ padding:22px var(--rl-pad-x) 20px; }
+  .cluster-viz .cv-legend{ padding:20px var(--rl-pad-x) 22px; }
+}
+
+
+/* ══ 6 · FIGURAS, EMBEBIDOS Y MAPAS ════════════════════════════════
+
+   Cada embebido usa el ancho disponible y una altura proporcionada al
+   viewport, en lugar de una altura de escritorio fija. No se emplea
+   transform:scale() en ningún caso: el iframe se redimensiona y el
+   documento interior recompone con sus propias media queries. */
+
+.rl-embed,.rl-embed-body,.rl-pair,.rl-pair-frame{ max-width:100%; }
+.rl-embed-body iframe,.rl-pair-frame iframe{
+  width:100%;
+  display:block;
+  border:0;
+}
+
+@media (max-width:1023px){
+  .rl-pair{ grid-template-columns:minmax(0,1fr); }
+}
+
+@media (max-width:767px){
+  /* Altura útil sin que el embebido se coma la pantalla entera. */
+  .rl-embed-body{ height:auto; min-height:0; }
+  .rl-embed-body.h-760,
+  .rl-embed-body.h-680{ height:clamp(420px,62vh,560px); min-height:0; }
+  .rl-embed-body.h-map{ height:clamp(400px,58vh,540px); min-height:0; }
+  /* `h-980` y `h-1040` (divergencia de alquileres y explorador FAI) se
+     dejan crecer con su contenido: medido a 390px, el documento interior
+     recompone a una columna y cabe entero: 994px y 1392px sin barra de
+     desplazamiento anidada. Recortarlos reintroduciría scroll dentro del
+     iframe, que en táctil compite con el scroll de la página. */
+  .rl-pair-frame{ height:clamp(340px,50vh,460px); }
+}
+
+@media (max-width:430px){
+  .rl-embed-body.h-760,
+  .rl-embed-body.h-680{ height:clamp(380px,58vh,480px); }
+  .rl-pair-frame{ height:clamp(300px,46vh,400px); }
+}
+
+/* Controles de Leaflet: no deben tapar contenido ni quedar diminutos.
+   La atribución se mantiene siempre visible y legible. */
+@media (max-width:767px){
+  .leaflet-control-attribution{
+    font-size:9.5px;
+    line-height:1.35;
+    max-width:76vw;
+  }
+  .leaflet-control-zoom a{
+    width:32px;height:32px;line-height:32px;
+  }
+  .leaflet-control-layers{ max-width:62vw; }
+}
+
+/* El enlace de apertura del mapa sigue visible y pulsable. */
+@media (max-width:767px){
+  .rl-embed-foot,.rl-fig-foot{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 14px;
+    align-items:baseline;
+  }
+  .rl-embed-foot a,.rl-fig-foot a{ min-height:34px; display:inline-flex; align-items:center; }
+}
+
+
+/* ══ 7 · PANTALLAS GRANDES Y PROYECCIÓN ════════════════════════════
+   Ni los gráficos ni el texto se estiran sin límite: crece la
+   presencia visual, no la longitud de línea. */
+
+@media (min-width:1920px){
+  :root{ --rl-gutter:clamp(48px,3.4vw,88px); }
+  .rl-embed-body.h-760,.rl-embed-body.h-680{ height:720px; }
+  .rl-embed-body.h-map{ height:760px; }
+}
+
+@media (min-width:2560px){
+  :root{ --rl-measure:1860px; }
+  html{ font-size:18px; }
+  .proj-narrative,.rl-ev,.rl-note{ max-width:78ch; }
+}
+
+/* Longitud de lectura razonable en cualquier pantalla ancha. */
+@media (min-width:1440px){
+  .proj-narrative p,.rl-ev p{ max-width:74ch; }
+}
+
+
+/* ══ 8 · ORIENTACIÓN APAISADA EN TELÉFONO ══════════════════════════
+   Con poca altura, los embebidos no deben ocupar más que la pantalla. */
+@media (max-height:520px) and (orientation:landscape){
+  .rl-embed-body,.rl-pair-frame{ height:clamp(280px,78vh,420px); }
+  .rlx-hdr .rlx-hdr-row{ height:52px; min-height:52px; }
+  :root{ --rl-hdr-h:52px; }
+}
+
+
+/* ══ 9 · PREFERENCIAS DEL SISTEMA ══════════════════════════════════ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:0.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.001ms !important;
+    scroll-behavior:auto !important;
+  }
+}

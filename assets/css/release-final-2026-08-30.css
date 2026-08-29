@@ -1,0 +1,110 @@
+/* ══════════════════════════════════════════════════════════════════
+   RECO-LAB · CAPA DE CIERRE DE RELEASE · 2026-08-30
+   ══════════════════════════════════════════════════════════════════
+
+   Capa autocontenida sobre PROYECTO 02. No toca datos, series,
+   valores, orden ni escalas estadísticas: sólo el modo en que la
+   figura de retornos se arma en pantalla. Quitar el <link> revierte
+   la pasada entera y nada más.
+
+   Las convenciones de mood son las ya vigentes en el sistema: el
+   valor por defecto sirve a los moods oscuros y `html[data-theme=
+   "light"]` reescribe únicamente el token que cambia.
+
+   La matriz UPI no aparece aquí a propósito. Su lienzo sigue siendo
+   1240 × 560 y sus rótulos siguen escritos a 15,5 unidades, de modo
+   que los pisos de ancho medidos en `responsive-2-2026-08-29`
+   —min(720px,100%) en tablet, y el desplazamiento interno en
+   mobile— siguen siendo los correctos y no deben re-especificarse.
+
+
+   ══ A · RETORNOS POR PAÍS · una figura, dos paneles ═══════════════
+
+   Los dos paneles llevaban borde y radio propios, heredados de la
+   pasada de QA, de modo que la franja se leía como dos tarjetas
+   vecinas y no como una figura compuesta: el ojo cerraba el primer
+   objeto antes de llegar al segundo, y el ranking acumulado quedaba
+   como un gráfico aparte en vez de como la segunda mitad del mismo
+   argumento.
+
+   El marco pasa a ser uno solo. El borde y el radio viven en el
+   contenedor; los paneles se separan con un filete interno, vertical
+   mientras van lado a lado y horizontal cuando se apilan. En los dos
+   casos la franja sigue siendo un único bloque visual. */
+.rl-fig-duo{
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:14px;
+  gap:0;
+  padding:0;
+  overflow:hidden;
+  background:transparent;
+}
+html[data-theme="light"] .rl-fig-duo{
+  border-color:rgba(30,45,61,0.14);
+}
+
+/* El panel deja de ser tarjeta: no dibuja borde ni redondea. */
+.rl-fig-duo > .rl-fig-panel{
+  border:0;
+  border-radius:0;
+}
+
+/* El filete interno es la única separación entre las dos mitades. */
+.rl-fig-duo > .rl-fig-panel + .rl-fig-panel{
+  border-left:1px solid rgba(255,255,255,0.10);
+}
+html[data-theme="light"] .rl-fig-duo > .rl-fig-panel + .rl-fig-panel{
+  border-left-color:rgba(30,45,61,0.14);
+}
+
+/* Apilados, el filete gira. El bloque no se parte en dos. */
+@media (max-width:1340px){
+  .rl-fig-duo > .rl-fig-panel + .rl-fig-panel{
+    border-left:0;
+    border-top:1px solid rgba(255,255,255,0.10);
+  }
+  html[data-theme="light"] .rl-fig-duo > .rl-fig-panel + .rl-fig-panel{
+    border-top-color:rgba(30,45,61,0.14);
+  }
+
+  /* ── Apilados, los dos lienzos reciben el mismo ancho de caja, y como
+     no miden lo mismo en unidades —680 el de la izquierda, 524 el de la
+     derecha— el mismo ancho los dibuja a escalas distintas.
+
+     MEDIDO a 834px: caja de 727px para los dos. El panel izquierdo
+     quedaba a escala 1,069 y el derecho a 1,387, de modo que un mismo
+     cuerpo 13 se leia a 13,9px arriba y a 18,0px abajo: la mitad de
+     abajo de la figura aparecia un 30 % mas grande que la de arriba.
+     A 390px el problema se invierte y los dos caen juntos, a 5,8 y
+     7,5px efectivos.
+
+     El techo y el piso se fijan en proporcion al lienzo de cada panel,
+     no en pixeles sueltos, de modo que la escala resultante es la misma
+     en los dos: 1,0 mientras la caja alcanza, y 0,88 —11,4px de cuerpo
+     util— cuando no alcanza, con desplazamiento dentro del panel y
+     nunca del documento. Es la misma afordancia que ya usan la matriz
+     y las tablas. */
+  .rl-fig-duo > .rl-fig-panel{
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    overscroll-behavior-x:contain;
+  }
+  .rl-fig-duo > .rl-fig-panel > svg{
+    width:100%;
+    margin-inline:auto;
+  }
+  .rl-fig-duo > .rl-fig-panel:first-child > svg{  min-width:600px; max-width:680px; }
+  .rl-fig-duo > .rl-fig-panel:last-child  > svg{  min-width:462px; max-width:524px; }
+
+  .rl-fig-duo > .rl-fig-panel::-webkit-scrollbar{ height:9px; }
+  .rl-fig-duo > .rl-fig-panel::-webkit-scrollbar-track{
+    background:var(--rule-soft,rgba(22,32,40,.07));
+    border-radius:6px;
+  }
+  .rl-fig-duo > .rl-fig-panel::-webkit-scrollbar-thumb{
+    background:var(--muted-2,#98A2A9);
+    border-radius:6px;
+  }
+}

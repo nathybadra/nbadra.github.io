@@ -1,3 +1,4 @@
+# Research data — never published
 *.ipynb
 *.csv
 *.xlsx
@@ -9,11 +10,8 @@
 *.zip
 *.7z
 *.rar
-.DS_Store
-Thumbs.db
-node_modules/
-.env
-.env.*
+
+# Working directories
 exports/
 backup/
 backups/
@@ -23,7 +21,30 @@ notebooks/
 datasets/
 data/raw/
 data/private/
+
+# Editor configuration
+.vscode/
+.idea/
+
+# OS artefacts
+.DS_Store
+Thumbs.db
+node_modules/
+
+# Credentials
+.env
+.env.*
+
+# Working copies and backups
 *_backup*
 *_vNEXT*
 *_FIXED*
+*-standalone.html
+*.bak
 *.log
+
+# Only the two public README files may live at the repository root.
+# Any other root-level document is a working document and stays local.
+/*.md
+!/README.md
+!/README.es.md

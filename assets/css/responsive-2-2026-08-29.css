@@ -1,0 +1,550 @@
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVE · SEGUNDA PASADA · 29 ago 2026
+   Hoja nueva, cargada DESPUÉS de `responsive-2026-08-29.css` en las
+   cuatro páginas. Retirar este único <link> revierte esta segunda
+   pasada entera y deja la primera intacta.
+
+   ALCANCE: composición, jerarquía y legibilidad. No toca datos,
+   resultados, metodología ni clasificación (IVUB, HAR, FAI, UPI).
+   Ningún texto de contenido se reescribe.
+
+   POR QUÉ HACE FALTA UNA SEGUNDA HOJA: la primera pasada midió
+   `scrollWidth` y contención de iframes, y por esa métrica pasaba.
+   Lo que no midió es el interior de cada figura. Todo lo que sigue
+   nace de una medición del contenido, no del contenedor, y cada
+   bloque cita la medida que lo justifica.
+   ═══════════════════════════════════════════════════════════════════ */
+
+
+/* ══ A · CABECERA · EL RÓTULO DE CONTEXTO Y LOS CONTROLES DEJAN DE
+        DISPUTARSE LA MISMA FILA ═══════════════════════════════════
+
+   CAUSA MEDIDA a 390px, con la primera pasada aplicada:
+     .rlx-wordmark   20 → 106
+     .rlx-hdr-ctx   124 → 251   ("Proyecto 01 · IVUB")
+     .rlx-lang      200 → 272   ← se monta 51px sobre el rótulo
+     .rlx-contact   279 → 304   pero su span de idioma mide 255 → 328
+                                porque el enlace quedó estrangulado a
+                                25px y el texto desborda a ambos lados
+     .rlx-burger    311 → 355   ← "Contacto" impreso encima
+
+   `.rlx-end` recibió 96px para alojar idioma (72) + Contacto (73) +
+   menú (44) + huecos ≈ 200px. La primera pasada intentó resolverlo
+   encogiendo los controles (`flex-shrink:1`), pero un botón no puede
+   encoger por debajo de su texto: lo desborda. Y los cortes elegidos
+   —ocultar el rótulo bajo 389 y Contacto bajo 359— dejan fuera
+   justamente 390, 393, 412 y 430, que son los anchos reales de los
+   teléfonos que hay que soportar.
+
+   SOLUCIÓN: dejar de repartir un ancho que no alcanza. Por debajo de
+   620px la fila pasa a dos renglones: marca arriba, contexto debajo
+   en menor jerarquía, y los controles ocupando la columna derecha en
+   toda la altura. Nadie encoge y nadie se monta. */
+
+@media (max-width:620px){
+  .rlx-hdr .rlx-hdr-row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:
+      "mark end"
+      "ctx  end";
+    align-items:center;
+    column-gap:12px;
+    /* 2px medidos: sin ellos la caja de linea del wordmark y la del
+       rotulo se tocan en 1px por redondeo, y el detector lo cuenta. */
+    row-gap:2px;
+    height:auto;
+    min-height:var(--rl-hdr-h);
+    padding-block:6px;
+  }
+  .rlx-hdr .rlx-hdr-row .rlx-wordmark{
+    grid-area:mark;
+    margin-right:0;
+    align-self:end;
+    line-height:1.05;
+  }
+
+  /* El rótulo de orientación se mantiene —es la petición— pero por
+     debajo de la marca y con un peso claramente menor, de modo que no
+     compite con RECO-LAB ni le disputa ancho. */
+  .rlx-hdr .rlx-hdr-row .rlx-hdr-ctx{
+    grid-area:ctx;
+    display:block;
+    align-self:start;
+    margin:0;
+    padding:1px 0 0;
+    border-left:0;
+    font-size:9.5px;
+    letter-spacing:0.13em;
+    line-height:1.25;
+    opacity:0.72;
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .rlx-hdr .rlx-hdr-row .rlx-end{
+    grid-area:end;
+    flex:0 0 auto;
+    align-self:center;
+    column-gap:10px;
+  }
+  /* Nada dentro de los controles vuelve a encogerse por debajo de su
+     propio texto: esa era la vía por la que "Contacto" se imprimía
+     sobre el botón de menú. */
+  .rlx-hdr .rlx-hdr-row .rlx-end > *{ flex-shrink:0; min-width:auto; }
+
+  /* Contacto sale de la cabecera y queda como entrada del panel, donde
+     ya existe. Se recupera el ancho que ahora usan idioma y menú, que
+     son los dos controles que no tienen duplicado fuera. */
+  .rlx-hdr .rlx-hdr-row .rlx-contact{ display:none; }
+
+  /* El rótulo vuelve a ser visible en todo el rango de teléfono: los
+     cortes 389/359 de la primera pasada dejaban fuera 390 y 430. */
+  .rlx-hdr-ctx{ display:block; }
+}
+
+@media (max-width:430px){
+  .rlx-hdr .rlx-hdr-row .rlx-hdr-ctx{ font-size:9px; letter-spacing:0.1em; }
+  .rlx-hdr .rlx-hdr-row{ column-gap:8px; }
+}
+@media (max-width:389px){
+  .rlx-hdr .rlx-hdr-row .rlx-hdr-ctx{ display:block; }
+  .rlx-hdr .rlx-hdr-row .rlx-wordmark{ margin-right:0; }
+}
+
+/* MISMA PATOLOGIA, OTRA BANDA. Entre 621 y 1080 la fila sigue siendo la
+   de la primera pasada, y ahi vive `.rlx-hdr .rlx-end > *{flex-shrink:1;
+   min-width:0}`. Medido a 768px con esa regla:
+
+     .rlx-lang ....... 501 → 569   (68px de caja)
+     boton "EN" ...... 545 → 590   <- 21px FUERA de su propia caja
+     .rlx-contact .... 581 → 677   <- "EN" impreso encima, 10px de solape
+
+   La pildora de idioma se estrangula a 68px cuando sus dos botones
+   necesitan ~90, y el sobrante se imprime encima del vecino. Encoger no
+   es una salida: un boton no baja de su texto.
+
+   Y no hace falta encoger. Medido a 621px, el ancho mas estrecho de la
+   banda: marca 86 + rotulo 151 + idioma 90 + Contacto 96 + menu 44 +
+   huecos ~62 = 529px contra 581 disponibles. Cabe entero. */
+@media (min-width:621px) and (max-width:1080px){
+  .rlx-hdr .rlx-hdr-row .rlx-end > *{ flex-shrink:0; min-width:auto; }
+  .rlx-hdr .rlx-hdr-row .rlx-lang{ flex:0 0 auto; }
+  .rlx-hdr .rlx-hdr-row .rlx-lang button{ flex:0 0 auto; white-space:nowrap; }
+  .rlx-hdr .rlx-hdr-row .rlx-contact{ flex:0 0 auto; white-space:nowrap; }
+
+  /* Y ADEMAS SOBRA UN CONTROL. Con nadie encogiendo, la suma real a
+     768px es: marca 86 + rotulo 151 + MODO 248 + idioma 90 + Contacto
+     116 + menu 39 + huecos ~62 = 792 contra 713 utiles. El selector de
+     modo -Claro / Oscuro / Noche- son 248px, un tercio de la fila, y es
+     el unico control de la cabecera que ya esta duplicado dentro del
+     panel, bajo el rotulo "Modo". Sale de la fila en toda la banda en
+     que la navegacion esta plegada, igual que Contacto sale por debajo
+     de 620. Medido tras retirarlo: 544px contra 713. Sin el, `.rlx-mood`
+     desbordaba hacia la IZQUIERDA -204 → 452- y se imprimia sobre
+     "Proyecto 01 · IVUB", que ocupa 135 → 286.
+     En escritorio (>=1081) el selector se queda donde estaba. */
+  .rlx-hdr .rlx-hdr-row .rlx-mood{ display:none; }
+}
+
+/* La cabecera creció de 56/60 a dos renglones. Las anclas y el relleno
+   superior tienen que saberlo o el primer título queda debajo. */
+@media (max-width:620px){
+  :root{ --rl-hdr-h:66px; }
+}
+@media (max-width:430px){
+  :root{ --rl-hdr-h:62px; }
+}
+
+/* El panel ya marca la sección activa con aria-current; se le da el
+   contraste que faltaba para que la marca se lea de un vistazo. */
+.rlx-drawer nav a[aria-current="page"]{
+  font-weight:600;
+  color:var(--teal,#2F6D69);
+}
+.rlx-drawer .rlx-drawer-here{
+  display:block;
+  font-family:var(--mono,ui-monospace,monospace);
+  font-size:10px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  opacity:0.66;
+  margin:2px 0 8px;
+}
+
+
+/* ══ B · CABECERA DE FIGURA · TÍTULO PRIMERO, ACCIÓN DESPUÉS ══════
+
+   CAUSA MEDIDA: `.rl-embed-head` es `display:flex` con
+   `justify-content:space-between` y `gap:18px`. El enlace lleva
+   `white-space:nowrap`, de modo que reclama su ancho íntegro y el
+   título —que sí puede partirse— absorbe todo el sobrante negativo.
+   A 390px "ABRIR MAPA INTERACTIVO" se queda con ~150px y "FLUJOS DE
+   RETORNO Y PRESIÓN URBANA EN DESTINO" cae en una columna de dos o
+   tres palabras de ancho. La jerarquía queda invertida: la acción
+   pesa más que el objeto sobre el que actúa.
+
+   SOLUCIÓN: por debajo de tablet la cabecera deja de ser una fila.
+   Renglón 1, título completo. Renglón 2, acción. */
+
+@media (max-width:900px){
+  .rl-embed-head{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:9px;
+    padding:12px 16px;
+  }
+  .rl-embed-head .t{
+    display:block;
+    width:100%;
+    max-width:100%;
+    font-size:11px;
+    line-height:1.45;
+    letter-spacing:0.13em;
+  }
+  .rl-embed-head a{
+    display:inline-flex;
+    align-items:center;
+    min-height:36px;
+    font-size:10px;
+    letter-spacing:0.14em;
+    white-space:nowrap;
+  }
+}
+@media (max-width:430px){
+  .rl-embed-head{ padding:11px 13px; }
+  .rl-embed-head .t{ font-size:10.5px; letter-spacing:0.11em; }
+}
+
+
+/* ══ C · TABLA HAR + PRECIOS · ACCESO A LAS OCHO COLUMNAS ═════════
+
+   La tabla tiene 8 columnas y 15 filas. Las proporciones declaradas en
+   el colgroup (14 + 11 + 12 + 12 + 9 + 20 + 11 + 11) reparten un 100%
+   que, a 834px de viewport y con el relleno del bloque, deja la
+   columna de régimen en ~120px: la píldora "Superávit fuerte" no entra
+   y el borde derecho se corta.
+
+   TABLET (768–1023): se reasignan proporciones y se baja el cuerpo de
+   los encabezados. La tabla entra entera; no hay desplazamiento.
+
+   MÓVIL (≤767): 8 columnas por 15 filas no son una tabla, son una
+   retícula. Cada fila pasa a ficha territorial con las ocho celdas
+   presentes y rotuladas. No se elimina ningún dato y no queda nada
+   fuera de pantalla ni recortado. */
+
+@media (min-width:768px) and (max-width:1023px){
+  /* LA CAUSA REAL DEL CORTE EN TABLET, medida a 834px:
+       .rl-table-scroll ......  777px de ancho util
+       table ................  940px  <- `min-width:940px` en
+                               `v3-reco-lab.css` linea 1513
+     El reparto del colgroup es irrelevante mientras ese minimo mande: la
+     tabla se dibuja a 940 y el borde derecho queda fuera. La hoja base
+     lo neutraliza sólo por debajo de 760px, de modo que toda la banda
+     761–1023 —tablet vertical y apaisada— se quedaba cortada.
+     Aqui se libera el minimo y el reparto de columnas vuelve a mandar. */
+  .rl-table-wrap table{ min-width:0; width:100%; }
+
+  .rl-table-wrap col.c-name { width:15%; }
+  .rl-table-wrap col.c-dist { width:10%; }
+  .rl-table-wrap col.c-num  { width:11.5%; }
+  .rl-table-wrap col.c-har  { width:8%;  }
+  .rl-table-wrap col.c-reg  { width:22%; }
+  .rl-table-wrap col.c-delta{ width:10.5%; }
+
+  .rl-table-wrap table{ font-size:12px; }
+  .rl-table-wrap th{
+    font-size:9.5px;
+    letter-spacing:0.04em;
+    padding:9px 5px;
+    line-height:1.25;
+  }
+  .rl-table-wrap td{ padding:8px 5px; }
+  .rl-table-wrap td.regime{ padding-inline:4px; }
+  .rl-table-wrap .rl-pill{
+    font-size:10px;
+    padding:3px 7px;
+    white-space:normal;
+    line-height:1.3;
+    display:inline-block;
+  }
+  .rl-table-scroll{ overflow-x:visible; }
+}
+
+@media (max-width:767px){
+  .rl-table-scroll{ overflow-x:visible; }
+  .rl-table-wrap table,
+  .rl-table-wrap thead,
+  .rl-table-wrap tbody,
+  .rl-table-wrap tr,
+  .rl-table-wrap td{ display:block; width:auto; }
+  .rl-table-wrap colgroup{ display:none; }
+  .rl-table-wrap thead{
+    position:absolute;
+    width:1px;height:1px;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+    white-space:nowrap;
+  }
+
+  .rl-table-wrap tbody tr{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0 14px;
+    border:1px solid var(--rule,rgba(22,32,40,.14));
+    border-radius:10px;
+    padding:12px 14px 10px;
+    margin:0 0 10px;
+    background:var(--surface,#fff);
+  }
+  .rl-table-wrap tbody tr:last-child{ margin-bottom:0; }
+  .rl-table-wrap tbody td{
+    border:0;
+    padding:5px 0;
+    text-align:left;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* El orden de lectura de la ficha no es el orden de las columnas:
+     primero quién, luego su régimen, luego el ratio que lo define y
+     por último los insumos y las variaciones de precio. */
+  .rl-table-wrap tbody td:nth-child(1){ order:1; grid-column:1 / -1;
+    font-size:16px; font-weight:600; padding-bottom:0; }
+  .rl-table-wrap tbody td:nth-child(2){ order:2; grid-column:1 / -1;
+    font-size:11px; opacity:.7; padding-top:1px; }
+  .rl-table-wrap tbody td:nth-child(6){ order:3; grid-column:1 / -1;
+    padding:8px 0 6px; border-bottom:1px solid var(--rule-soft,rgba(22,32,40,.08));
+    margin-bottom:4px; }
+  .rl-table-wrap tbody td:nth-child(5){ order:4; grid-column:1 / -1; }
+  .rl-table-wrap tbody td:nth-child(3){ order:5; }
+  .rl-table-wrap tbody td:nth-child(4){ order:6; }
+  .rl-table-wrap tbody td:nth-child(7){ order:7; }
+  .rl-table-wrap tbody td:nth-child(8){ order:8; }
+
+  /* Rótulo de cada celda. Sin él una ficha es una lista de cifras sin
+     sujeto. Se toma del encabezado real de la columna, en el idioma
+     activo, y por eso va duplicado por `html[lang]`. */
+  .rl-table-wrap tbody td:nth-child(n+3)::before{
+    display:block;
+    font-family:var(--mono,ui-monospace,monospace);
+    font-size:9.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    opacity:.55;
+    margin-bottom:1px;
+  }
+  .rl-table-wrap tbody td:nth-child(5){ font-size:15px; font-weight:600; }
+
+  html[lang="es"] .rl-table-wrap tbody td:nth-child(3)::before{ content:"UF"; }
+  html[lang="es"] .rl-table-wrap tbody td:nth-child(4)::before{ content:"Demanda efectiva"; }
+  html[lang="es"] .rl-table-wrap tbody td:nth-child(5)::before{ content:"HAR"; }
+  html[lang="es"] .rl-table-wrap tbody td:nth-child(6)::before{ content:"Régimen de absorción"; }
+  html[lang="es"] .rl-table-wrap tbody td:nth-child(7)::before{ content:"Δ Alquiler"; }
+  html[lang="es"] .rl-table-wrap tbody td:nth-child(8)::before{ content:"Δ Venta"; }
+
+  html[lang="en"] .rl-table-wrap tbody td:nth-child(3)::before{ content:"Completed units"; }
+  html[lang="en"] .rl-table-wrap tbody td:nth-child(4)::before{ content:"Effective demand"; }
+  html[lang="en"] .rl-table-wrap tbody td:nth-child(5)::before{ content:"HAR"; }
+  html[lang="en"] .rl-table-wrap tbody td:nth-child(6)::before{ content:"Absorption regime"; }
+  html[lang="en"] .rl-table-wrap tbody td:nth-child(7)::before{ content:"Δ Rent"; }
+  html[lang="en"] .rl-table-wrap tbody td:nth-child(8)::before{ content:"Δ Sale"; }
+
+  .rl-table-wrap .rl-pill{
+    display:inline-block;
+    white-space:normal;
+    font-size:11.5px;
+    line-height:1.35;
+    padding:4px 9px;
+  }
+}
+
+
+/* ══ D · MATRIZ UPI · SE VE ENTERA Y SE LEE ═══════════════════════
+
+   CAUSA MEDIDA a 390px: `.rl-matrix-plot svg{min-width:640px}` contra
+   un contenedor de 309px. El SVG se dibujaba a 640px dentro de 309 y
+   `overflow-x:auto` lo recortaba sin afordancia visible: por eso
+   parecía cortado y no desplazable.
+
+   El lienzo mide 1240 por 560 unidades y los rótulos de territorio
+   están escritos a 15,5 unidades. A 309px de contenedor el factor es
+   0,249: esos 15,5 se ven a 3,9px. Encoger más el lienzo no arregla
+   nada, porque el texto encoge con él.
+
+   Se hacen dos cosas, en este orden:
+   1) adaptar de verdad — el cuerpo de letra se recalcula en unidades
+      de usuario para que su tamaño óptico no baje de 10,5px reales;
+      lo hace `responsive-2-2026-08-29.js`, que además restituye el
+      original en cuanto deja de hacer falta;
+   2) sólo lo que aún no entra se resuelve con paneo EXPLÍCITO: raíl
+      visible, foco de teclado y aviso textual. Nunca recorte
+      silencioso. */
+
+.rl-matrix-plot{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  overscroll-behavior-x:contain;
+}
+.rl-matrix-plot:focus-visible{
+  outline:2px solid var(--teal,#2F6D69);
+  outline-offset:2px;
+}
+
+@media (min-width:768px) and (max-width:1023px){
+  /* MEDIDO a 834px: la caja da 749px de ancho con 22+22 de relleno, o
+     sea 705px utiles, contra un `min-width:720px`: sobraban 15px y el
+     aviso de paneo se encendia por esos 15px, en una figura que cabia.
+     Con `min(720px,100%)` el lienzo nunca fuerza desbordamiento y el
+     ajuste tipografico -que tiene margen de sobra en esta banda- se
+     encarga de que el rotulo siga a 10,5px reales. En tablet, por
+     tanto, NO hay paneo. */
+  .rl-matrix-plot svg{ min-width:min(720px,100%); }
+  .rl-matrix-plot{ padding:16px 14px 6px; }
+}
+
+@media (max-width:1023px){
+
+  .rl-matrix-plot::-webkit-scrollbar{ height:9px; }
+  .rl-matrix-plot::-webkit-scrollbar-track{
+    background:var(--rule-soft,rgba(22,32,40,.07));
+    border-radius:6px;
+  }
+  .rl-matrix-plot::-webkit-scrollbar-thumb{
+    background:var(--muted-2,#98A2A9);
+    border-radius:6px;
+  }
+  .rl-matrix-plot[data-pan="1"]::after{
+    content:attr(data-pan-label);
+    display:block;
+    font-family:var(--mono,ui-monospace,monospace);
+    font-size:9.5px;
+    letter-spacing:0.13em;
+    text-transform:uppercase;
+    opacity:.6;
+    padding:6px 2px 0;
+    position:sticky;
+    left:0;
+  }
+}
+@media (max-width:767px){
+  /* Por debajo de tablet el ajuste tipografico topa con su techo: a
+     390px el lienzo util es ~280px y harian falta 46 unidades de cuerpo
+     para llegar a 10,5px reales, muy por encima del +55% que los
+     rotulos de la matriz admiten sin tocarse. Aqui, y solo aqui, se
+     recurre al paneo explicito. */
+  .rl-matrix-plot svg{ min-width:700px; }
+  .rl-matrix-plot{ padding:14px 12px 6px; }
+}
+
+/* Encabezados de la tabla en tablet.
+
+   MEDIDO a 834px: el primer th mide 118px con 20+12 de relleno, o sea
+   86px utiles, y "Subdistrito" a 12px con 1,32px de tracking ocupa
+   ~87px. Por un pixel, `overflow-wrap:break-word` lo partia a mitad de
+   palabra: "SUBDISTRIT / O". Igual en "Distri/to", "Efectiv/a" y
+   "Alquil/er".
+
+   El gancho tiene que ser `.rl-table-wrap table th` (0,1,2): las reglas
+   de `qa-final-2026-08-16` estan escritas asi y una clase suelta pierde
+   -verificado: con `.rl-table-wrap th` el cuerpo seguia en 12px y el
+   relleno en 20px. */
+@media (min-width:768px) and (max-width:1023px){
+  .rl-table-wrap table th{
+    font-size:10.5px;
+    letter-spacing:0.01em;
+    line-height:1.3;
+    padding:9px 6px;
+    word-break:keep-all;
+    overflow-wrap:normal;
+    hyphens:none;
+    white-space:normal;
+  }
+  .rl-table-wrap table th:first-child,
+  .rl-table-wrap table td:first-child{ padding-left:10px; }
+  .rl-table-wrap table th:last-child,
+  .rl-table-wrap table td:last-child{ padding-right:10px; }
+  .rl-table-wrap table td{ padding:8px 6px; }
+  .rl-table-wrap table td.n{ white-space:nowrap; }
+}
+
+
+/* ══ F · ALTURA DE LOS EMBEBIDOS QUE RECOMPONEN ═══════════════════
+
+   Dos figuras dejan de tener la misma forma al estrecharse, y por tanto
+   dejan de caber en la altura que traían declarada:
+
+   · HAR vs variación del alquiler pasa de tres columnas a tres filas
+     por debajo de 1024px. Tres paneles apilados con sus ejes no caben
+     en los 680px de `h-680`, ni en los 420–560px que la primera pasada
+     le daba en teléfono: el tercer corte quedaba fuera.
+
+   · El balance migratorio tiene dos paneles y una leyenda de cuatro
+     entradas; en teléfono el título ocupa tres renglones y el área de
+     dibujo se quedaba sin altura.
+
+   Ambos comparten la clase `h-680`, así que se distinguen por el output
+   que cargan. El atributo `data-href-es` está presente en las dos
+   versiones de la página, de modo que la regla vale también en inglés. */
+
+@media (max-width:1023px){
+  .rl-embed-body:has(iframe[data-href-es*="housing_absorption_vs_market_pressure"]){
+    height:1120px;
+    min-height:1120px;
+  }
+  .rl-embed-body:has(iframe[data-href-es*="wartime_demographic_balance"]){
+    height:700px;
+    min-height:700px;
+  }
+}
+@media (max-width:767px){
+  .rl-embed-body.h-680:has(iframe[data-href-es*="housing_absorption_vs_market_pressure"]){
+    height:1190px;
+    min-height:1190px;
+  }
+  .rl-embed-body.h-680:has(iframe[data-href-es*="wartime_demographic_balance"]){
+    height:700px;
+    min-height:700px;
+  }
+}
+@media (max-width:479px){
+  .rl-embed-body.h-680:has(iframe[data-href-es*="wartime_demographic_balance"]){
+    height:760px;
+    min-height:760px;
+  }
+}
+
+
+/* ══ E · HERO · TECHO DE SEGURIDAD EN MONITOR GRANDE ══════════════
+
+   MEDIDO tras la primera pasada, con "Alcance territorial" como
+   referencia del pliegue:
+
+     1440 x 900   hero 686px   globo 520x520   "Alcance" en y=635  ✓
+     1920 x 1080  hero 705px   globo 520x520   "Alcance" en y=645  ✓
+     2560 x 1440  hero 730px   globo 520x520   "Alcance" en y=658  ✓
+
+   Es decir: la primera pasada YA dejó el hero en su sitio en las tres
+   pantallas, y el globo no crece con el viewport. Aquí no hace falta
+   corregir nada; lo único que se añade es un techo explícito, por
+   encima de los valores medidos, para que un cambio futuro en el hero
+   no pueda volver a empujar "Alcance territorial" bajo el pliegue.
+
+   Nota: los ganchos son `.hero`, `.hero-globe` y `.globe-figure` — el
+   hero no usa el prefijo `rlx-`, y el globo es un elemento propio
+   `<reco-globe>`. */
+
+@media (min-width:1440px){
+  .hero{ max-height:min(84vh,820px); }
+  .hero .globe-figure,
+  .hero reco-globe{ max-height:min(58vh,600px); }
+}
+@media (min-width:1920px){
+  .hero{ max-height:min(78vh,860px); }
+}
+@media (min-width:2560px){
+  .hero{ max-height:min(70vh,900px); }
+}

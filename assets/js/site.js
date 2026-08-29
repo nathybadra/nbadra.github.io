@@ -12,7 +12,7 @@
 
   /* Embedded outputs are versioned so a browser never serves a stale copy
      after an output is regenerated. Bump on every outputs/ change. */
-  var BUILD = '2026-08-12b';
+  var BUILD = '2026-08-29r2';
 
   /* ── Bilingual href / src / label swap ──────────────────────────── */
   function swapBilingual(lang) {
@@ -79,7 +79,7 @@
   setLang(initial);
 
   /* ── Mood · light / dark / night ─────────────────────────────────
-     The handoff ships a written theme control at the end of the nav and
+     The design system ships a written theme control at the end of the nav and
      a full set of dark tokens. Both were implemented but the control was
      never exposed, on the argument that a dark shell around a white
      analytical figure is worse than no dark mode at all. That argument

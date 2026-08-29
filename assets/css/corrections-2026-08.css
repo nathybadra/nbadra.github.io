@@ -288,7 +288,7 @@ html[data-theme="night"] #project-1 .finding:last-child{border-left-color:#93b3d
 .rl-chip{font-size:11px;letter-spacing:0.1em;padding:4px 11px;}
 .rl-topic-status{font-size:11px;letter-spacing:0.12em;padding:3px 10px;}
 
-/* ══ 6 · Mood switch · written, per the handoff ══════════════════ */
+/* ══ 6 · Mood switch · written, per the design system ══════════════════ */
 .rl-mood{display:flex;align-items:center;gap:7px;}
 .rl-mood button{
   font-family:var(--font-shell,var(--sans));

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <title>IVUB Dashboard — Israel y Líbano</title>
   <style>
@@ -25,14 +26,38 @@
       div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
       div[style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
       section[style*="padding:22px 26px 18px;margin-bottom:24px"] { overflow-x: auto !important; }
-      div[style*="grid-template-columns:34px minmax(104px,1.4fr)"] { min-width: 640px; }
+      div[style*="grid-template-columns:34px minmax(104px,1.4fr)"],
+      div[style*="grid-template-columns: 34px minmax(104px, 1.4fr)"] { min-width: 640px; }
+      /* selectores hermanos que sí matchean el whitespace del navegador */
+      .dc-kpi-grid,
+      div[style*="grid-template-columns: repeat(5, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+      div[style*="grid-template-columns: 7fr 3fr"] { grid-template-columns: 1fr !important; }
+      div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+      div[style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
     }
     @media (max-width: 560px) {
+      .dc-kpi-grid,
+      div[style*="grid-template-columns: repeat(5, 1fr)"] { grid-template-columns: 1fr !important; }
+      div[style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: 1fr !important; }
+      main[style*="width: min(1480px"] { width: calc(100vw - 32px) !important; }
       header[style*="background:linear-gradient(180deg,#354F52"] { padding: 14px 16px 0 !important; }
       nav[style*="background:#FFFFFF;border-bottom:1px solid #E7E5DF"] { padding: 10px 16px !important; }
       main[style*="width:min(1480px"] { width: calc(100vw - 32px) !important; }
       div[style*="grid-template-columns:repeat(5,1fr)"] { grid-template-columns: 1fr !important; }
       div[style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: 1fr !important; }
+    }
+    /* BADGES "Fuente:/Source:" en gris neutro único (firma inline exclusiva) */
+    span[style*="display: inline-block"][style*="font-size: 10px"][style*="font-weight: 600"][style*="letter-spacing: 0.01em"],
+    span[style*="display:inline-block"][style*="font-size:10px"][style*="font-weight:600"][style*="letter-spacing:0.01em"] {
+      color: #4a5560 !important;
+      background: rgba(74,85,96,0.10) !important;
+      border-color: rgba(74,85,96,0.28) !important;
+    }
+    span[style*="display: inline-block"][style*="font-size: 10px"][style*="font-weight: 600"][style*="letter-spacing: 0.01em"] > *,
+    span[style*="display:inline-block"][style*="font-size:10px"][style*="font-weight:600"][style*="letter-spacing:0.01em"] > * {
+      color: #4a5560 !important;
+      border-color: rgba(74,85,96,0.28) !important;
+      background: transparent !important;
     }
     #dcModalOverlay { display:none; position:fixed; inset:0; z-index:9999; background:rgba(24,32,28,.55);
       backdrop-filter:blur(3px); align-items:center; justify-content:center; padding:24px; }
@@ -180,6 +205,23 @@ document.addEventListener('DOMContentLoaded', async function() {
       template = template.slice(0, i) + resourceScript + template.slice(i);
     }
 
+    // ── RESPONSIVE FIX 29-08-2026 · badges + KPI grid ─────────────────
+    // Se inyecta en la plantilla antes del parseo, para que sobreviva
+    // al replaceWith(). Neutraliza los badges "Fuente:/Source:" a gris
+    // único (firma inline: display:inline-block + font-size:10px +
+    // font-weight:600 + letter-spacing:0.01em) y refuerza la retícula
+    // de KPIs (.dc-kpi-grid) en mobile/tablet.
+    template = template.replace(/<\/head>/i,
+      '<style id="rlResponsiveFix">' +
+      'span[style*="display: inline-block"][style*="font-size: 10px"][style*="font-weight: 600"][style*="letter-spacing: 0.01em"],' +
+      'span[style*="display:inline-block"][style*="font-size:10px"][style*="font-weight:600"][style*="letter-spacing:0.01em"]{' +
+      'color:#4a5560!important;background:rgba(74,85,96,0.10)!important;border-color:rgba(74,85,96,0.28)!important}' +
+      'span[style*="display: inline-block"][style*="font-size: 10px"][style*="font-weight: 600"][style*="letter-spacing: 0.01em"] *,' +
+      'span[style*="display:inline-block"][style*="font-size:10px"][style*="font-weight:600"][style*="letter-spacing:0.01em"] *{' +
+      'color:#4a5560!important;border-color:rgba(74,85,96,0.28)!important;background:transparent!important}' +
+      '@media (max-width:900px){.dc-kpi-grid{grid-template-columns:repeat(2,1fr)!important}}' +
+      '@media (max-width:560px){.dc-kpi-grid{grid-template-columns:1fr!important}}' +
+      '</style></head>');
     // Parse the template and swap the root element. Scripts inserted via
     // DOMParser/replaceWith are inert per spec — re-create each with
     // createElement so they execute, awaiting onload for src scripts to
@@ -612,5 +654,85 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
   var n=0, t=setInterval(function(){ n++; if(wire()||n>60) clearInterval(t); }, 120);
 })();</script>
+<!-- RL-BLOCK:resp2-dashboard -->
+<script id="rl-resp2-dashboard-js">
+/* ═══ SEGUNDA PASADA RESPONSIVE · 29 ago 2026 · dashboard IVUB macro ══
+
+   NO TOCA DATOS. Ni un filtro, ni una serie, ni una cifra, ni la
+   clasificación. Sólo composición de la barra de filtros.
+
+   CAUSA MEDIDA a 390px de viewport:
+     body.scrollWidth ......... 435px, es decir barra de desplazamiento
+                                horizontal DENTRO del propio embebido
+     fila "Año" ............... 16 → 435, ocho botones
+                                (Todos · 2021 … 2026) en una sola línea
+                                que no cede ancho
+
+   Mientras la página escalaba este output a 0,78 el desbordamiento no
+   se veía; al retirar ese escalado —que es lo pedido— aflora. Aquí los
+   grupos de filtro pasan a envolver. Ningún filtro se oculta ni cambia
+   de valor.
+
+   POR QUÉ ES UN SCRIPT Y NO UNA HOJA SUELTA. Se probaron las dos
+   colocaciones estáticas y ninguna sobrevive en este output concreto:
+
+     · al final de <body>: la aplicación se dibuja por JS y reemplaza el
+       contenido del body al arrancar, de modo que la hoja desaparecía.
+       Medido: getElementById devolvía null con el bloque en el fichero.
+     · antes de </head>: el analizador cierra el <head> ANTES de llegar
+       ahí (lo verifica DOMParser sobre el fichero servido: el elemento
+       queda adoptado por <body>), así que acaba en el mismo sitio y con
+       el mismo final.
+
+   Un script sí sobrevive: su cierre sigue vivo aunque el body se
+   reescriba. Instala la hoja en <head> —que la aplicación no toca,
+   puesto que inyecta ahí la suya— y la repone si alguna vez desaparece.
+   ═══════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var ID = 'rl-resp2-dashboard';
+  var CSS = [
+    '@media (max-width:900px){',
+    /* el grupo "Ano" es label + control segmentado, y son los ocho
+       botones DENTRO del segmentado los que no ceden: hay que envolver
+       en todos los niveles de la barra, no solo en el primero */
+    '  .dc-nav div{ flex-wrap:wrap; min-width:0; }',
+    '  .dc-nav > div{ gap:10px 18px; }',
+    '  .dc-nav button{ flex:0 0 auto; }',
+    '  .sc-host, .dc-nav, .dc-main{ max-width:100%; min-width:0; }',
+    '}',
+    '@media (max-width:560px){',
+    '  .dc-nav > div{ gap:9px 14px; }',
+    '  .dc-nav button{ min-height:34px; }',
+    '}'
+  ].join('\n');
+
+  function install() {
+    if (document.getElementById(ID)) return;
+    var head = document.head || document.getElementsByTagName('head')[0];
+    if (!head) return;
+    var st = document.createElement('style');
+    st.id = ID;
+    st.appendChild(document.createTextNode(CSS));
+    head.appendChild(st);
+  }
+
+  install();
+
+  /* La aplicación inyecta su propia hoja en <head> al arrancar; si en
+     esa operación se llevara la nuestra por delante, se repone. */
+  try {
+    new MutationObserver(install).observe(
+      document.documentElement, { childList: true, subtree: true }
+    );
+  } catch (e) {}
+
+  /* setTimeout y no requestAnimationFrame: en un documento oculto el
+     navegador no entrega frames. */
+  [0, 200, 800, 2000].forEach(function (ms) { setTimeout(install, ms); });
+})();
+</script>
+<!-- /RL-BLOCK:resp2-dashboard -->
 </body>
 </html>

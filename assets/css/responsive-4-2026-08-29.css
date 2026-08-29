@@ -1,0 +1,310 @@
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVE · CUARTA PASADA · 29 ago 2026
+   Hoja nueva, cargada DESPUÉS de `responsive-3-2026-08-29.css` en las
+   cuatro páginas. Retirar este único <link> revierte esta pasada.
+
+   ALCANCE: cierre estructural del header (space-between real),
+   compactado CTA, separación de botones FAI, swatches de leyendas
+   de tamaño fijo, aseguramiento del bloque "Estado de fuentes" oculto,
+   alineación tabla HAR complementaria y contención agresiva de
+   figuras Plotly (variación acumulada, divergencia) en 360-430px.
+   No toca datos, ni resultados, ni metodología, ni clasificaciones.
+   ═══════════════════════════════════════════════════════════════════ */
+
+
+/* ══ A · HEADER · SPACE-BETWEEN REAL EN TODAS LAS BANDAS ═══════════
+
+   MEDIDO: en tablet 768-1080 la nav plegada deja el hueco entre logo
+   y controles porque el wordmark + rótulo de contexto ocupan la
+   izquierda y `.rlx-end` fluye a la derecha sin margin-left:auto.
+   Al desaparecer los enlaces internos (plegados en el burger) el
+   layout flex por defecto agrupa TODO a la izquierda y sobra un
+   bloque enorme a la derecha. Aquí se fuerza el reparto real.
+   No se toca la banda >=1081 donde la nav se despliega. */
+
+@media (min-width:621px) and (max-width:1080px){
+  .rlx-hdr .rlx-hdr-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .rlx-hdr .rlx-hdr-row .rlx-nav{
+    /* la nav se pliega en el burger en esta banda; asegurar que no
+       reserve ancho fantasma cuando alguna hoja la deja invisible */
+    display:none;
+  }
+  .rlx-hdr .rlx-hdr-row .rlx-end{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    flex:0 0 auto;
+  }
+  .rlx-hdr .rlx-hdr-row .rlx-wordmark{
+    flex:0 0 auto;
+  }
+}
+/* En mobile (<=620) responsive-2 usa un grid mark/ctx | end donde
+   `end` abarca las dos filas, y por tanto la altura mayor de esa
+   columna (idioma + burger) empuja el wordmark al fondo mientras
+   los controles quedan arriba. La petición explícita es que
+   RECO-LAB y los controles queden ALINEADOS en la misma fila y
+   el rótulo de contexto quiebre debajo. Re-especificamos: fila 1
+   marca|controles, fila 2 el rótulo a ancho completo. */
+@media (max-width:620px){
+  .rlx-hdr .rlx-hdr-row{
+    display:grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "mark end"
+      "ctx  ctx";
+    row-gap:4px;
+    align-items:center;
+  }
+  .rlx-hdr .rlx-hdr-row .rlx-wordmark{
+    grid-area:mark;
+    align-self:center;
+  }
+  .rlx-hdr .rlx-hdr-row .rlx-end{
+    grid-area:end;
+    align-self:center;
+    justify-self:end;
+  }
+  .rlx-hdr .rlx-hdr-row .rlx-hdr-ctx{
+    grid-area:ctx;
+    white-space:normal;
+    text-overflow:clip;
+    overflow:visible;
+    line-height:1.22;
+    max-width:100%;
+  }
+}
+
+
+/* ══ B · CONTEXTO DE PÁGINA P02 · TÍTULO COMPLETO SIN CORTES ═══════
+
+   El markup HTML lleva ya el título completo ("Presión habitacional
+   y dinámicas urbanas en Israel"). Aquí se garantiza que la píldora
+   no se corte por un `text-overflow:ellipsis` heredado. En mobile la
+   segunda pasada permite `nowrap` con ellipsis, que amputa palabras;
+   liberamos wrap con dos renglones máximos y line-height compacto. */
+
+@media (max-width:620px){
+  .rlx-hdr .rlx-hdr-row .rlx-hdr-ctx{
+    white-space:normal;
+    text-overflow:clip;
+    overflow:visible;
+    line-height:1.2;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    max-height:calc(1.2em * 2);
+  }
+}
+
+
+/* ══ C · CTA GLOBAL COMPACTADA (CLARO/OSCURO/NOCHE, ES/EN, CONTACTO)
+
+   Complementa a `responsive-3` reduciendo padding horizontal y
+   tamaños. Nunca por debajo de 34px de altura táctil. */
+
+@media (min-width:768px){
+  .rlx-hdr .rlx-end .rlx-mood{
+    gap:0;
+  }
+  .rlx-hdr .rlx-end .rlx-mood button{
+    padding-inline:9px;
+    font-weight:500;
+    font-size:11.5px;
+    letter-spacing:0.04em;
+  }
+  .rlx-hdr .rlx-end .rlx-mood button[aria-pressed="true"]{
+    font-weight:600;
+  }
+  .rlx-hdr .rlx-end .rlx-lang{
+    padding:1px;
+  }
+  .rlx-hdr .rlx-end .rlx-lang button{
+    padding-inline:8px;
+    font-size:11.5px;
+  }
+  .rlx-hdr .rlx-end .rlx-contact{
+    padding-inline:12px;
+  }
+  .rlx-hdr .rlx-end{
+    column-gap:8px;
+  }
+}
+
+
+/* ══ D · FAI · SEPARACIÓN VERTICAL ENTRE "RECALCULAR" Y "VOLVER" ═══
+
+   La botonera del FAI queda con dos controles pegados verticalmente.
+   Se asegura separación clara y centrado horizontal en todos los
+   anchos, sin romper el layout desktop. Se ataca por los ganchos
+   más plausibles: cualquier .rl-fai-actions, .rl-fai-cta, o pares
+   consecutivos de .rl-btn en un contenedor centrado del FAI. */
+
+.rl-fai-actions,
+.rl-fai-cta,
+.rl-fai .rl-actions,
+.rl-fai .rl-cta,
+[data-fai-actions]{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  padding-block:6px;
+}
+.rl-fai-actions > *,
+.rl-fai-cta > *,
+.rl-fai .rl-actions > *,
+.rl-fai .rl-cta > *,
+[data-fai-actions] > *{
+  min-height:38px;
+}
+/* Cuando los dos controles son adyacentes directos con la misma clase */
+.rl-fai .rl-btn + .rl-btn,
+.rl-fai [data-fai-btn] + [data-fai-btn]{
+  margin-top:12px;
+}
+
+
+/* ══ E · SWATCHES DE LEYENDAS · TAMAÑO FIJO IDÉNTICO ══════════════
+
+   Los recuadros de color de la leyenda categórica del mapa de
+   retornos (USA, Alemania, Francia, Reino Unido, Canadá, Australia,
+   India) NO deben codificar magnitud. Sólo la cifra/texto informa.
+   Fijamos width/height iguales y flex-shrink:0 para que el tamaño
+   quede independiente del contenido de la fila.
+
+   Se ataca por dos ganchos: los que el sitio expone (`.rl-legend
+   .swatch`, `.rl-legend-row .sw`) y una firma inline habitual
+   ("width:...px;height:...px" en un <span> hijo de leyenda). */
+
+.rl-legend .swatch,
+.rl-legend .sw,
+.rl-legend-row .swatch,
+.rl-legend-row .sw,
+.rl-legend-item .swatch,
+.rl-legend-item .sw,
+[data-legend-swatch]{
+  width:12px !important;
+  height:12px !important;
+  min-width:12px !important;
+  min-height:12px !important;
+  flex-shrink:0 !important;
+  border-radius:3px !important;
+  display:inline-block !important;
+  box-sizing:border-box !important;
+}
+
+
+/* ══ F · "ESTADO DE FUENTES POR INDICADOR" · OCULTO SEGURO ═════════
+
+   responsive-3 ya oculta `.rl-fai-status`. Añadimos ganchos
+   defensivos por si alguna versión usa una clase o id emparentado. */
+
+.rl-fai-status,
+.rl-fai-fuentes,
+.rl-fai-status-block,
+[data-fai-status],
+[data-source-status],
+#fai-fuentes-indicador,
+#estado-fuentes,
+.estado-fuentes-indicador{
+  display:none !important;
+}
+
+
+/* ══ G · TABLA HAR · REFUERZO DE ALINEACIÓN ═══════════════════════
+
+   responsive-3 alinea columnas 3-8 al centro en tablet+. Aquí se
+   añade la píldora del régimen (col 6) explícita y se conserva
+   alineación izquierda para 1-2 sin ambigüedades. */
+
+@media (min-width:768px){
+  .rl-table-wrap table thead th:nth-child(-n+2),
+  .rl-table-wrap table tbody td:nth-child(-n+2){
+    text-align:left !important;
+  }
+  .rl-table-wrap table thead th:nth-child(n+3),
+  .rl-table-wrap table tbody td:nth-child(n+3){
+    text-align:center !important;
+  }
+  .rl-table-wrap table tbody td.regime,
+  .rl-table-wrap table tbody td:nth-child(6){
+    text-align:center !important;
+  }
+  .rl-table-wrap table tbody td.regime .rl-pill,
+  .rl-table-wrap table tbody td:nth-child(6) .rl-pill{
+    margin-inline:auto;
+    display:inline-block;
+  }
+}
+
+
+/* ══ H · FIGURAS PLOTLY EN MOBILE · CONTENCIÓN DE MÁRGENES ═════════
+
+   Variación acumulada por subdistrito y divergencia del alquiler:
+   en mobile 360-430px la barra queda cortada porque el margen
+   izquierdo (nombres territoriales largos) le come el ancho útil.
+   Complementa a los ajustes internos de cada figura reduciendo
+   overflow silencioso y forzando altura mínima suficiente. */
+
+@media (max-width:479px){
+  .rl-embed-body:has(iframe[data-href-es*="housing_rent_variation"]),
+  .rl-embed-body:has(iframe[data-href-es*="rent_variation_cumulative"]),
+  .rl-embed-body:has(iframe[data-href-es*="subdistrict_cumulative"]){
+    min-height:680px;
+  }
+  /* dentro del iframe, plotly toma 100% del contenedor; si algún
+     wrapper lo recorta en X lo revertimos */
+  .rl-embed-body iframe{ width:100%; }
+}
+
+
+/* ══ I · MAPAS ALIYAH / RETORNOS · LEYENDA FUERA DEL ZOOM ══════════
+
+   Complementa a la G-block de responsive-3. En tablet la leyenda
+   debe empujarse al lado derecho-inferior para no chocar con el
+   control de zoom (top-izquierda) ni con el layer switcher. En
+   mobile, reducir footprint sin perder legibilidad. Selectores
+   redundantes por si el iframe carga versión más reciente. */
+
+@media (min-width:768px) and (max-width:1023px){
+  .leaflet-container .leaflet-control-attribution,
+  .leaflet-bottom.leaflet-right .leaflet-control-attribution{
+    /* attribution siempre visible en su esquina propia */
+    max-width:60%;
+  }
+  .leaflet-container .rl-map-legend,
+  .leaflet-container .legend,
+  .leaflet-bottom.leaflet-left .leaflet-control:not(.leaflet-control-attribution){
+    /* mueve leyendas empotradas al bottom-right en tablet */
+    position:absolute !important;
+    right:12px !important;
+    bottom:36px !important;
+    left:auto !important;
+    top:auto !important;
+    max-width:220px;
+  }
+}
+@media (max-width:767px){
+  .leaflet-container .rl-map-legend,
+  .leaflet-container .legend{
+    font-size:10.5px;
+    padding:8px 10px;
+    max-width:180px;
+  }
+}
+
+
+/* ══ J · SAFETY · overflow-x en body ═══════════════════════════════
+
+   Ninguna figura ni tabla debe forzar scroll horizontal del
+   documento. Los propios contenedores ya llevan overflow-x auto
+   cuando lo necesitan (matriz UPI, dashboard). Esto sólo evita
+   que un `min-width` heredado desborde. */
+
+html, body{ overflow-x:hidden; }

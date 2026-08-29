@@ -473,7 +473,7 @@ document.addEventListener("DOMContentLoaded", function() {
     </span>
   </div>
   <div class="src">
-    © OpenStreetMap · CARTO
+    © OpenStreetMap · Esri
     <span style="color:#4f5a6a"> | </span>
     Fuentes: UCDP · GDELT BigQuery · WorldPop · geoBoundaries
   </div>
@@ -502,6 +502,80 @@ document.addEventListener("DOMContentLoaded", function() {
   </div>
   <div class="bot">&copy; 2026 RECO-LAB &middot; Laboratorio de Inteligencia Urbana</div>
 </footer>
+
+<style id="reco-lab-responsive-2026-08-29">
+/* Responsive . 29 ago 2026 . leyendas y controles en pantalla estrecha.
+   Medido a 352px: la leyenda ocupaba entre el 58% y el 93% del ancho del
+   mapa y dejaba muy poca cartografia visible. Aqui baja de cuerpo y se
+   acota, sin ocultarse y sin tocar la atribucion, que sigue legible. */
+@media (max-width:560px){
+  .tf-map-legend,.tf-legend{
+    font-size:10px !important;
+    line-height:1.5 !important;
+    padding:8px 10px !important;
+    max-width:60% !important;
+    max-height:38% !important;
+    overflow:auto !important;
+  }
+  .tf-map-legend .l-w,.tf-legend .l-w{ font-size:9.5px !important; }
+  .tf-map-legend .l-ends,.tf-legend .l-ends{ font-size:8.5px !important; }
+  .leaflet-control-layers{ max-width:52% !important; font-size:11px !important; }
+  .leaflet-control-layers-list{ max-height:36vh; overflow:auto; }
+  .leaflet-control-zoom a{
+    width:32px !important; height:32px !important; line-height:32px !important;
+  }
+  .leaflet-control-attribution{
+    font-size:9px !important; line-height:1.35 !important;
+  }
+}
+/* Muy estrecho: la leyenda cede ancho antes que tapar el mapa. */
+@media (max-width:400px){
+  .tf-map-legend,.tf-legend{ max-width:68% !important; max-height:34% !important; }
+}
+</style>
+
+<!-- RL-BLOCK:resp2-ivubmap -->
+<style id="rl-resp2-ivubmap">
+/* SEGUNDA PASADA RESPONSIVE - 29 ago 2026 - mapa IVUB.
+   No toca datos, geometrias, clasificacion, ranking ni basemap.
+
+   CAUSA MEDIDA: la primera pasada dio al selector de capas
+   `max-width:52% !important`. Ese porcentaje se resuelve contra
+   `.leaflet-top.leaflet-right`, un contenedor posicionado sin ancho
+   propio, de modo que el control se quedaba en unos 67px y cada
+   etiqueta de capa se partia letra a letra. Se sustituye por una medida
+   absoluta. Lleva !important porque enfrente hay otro !important. */
+@media (max-width:767px){
+  .leaflet-control-layers{
+    max-width:min(64vw,240px) !important;
+    width:auto !important;
+    font-size:11.5px !important;
+  }
+  .leaflet-control-layers-list{
+    max-height:min(38vh,190px) !important;
+    overflow:auto;
+  }
+  .leaflet-control-layers label{
+    display:block;
+    white-space:nowrap;
+    min-height:26px;
+    line-height:26px;
+  }
+  .leaflet-control-layers label span{ white-space:nowrap; }
+
+  /* La atribucion es obligatoria y tiene que poder leerse. */
+  .leaflet-control-attribution{
+    font-size:9.5px !important;
+    line-height:1.4 !important;
+    max-width:78vw;
+    background:rgba(255,255,255,.92);
+  }
+  .leaflet-control-zoom a{
+    width:36px !important; height:36px !important; line-height:36px !important;
+  }
+}
+</style>
+<!-- /RL-BLOCK:resp2-ivubmap -->
 </body>
 <script>
     
@@ -526,13 +600,13 @@ document.addEventListener("DOMContentLoaded", function() {
         
     
             var tile_layer_e38be7bceb453dc222e23da789a6a148 = L.tileLayer(
-                "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+                "https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
                 {
   "minZoom": 0,
   "maxZoom": 18,
   "maxNativeZoom": 18,
   "noWrap": false,
-  "attribution": "\u00a9 OpenStreetMap contributors \u00a9 CARTO",
+  "attribution": "Tiles &copy; <a href=\"https://www.esri.com/\">Esri</a> — Esri, HERE, Garmin, &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
   "subdomains": "abc",
   "detectRetina": false,
   "tms": false,
@@ -546,13 +620,13 @@ document.addEventListener("DOMContentLoaded", function() {
         
     
             var tile_layer_279ab6a8d16bfa41a9695a60000eb516 = L.tileLayer(
-                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
                 {
   "minZoom": 0,
   "maxZoom": 18,
   "maxNativeZoom": 18,
   "noWrap": false,
-  "attribution": "\u00a9 OpenStreetMap contributors \u00a9 CARTO",
+  "attribution": "Tiles &copy; <a href=\"https://www.esri.com/\">Esri</a> — Esri, HERE, Garmin, &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
   "subdomains": "abc",
   "detectRetina": false,
   "tms": false,
@@ -2044,8 +2118,8 @@ document.addEventListener("DOMContentLoaded", function() {
     
             var layer_control_a2d3bfdfb479dc750cd57695700bcd21_layers = {
                 base_layers : {
-                    "CARTO Voyager \u2014 OSM" : tile_layer_e38be7bceb453dc222e23da789a6a148,
-                    "CARTO Light \u2014 OSM" : tile_layer_279ab6a8d16bfa41a9695a60000eb516,
+                    "Calles \u2014 Esri/OSM" : tile_layer_e38be7bceb453dc222e23da789a6a148,
+                    "Base clara \u2014 Esri/OSM" : tile_layer_279ab6a8d16bfa41a9695a60000eb516,
                 },
                 overlays :  {
                     "IVUB \u2014 ranking integrado" : feature_group_8b714c43dda85b707ede4b517035cfd3,

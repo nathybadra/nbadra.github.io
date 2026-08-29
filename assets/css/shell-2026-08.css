@@ -1,26 +1,26 @@
 /* ══════════════════════════════════════════════════════════════════
    RECO-LAB · site shell · August 2026
 
-   Implements design_handoff_reco_lab_shell: header, home hero, footer and
+   Implements the RECO-LAB shell design system: header, home hero, footer and
    the methods page, as a layer that sits on top of system-2.9.css and
    v3-reco-lab.css. Nothing here fights the older sheets for the same
    selectors: the old header.site / footer.site / .hero markup is gone from
    every page, so those rules are simply unreachable, and the shell owns a
    private namespace (.rl-hdr, .rl-hero, .rl-ftr, .rl-mp).
 
-   Two rules govern where the handoff was followed literally and where it
+   Two rules govern where the design system was followed literally and where it
    was adapted:
 
      · structure, layout, colour, spacing and display type come from the
-       handoff, at the values it declares;
+       design system, at the values it declares;
      · every size that carries running text respects the site's own
        legibility floors — nav 14px, body 14–16px, notes and metadata
-       11px minimum, body line-height 1.5 or more. Where the handoff
+       11px minimum, body line-height 1.5 or more. Where the design system
        specified 13px nav or 12.5px lead-ins for reading text, the floor
-       wins. Display type, labels and technical strips keep the handoff's
+       wins. Display type, labels and technical strips keep the design system's
        tracking-heavy small caps.
 
-   Dark mode is defined but not exposed. The handoff ships a light/dark
+   Dark mode is defined but not exposed. The design system ships a light/dark
    pair and the tokens are here in full, so switching data-theme on <html>
    repaints the shell; there is no control in the UI because the project
    pages and their embedded outputs are light-only documents, and a dark
@@ -53,7 +53,7 @@
   --font-shell:'Barlow',var(--sans);
   --font-ui:'IBM Plex Sans',var(--sans);
 
-  /* The bar is 62px per the handoff; site.js re-measures the live element
+  /* The bar is 62px per the design system; site.js re-measures the live element
      and overwrites this, so it only has to be right for the no-JS case. */
   --rl-hdr-h:62px;
 }
@@ -79,7 +79,7 @@ html[data-theme="dark"]{
 /* ── Shared shell primitives ────────────────────────────────────── */
 
 /* Chrome is laid out on the same column as the page body, so the wordmark
-   sits directly above the first section's first character. The handoff's
+   sits directly above the first section's first character. The design system's
    own clamp() padding would leave the header 70px out of register with a
    1240px content column. */
 .rl-shell-row{

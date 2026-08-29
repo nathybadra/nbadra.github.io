@@ -2,7 +2,7 @@
    RECO-LAB · <reco-globe> · global-current build
 
    Same web component as assets/js/reco-globe.js (itself ported from
-   design_handoff_reco_lab_shell/reco-globe.js): same orthographic
+   the RECO-LAB shell design system): same orthographic
    projection, same hypsometric relief, same 18 great-circle flows, same
    city set, same light/dark palettes. Two defects are fixed here, and
    they are the reason the globe was rendering as a black sphere:
@@ -56,7 +56,7 @@
     [36.8, -1.3], [32.6, 15.5]
   ];
 
-  /* Palettes of the handoff, unchanged. "night" is the dark palette taken
+  /* Palettes of the design system, unchanged. "night" is the dark palette taken
      one step down: same hues, less light, so the sphere sits inside the
      night ground instead of glowing on top of it. */
   const PALETTE = {
